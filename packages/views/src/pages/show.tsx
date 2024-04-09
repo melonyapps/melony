@@ -18,6 +18,7 @@ import { Toolbar } from "../components/toolbar";
 import { FIELDS } from "../constants";
 import { ConfirmDeleteModal } from "../components/confirm-delete-modal";
 import { DocumentDropdownMenu } from "../components/document-dropdown-menu";
+import { filterEditableFields } from "../helpers/filter-editable-fields";
 
 export function ShowPage({}: {}): JSX.Element {
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
@@ -46,7 +47,7 @@ export function ShowPage({}: {}): JSX.Element {
     (x) => x.type === "DOCUMENTS"
   );
 
-  const filteredSchema = schema.filter((x) => x.type !== "DOCUMENTS");
+  const filteredSchema = filterEditableFields(schema);
 
   return (
     <DocumentProvider data={docRes?.data}>
@@ -88,6 +89,9 @@ export function ShowPage({}: {}): JSX.Element {
                 const Comp =
                   FIELDS[field?.type || "TEXT"]?.["default"] || (() => <></>);
 
+                const fieldId =
+                  field.type === "DOCUMENT" ? `${field.slug}_full` : field.slug;
+
                 return (
                   <div
                     key={field.slug}
@@ -101,7 +105,7 @@ export function ShowPage({}: {}): JSX.Element {
                     <div className="col-span-8">
                       <Comp
                         field={field}
-                        defaultValue={docRes?.data?.[field.slug]}
+                        defaultValue={docRes?.data?.[fieldId]}
                       />
                     </div>
                   </div>

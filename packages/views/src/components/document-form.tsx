@@ -7,6 +7,7 @@ import { FormFields } from "./form/form-fields";
 import { Button } from "@melony/ui/button";
 import { getValidation } from "../helpers/validate";
 import { Card } from "@melony/ui/card";
+import { filterEditableFields } from "../helpers/filter-editable-fields";
 
 export function DocumentForm({
   onSubmit,
@@ -18,7 +19,7 @@ export function DocumentForm({
   const { schema } = useCollection();
   const { data } = useDocument();
 
-  const filteredSchema = schema.filter((x) => x.type !== "DOCUMENTS");
+  const filteredSchema = filterEditableFields(schema);
 
   const schemaFields = filteredSchema.map((field) => {
     return [field.slug, getValidation(field)];

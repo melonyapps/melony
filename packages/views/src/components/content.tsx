@@ -4,13 +4,14 @@ import { DataTable } from "@melony/ui/data-table";
 import { FIELDS } from "../constants";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@melony/ui/card";
+import { filterEditableFields } from "../helpers/filter-editable-fields";
 
 export function Content() {
   const navigate = useNavigate();
 
   const { slug, isLoading, schema, result, view } = useCollection();
 
-  const filteredSchema = schema.filter((x) => x.type !== "DOCUMENTS");
+  const filteredSchema = filterEditableFields(schema);
 
   switch (view?.type) {
     case "CARDS":
@@ -64,8 +65,11 @@ export function Content() {
                   ? "text-right"
                   : "text-left";
 
+                const columnId =
+                  field.type === "DOCUMENT" ? `${field.slug}_full` : field.slug;
+
                 return {
-                  accessorKey: field.slug,
+                  accessorKey: columnId,
                   header: () => (
                     <div className={textAlignClass}>
                       {field?.label || field.slug}
@@ -76,7 +80,7 @@ export function Content() {
                       <div className={textAlignClass}>
                         <Comp
                           field={field}
-                          defaultValue={row.getValue(field.slug)}
+                          defaultValue={row.getValue(columnId)}
                         />
                       </div>
                     );

@@ -63,12 +63,12 @@ export const mongodbAdapter = ({
                 { $addFields: { id: { $toString: "$_id" } } },
                 { $match: { $expr: { $eq: ["$id", `$$localFieldSlug`] } } },
               ],
-              as: `${docField?.slug}`,
+              as: `${docField?.slug}_full`,
             },
           });
           pipeline.push({
             $unwind: {
-              path: `$${docField?.slug}`,
+              path: `$${docField?.slug}_full`,
               preserveNullAndEmptyArrays: true,
             },
           });
@@ -121,12 +121,12 @@ export const mongodbAdapter = ({
                 { $addFields: { id: { $toString: "$_id" } } },
                 { $match: { $expr: { $eq: ["$id", `$$localFieldSlug`] } } },
               ],
-              as: `${docField?.slug}`,
+              as: `${docField?.slug}_full`,
             },
           });
           pipeline.push({
             $unwind: {
-              path: `$${docField?.slug}`,
+              path: `$${docField?.slug}_full`,
               preserveNullAndEmptyArrays: true,
             },
           });
