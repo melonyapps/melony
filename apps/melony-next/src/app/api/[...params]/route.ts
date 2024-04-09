@@ -37,6 +37,7 @@ export const { GET, POST, PUT, DELETE } = serve({
         views.cards({
           slug: "projectsByDate",
           label: "თარიღის მიხედვით",
+          icon: "🚧",
         }),
       ],
     },

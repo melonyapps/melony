@@ -9,15 +9,22 @@ export function Navigation() {
   const location = useLocation();
   const { config } = useConfig();
 
+  const ViewsFlatten: NavigationItemProps[] = [];
+
+  // TODO: keeping reduce here for nested navigation if needed
   const Views = config.collections.reduce(
     (prev, curr) => {
       if (curr?.views) {
         prev[curr?.label || curr.slug] = (curr?.views || []).map((view) => {
-          return {
+          const viewItem = {
             title: view?.label || view.slug,
             to: `/c/${curr.slug}/v/${view.slug}`,
-            icon: <Eye className="h-4 w-4" />,
+            icon: view?.icon || <Eye className="h-4 w-4" />,
           };
+
+          ViewsFlatten.push(viewItem);
+
+          return viewItem;
         });
       }
 
@@ -27,7 +34,7 @@ export function Navigation() {
   );
 
   const defaultNav: Record<string, NavigationItemProps[]> = {
-    ...Views,
+    Views: ViewsFlatten,
     Collections: config.collections.map((collection) => ({
       title: collection?.label || collection.slug,
       to: `/c/${collection.slug}/v/base`,

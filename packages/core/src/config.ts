@@ -43,6 +43,7 @@ export type View = {
   slug: string;
   label?: string;
   type?: string;
+  icon?: any;
 };
 
 export type DbTrigger = {
