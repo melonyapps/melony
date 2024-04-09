@@ -29,7 +29,7 @@ export const mongodbAdapter = ({
     auth: MongoDBAdapter(clientPromise, {
       databaseName: id,
     }),
-    getDocuments: async ({ collectionSlug, filter }) => {
+    getDocuments: async ({ collectionSlug, filter, sort }) => {
       const collection = collections.find((x) => x.slug === collectionSlug);
       const schema = collection?.schema || [];
 
@@ -68,6 +68,12 @@ export const mongodbAdapter = ({
             },
           });
         });
+
+        if (sort) {
+          pipeline.push({
+            $sort: { [sort?.field]: sort?.direction === "desc" ? -1 : 1 },
+          });
+        }
 
         // query
         const docs = await db

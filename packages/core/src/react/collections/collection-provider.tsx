@@ -29,12 +29,18 @@ export function CollectionProvider({
 }) {
   const { config } = useConfig();
 
-  const [params, setParams] = React.useState(baseParams);
+  const [params, setParams] = React.useState<CollectionParams>({
+    ...baseParams,
+    sort: baseParams?.sort || { field: "createdAt", direction: "desc" },
+  });
 
   const data = config.collections.find((x) => x.slug === slug);
   const view = (data?.views || []).find((x) => x.slug === viewSlug);
 
-  const schema = data?.schema || [];
+  const schema = [
+    ...(data?.schema || []),
+    { slug: "createdAt", label: "Created at", type: "DATE" },
+  ];
 
   const res = useInfiniteDocs(slug, {
     ...params,

@@ -4,13 +4,24 @@ import { Input } from "@melony/ui/input";
 import { Button } from "@melony/ui/button";
 import { AdvancedFilterPopover } from "@melony/ui/advanced-filter-popover";
 import { Plus } from "lucide-react";
-import { useCollection, useView } from "@melony/core/react";
+import { SortingProps, useCollection, useView } from "@melony/core/react";
 import { convertFieldsToFilterTokens } from "../helpers/transforms";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@melony/ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "@melony/ui/popover";
 
 export function Toolbar() {
+  const [sortIsOpen, setSortIsOpen] = React.useState(false);
+
   const navigate = useNavigate();
   const { data: viewData } = useView();
-  const { slug, schema, params, filter } = useCollection();
+  const { slug, schema, params, filter, sort } = useCollection();
 
   return (
     <div className="py-4 px-4 h-[52px] flex justify-between items-center gap-2 border-b">
@@ -33,7 +44,62 @@ export function Toolbar() {
           />
         </div>
         <div>
-          <Button variant="ghost">Sort</Button>
+          <Popover open={sortIsOpen} onOpenChange={setSortIsOpen}>
+            <PopoverTrigger asChild>
+              <Button variant="outline">Sort</Button>
+            </PopoverTrigger>
+            <PopoverContent className="p-2" align="start">
+              <div className="flex gap-2">
+                <div className="flex-1">
+                  <Select
+                    value={params?.sort?.field}
+                    onValueChange={(value) =>
+                      sort({
+                        field: value,
+                        direction: params?.sort?.direction || "desc",
+                      })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="- Sort" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {schema.map((field) => {
+                          return (
+                            <SelectItem key={field.slug} value={field.slug}>
+                              {field?.label || field.slug}
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Select
+                    value={params?.sort?.direction}
+                    onValueChange={(value: SortingProps["direction"]) =>
+                      sort({
+                        field: params?.sort?.field || "unknown",
+                        direction: value,
+                      })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="- Dir" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value={"asc"}>ASC</SelectItem>
+                        <SelectItem value={"desc"}>DESC</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
         </div>
         <div>
           <Button variant="ghost">Group</Button>

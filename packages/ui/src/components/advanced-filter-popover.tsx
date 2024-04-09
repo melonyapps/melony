@@ -77,7 +77,7 @@ export function AdvancedFilterPopover({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="ghost">
+        <Button variant="outline">
           Filter{" "}
           {items.length > 0 && <Badge className="ml-2">{items.length}</Badge>}
         </Button>

@@ -42,7 +42,7 @@ export function DocumentForm({
         </Card>
 
         <div className="flex justify-end">
-          <Button size="lg" type="submit" disabled={isSubmitting}>
+          <Button type="submit" disabled={isSubmitting}>
             Submit
           </Button>
         </div>

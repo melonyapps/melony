@@ -28,14 +28,10 @@ import { updateDocument } from "./update-document";
 // import { getView } from "./get-view";
 // import { getViews } from "./get-views";
 // import { updateView } from "./update-view";
-import { DataProviderProps } from "@melony/core/types";
+import { DataProvider } from "@melony/core/types";
 import { init } from "./init";
 
-export const dataProvider = ({
-  apiUrl,
-}: {
-  apiUrl: string;
-}): DataProviderProps => {
+export const dataProvider = ({ apiUrl }: { apiUrl: string }): DataProvider => {
   return {
     // signIn: () => signIn(apiUrl),
 
