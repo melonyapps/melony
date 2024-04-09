@@ -29,7 +29,8 @@
     "./dialog": "./src/components/ui/dialog.tsx",
     "./card": "./src/components/ui/card.tsx",
     "./command": "./src/components/ui/command.tsx",
-    "./alert-dialog": "./src/components/ui/alert-dialog.tsx"
+    "./alert-dialog": "./src/components/ui/alert-dialog.tsx",
+    "./tabs": "./src/components/ui/tabs.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
@@ -60,6 +61,7 @@
     "@radix-ui/react-popover": "^1.0.7",
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-tabs": "^1.0.4",
     "@tailwindcss/typography": "^0.5.10",
     "@tanstack/react-table": "^8.14.0",
     "class-variance-authority": "^0.7.0",

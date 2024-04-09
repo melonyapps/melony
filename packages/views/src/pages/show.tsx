@@ -5,6 +5,7 @@ import {
   useGetDocument,
 } from "@melony/core/react";
 import { Button } from "@melony/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@melony/ui/tabs";
 import { Pencil, Trash } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Header } from "../components/header";
@@ -41,7 +42,7 @@ export function ShowPage({}: {}): JSX.Element {
   if (isLoading) return <>Loading doc...</>;
 
   // TODO: we need to auto-detect the type
-  const subcollectionsFields: DocumentFieldProps[] = schema.filter(
+  const subcollectionFields: DocumentFieldProps[] = schema.filter(
     (x) => x.type === "DOCUMENTS"
   );
 
@@ -111,29 +112,45 @@ export function ShowPage({}: {}): JSX.Element {
           </Card>
         </div>
 
-        {subcollectionsFields.map((colField) => {
-          return (
-            <div key={colField.slug}>
-              <div className="px-4 py-2">{colField.label}</div>
-              <CollectionWrapper
-                collectionSlug={colField.collectionSlug}
-                viewSlug={colField?.defaultViewSlug}
-                baseParams={{
-                  filter: [
-                    {
-                      field: colField?.foreignField || `${collectionSlug}_id`,
-                      operator: FilterOperator.Is,
-                      value: docRes?.data?._id,
-                    },
-                  ],
-                }}
-              >
-                <Toolbar />
-                <Content />
-              </CollectionWrapper>
+        {subcollectionFields.length > 0 && (
+          <Tabs defaultValue={subcollectionFields[0]?.slug}>
+            <div className="px-4">
+              <TabsList>
+                {subcollectionFields.map((colField) => {
+                  return (
+                    <TabsTrigger key={colField.slug} value={colField.slug}>
+                      {colField?.label || colField.slug}
+                    </TabsTrigger>
+                  );
+                })}
+              </TabsList>
             </div>
-          );
-        })}
+
+            {subcollectionFields.map((colField) => {
+              return (
+                <TabsContent key={colField.slug} value={colField.slug}>
+                  <CollectionWrapper
+                    collectionSlug={colField.collectionSlug}
+                    viewSlug={colField?.defaultViewSlug}
+                    baseParams={{
+                      filter: [
+                        {
+                          field:
+                            colField?.foreignField || `${collectionSlug}_id`,
+                          operator: FilterOperator.Is,
+                          value: docRes?.data?._id,
+                        },
+                      ],
+                    }}
+                  >
+                    <Toolbar />
+                    <Content />
+                  </CollectionWrapper>
+                </TabsContent>
+              );
+            })}
+          </Tabs>
+        )}
       </div>
 
       <ConfirmDeleteModal
