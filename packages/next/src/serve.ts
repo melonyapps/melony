@@ -47,6 +47,7 @@ export const serve = (config: Config) => {
       const parsedQs = queryString.parse(search);
       const filter = parsedQs?.["filter"];
       const sort = parsedQs?.["sort"];
+      const searchTerm = parsedQs?.["searchTerm"];
 
       // auth (used for callbacks)
       if (params?.[0] === "auth") {
@@ -77,6 +78,7 @@ export const serve = (config: Config) => {
         try {
           const res = await dbCrudAdapter.getDocuments({
             collectionSlug,
+            searchTerm,
             filter,
             sort,
           });

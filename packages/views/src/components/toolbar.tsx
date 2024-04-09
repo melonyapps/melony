@@ -21,7 +21,7 @@ export function Toolbar() {
 
   const navigate = useNavigate();
   const { data: viewData } = useView();
-  const { slug, schema, params, filter, sort } = useCollection();
+  const { slug, schema, params, search, filter, sort } = useCollection();
 
   return (
     <div className="py-4 px-4 h-[52px] flex justify-between items-center gap-2 border-b">
@@ -33,7 +33,12 @@ export function Toolbar() {
               <Button variant="secondary">Create</Button>
             </div> */}
         <div>
-          <Input placeholder="Search by title..." />
+          <Input
+            placeholder="Search by title..."
+            onChange={(e) => {
+              search(e.target.value);
+            }}
+          />
         </div>
 
         <div>
@@ -101,9 +106,9 @@ export function Toolbar() {
             </PopoverContent>
           </Popover>
         </div>
-        <div>
+        {/* <div>
           <Button variant="ghost">Group</Button>
-        </div>
+        </div> */}
       </div>
 
       <div className="flex items-center gap-2">

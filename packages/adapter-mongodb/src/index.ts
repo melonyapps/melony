@@ -29,7 +29,7 @@ export const mongodbAdapter = ({
     auth: MongoDBAdapter(clientPromise, {
       databaseName: id,
     }),
-    getDocuments: async ({ collectionSlug, filter, sort }) => {
+    getDocuments: async ({ collectionSlug, filter, sort, searchTerm }) => {
       const collection = collections.find((x) => x.slug === collectionSlug);
       const schema = collection?.schema || [];
 
@@ -40,6 +40,11 @@ export const mongodbAdapter = ({
 
         // filter
         const matches = filter ? filterToQuery(filter) : {};
+
+        if (searchTerm) {
+          matches["title"] = new RegExp(searchTerm, "i");
+        }
+
         pipeline.push({ $match: { ...matches } });
 
         // TODO: unlike sql dvs, nosql lookup is super expensive. solution needed for denormalization.
