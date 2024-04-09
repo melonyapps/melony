@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@melony/ui/avatar";
-import { useAuth, useLogout } from "@melony/core/react";
+import { useLogout } from "@melony/core/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,9 +29,14 @@ export function AccountPopover({
   const { mutate: logout } = useLogout();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    // const res = await signOut({
+    //   redirect: false,
+    //   callbackUrl: "/login",
+    // });
+
     logout(undefined, {
-      onSuccess: (res) => {
+      onSuccess: async (res) => {
         navigate(res?.redirectUrl);
       },
     });

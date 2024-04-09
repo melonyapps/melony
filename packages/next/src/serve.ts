@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { Config } from "@melony/core/config";
 import { getParams } from "./utils";
 import GoogleProvider from "next-auth/providers/google";
@@ -108,7 +108,7 @@ export const serve = (config: Config) => {
 
       return Response.json({});
     },
-    POST: auth(async (req) => {
+    POST: async (req: NextRequest) => {
       const params = getParams(req);
 
       if (params?.[0] === "login") {
@@ -121,7 +121,8 @@ export const serve = (config: Config) => {
       if (params?.[0] === "logout") {
         try {
           await signOut({ redirect: false });
-          return Response.json({ redirectUrl: "/login" });
+
+          return NextResponse.json({ redirectUrl: "/login" });
         } catch (err) {}
       }
 
@@ -135,7 +136,7 @@ export const serve = (config: Config) => {
           await dbCrudAdapter.createDocument({
             collectionSlug,
             data,
-            auth: req.auth,
+            auth,
           });
 
           eventEmitter.emit("docChange", {
@@ -147,7 +148,7 @@ export const serve = (config: Config) => {
       }
 
       return Response.json({});
-    }),
+    },
     PUT: auth(async (req) => {
       const params = getParams(req);
 

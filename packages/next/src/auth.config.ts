@@ -9,12 +9,5 @@ export const authConfig = {
     signIn: "/login",
     signOut: "/logout",
   },
-  // callbacks: {
-  //   authorized({ auth }) {
-  //     const isAuthenticated = !!auth?.user;
-
-  //     return isAuthenticated;
-  //   },
-  // },
   providers: [],
 } satisfies NextAuthConfig;

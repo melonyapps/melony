@@ -1,4 +1,3 @@
-"use client";
 import * as React from "react";
 import { AuthContext, ConfigProvider, DataContext } from "@melony/core/react";
 import { QueryClient, QueryClientProvider } from "react-query";
