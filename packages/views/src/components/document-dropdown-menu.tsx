@@ -1,55 +1,64 @@
 "use client";
 
 import * as React from "react";
-import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
+  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@melony/ui/dropdown-menu";
 import { Button } from "@melony/ui/button";
-import { EllipsisVertical } from "lucide-react";
+import { EllipsisVertical, Trash } from "lucide-react";
+import { ConfirmDeleteModal } from "./confirm-delete-modal";
+import { useCollection } from "@melony/core/react";
+import { useNavigate } from "react-router-dom";
 
-type Checked = DropdownMenuCheckboxItemProps["checked"];
+export function DocumentDropdownMenu({ docId }: { docId: string }) {
+  const [showDeleteModal, setShowDeleteModal] = React.useState(false);
 
-export function DocumentDropdownMenu() {
-  const [showStatusBar, setShowStatusBar] = React.useState<Checked>(true);
-  const [showActivityBar, setShowActivityBar] = React.useState<Checked>(false);
-  const [showPanel, setShowPanel] = React.useState<Checked>(false);
+  const navigate = useNavigate();
+
+  const {
+    slug: collectionSlug,
+    view,
+    deleteDoc,
+    isDeletingDoc,
+  } = useCollection();
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline">
-          <EllipsisVertical className="h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>Appearance</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuCheckboxItem
-          checked={showStatusBar}
-          onCheckedChange={setShowStatusBar}
-        >
-          Status Bar
-        </DropdownMenuCheckboxItem>
-        <DropdownMenuCheckboxItem
-          checked={showActivityBar}
-          onCheckedChange={setShowActivityBar}
-          disabled
-        >
-          Activity Bar
-        </DropdownMenuCheckboxItem>
-        <DropdownMenuCheckboxItem
-          checked={showPanel}
-          onCheckedChange={setShowPanel}
-        >
-          Panel
-        </DropdownMenuCheckboxItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline">
+            <EllipsisVertical className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-56">
+          <DropdownMenuItem
+            onClick={() => {
+              setShowDeleteModal(true);
+            }}
+          >
+            <Trash className="h-4 w-4 mr-2" /> Delete
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <ConfirmDeleteModal
+        open={showDeleteModal}
+        onClose={() => {
+          setShowDeleteModal(false);
+        }}
+        onConfirm={() => {
+          deleteDoc(docId, {
+            onSuccess: () => {
+              setShowDeleteModal(false);
+              navigate(`/c/${collectionSlug}/v/${view?.slug || "base"}`);
+            },
+          });
+        }}
+        isConfirming={isDeletingDoc}
+      />
+    </>
   );
 }

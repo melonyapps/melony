@@ -32,13 +32,18 @@ export function Content() {
                   const Comp =
                     FIELDS[field?.type || "TEXT"]?.["default"] || (() => <></>);
 
+                  const fieldId =
+                    field.type === "DOCUMENT"
+                      ? `${field.slug}_full`
+                      : field.slug;
+
                   return (
                     <div key={field.slug} className="flex flex-col gap-1">
                       <p className="text-sm text-muted-foreground block truncate">
                         {field?.label || field.slug}
                       </p>
                       <p className="font-medium leading-none block truncate">
-                        <Comp field={field} defaultValue={doc?.[field.slug]} />
+                        <Comp field={field} defaultValue={doc?.[fieldId]} />
                       </p>
                     </div>
                   );

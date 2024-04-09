@@ -6,7 +6,7 @@ import {
 } from "@melony/core/react";
 import { Button } from "@melony/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@melony/ui/tabs";
-import { Pencil, Trash } from "lucide-react";
+import { Pencil } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Header } from "../components/header";
 import { Card } from "@melony/ui/card";
@@ -16,24 +16,16 @@ import { Content } from "../components/content";
 import { DocumentFieldProps } from "@melony/core/config";
 import { Toolbar } from "../components/toolbar";
 import { FIELDS } from "../constants";
-import { ConfirmDeleteModal } from "../components/confirm-delete-modal";
 import { DocumentDropdownMenu } from "../components/document-dropdown-menu";
 import { filterEditableFields } from "../helpers/filter-editable-fields";
 
 export function ShowPage({}: {}): JSX.Element {
-  const [showDeleteModal, setShowDeleteModal] = React.useState(false);
   const params = useParams();
   const navigate = useNavigate();
 
   const documentId = params?.documentId || "";
 
-  const {
-    slug: collectionSlug,
-    schema,
-    view,
-    deleteDoc,
-    isDeletingDoc,
-  } = useCollection();
+  const { slug: collectionSlug, schema, view } = useCollection();
 
   const { data: docRes, isLoading } = useGetDocument(
     collectionSlug,
@@ -56,14 +48,6 @@ export function ShowPage({}: {}): JSX.Element {
         toolbar={
           <div className="flex gap-2">
             <Button
-              variant="destructive"
-              onClick={() => {
-                setShowDeleteModal(true);
-              }}
-            >
-              <Trash className="h-4 w-4 mr-2" /> Delete
-            </Button>
-            <Button
               variant="outline"
               onClick={() => {
                 navigate(
@@ -74,7 +58,7 @@ export function ShowPage({}: {}): JSX.Element {
               <Pencil className="h-4 w-4 mr-2" /> Edit
             </Button>
 
-            <DocumentDropdownMenu />
+            <DocumentDropdownMenu docId={documentId} />
           </div>
         }
       />
@@ -156,22 +140,6 @@ export function ShowPage({}: {}): JSX.Element {
           </Tabs>
         )}
       </div>
-
-      <ConfirmDeleteModal
-        open={showDeleteModal}
-        onClose={() => {
-          setShowDeleteModal(false);
-        }}
-        onConfirm={() => {
-          deleteDoc(documentId, {
-            onSuccess: () => {
-              setShowDeleteModal(false);
-              navigate(`/c/${collectionSlug}/v/${view?.slug || "base"}`);
-            },
-          });
-        }}
-        isConfirming={isDeletingDoc}
-      />
     </DocumentProvider>
   );
 }

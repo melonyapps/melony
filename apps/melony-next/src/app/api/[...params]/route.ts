@@ -66,6 +66,7 @@ export const { GET, POST, PUT, DELETE } = serve({
         views.cards({
           slug: "cardsView",
           label: "ქარდებად დალაგება",
+          icon: "🛋️",
         }),
       ],
     },
