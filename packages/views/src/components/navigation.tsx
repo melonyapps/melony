@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { useConfig } from "@melony/core/react";
 import { cn } from "@melony/ui/lib";
@@ -5,8 +7,10 @@ import { NavigationItemProps } from "@melony/core/config";
 import * as icons from "lucide-react";
 
 export function Navigation({
+  pathname = "",
   onClickItem,
 }: {
+  pathname?: string;
   onClickItem: (item: NavigationItemProps) => void;
 }) {
   const { config } = useConfig();
@@ -53,6 +57,8 @@ export function Navigation({
 
   const nav = config?.ui?.navigation || defaultNav;
 
+  console.log(pathname);
+
   return (
     <div className="flex flex-col gap-2">
       {Object.keys(nav).map((title) => {
@@ -70,8 +76,9 @@ export function Navigation({
                     className={cn(
                       "cursor-pointer inline-flex items-center whitespace-nowrap text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 justify-start",
                       {
-                        "text-accent-foreground bg-muted":
-                          location.pathname.includes(item.to),
+                        "text-accent-foreground bg-muted": pathname.includes(
+                          item.to
+                        ),
                       }
                     )}
                     onClick={() => {

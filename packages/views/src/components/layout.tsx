@@ -6,10 +6,12 @@ import { ProjectContext, useConfig } from "@melony/core/react";
 import { Loader2 } from "lucide-react";
 
 export function Layout({
+  logo,
   children,
   navigation,
   account,
 }: {
+  logo?: JSX.Element;
   children: JSX.Element | React.ReactNode;
   navigation: JSX.Element | React.ReactNode;
   account: JSX.Element | React.ReactNode;
@@ -30,7 +32,7 @@ export function Layout({
   return (
     <ProjectContext.Provider value={{ projectId: id }}>
       <AppShell
-        logo={ui?.logo}
+        logo={logo}
         title={ui?.title || "Melony"}
         nav={navigation}
         account={account}

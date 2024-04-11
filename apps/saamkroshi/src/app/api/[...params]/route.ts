@@ -6,7 +6,6 @@ export const { GET, POST, PUT, DELETE } = serve({
   id: "65a2b2167f0c2c91ea054cb3",
   adapter: mongodbAdapter,
   ui: {
-    logo: "🏭",
     title: "საამქროში",
     navigation: {
       Navigation: [

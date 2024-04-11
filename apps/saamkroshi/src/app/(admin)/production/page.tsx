@@ -1,4 +1,14 @@
-import { Container, Heading, Stack, Table } from "@melony/views";
+import {
+  AdvancedFilter,
+  Between,
+  Container,
+  CreateButton,
+  Heading,
+  SearchInput,
+  Sort,
+  Stack,
+} from "@melony/views";
+import PageContent from "./content";
 
 export const metadata = {
   title: "Next Melony",
@@ -9,7 +19,16 @@ export default async function ProductionPage() {
     <Container>
       <Stack>
         <Heading>წარმოება</Heading>
-        <Table />
+
+        <Stack horizontal gapSize="sm">
+          <SearchInput />
+          <AdvancedFilter />
+          <Sort />
+          <Between />
+          <CreateButton />
+        </Stack>
+
+        <PageContent />
       </Stack>
     </Container>
   );
