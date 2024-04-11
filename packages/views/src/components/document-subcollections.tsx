@@ -14,7 +14,11 @@ import { Table } from "./table";
 
 export function DocumentSubcollections({}: {}): JSX.Element {
   const { slug: collectionSlug, schema } = useCollection();
-  const { data } = useDocument();
+  const { data, isLoading } = useDocument();
+
+  if (isLoading) {
+    return <></>;
+  }
 
   // TODO: we need to auto-detect the type
   const subcollectionFields: DocumentFieldProps[] = schema.filter(

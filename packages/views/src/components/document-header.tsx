@@ -4,16 +4,17 @@ import { Button } from "@melony/ui/button";
 import { Pencil } from "lucide-react";
 import { Header } from "./header";
 import { DocumentDropdownMenu } from "./document-dropdown-menu";
+import { Skeleton } from "@melony/ui/skeleton";
 
 export function DocumentHeader({}: {}): JSX.Element {
   const { slug: collectionSlug, view } = useCollection();
-  const { data } = useDocument();
+  const { data, isLoading } = useDocument();
 
   const documentId = data?._id;
 
   return (
     <Header
-      title={data?.title}
+      title={isLoading ? <Skeleton className="w-40 h-4" /> : data?.title}
       toolbar={
         <div className="flex gap-2">
           <Button

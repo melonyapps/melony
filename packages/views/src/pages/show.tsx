@@ -28,7 +28,7 @@ export function ShowPage({}: {}): JSX.Element {
           <DocumentDetails />
         </div>
 
-        {subcollectionFields.length > 0 && <DocumentSubcollections />}
+        <DocumentSubcollections />
       </div>
     </DocumentProvider>
   );

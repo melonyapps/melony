@@ -13,7 +13,7 @@ export function DocumentProvider({
 
   const { data: docRes, isLoading } = useGetDocument(slug, id);
 
-  const value = { data: docRes?.data || {} };
+  const value = { data: docRes?.data || {}, isLoading };
 
   return <DocContext.Provider value={value}>{children}</DocContext.Provider>;
 }
