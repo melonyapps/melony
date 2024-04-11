@@ -1,7 +1,12 @@
 import { Adapter } from "./types";
+import * as icons from "lucide-react";
 
 // config
-export type NavigationItemProps = { to: string; title?: string; icon?: any };
+export type NavigationItemProps = {
+  to: string;
+  title?: string;
+  icon?: keyof typeof icons;
+};
 
 type Ui = {
   title?: string;

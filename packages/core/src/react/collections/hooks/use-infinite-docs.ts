@@ -1,15 +1,15 @@
-import { useProject } from "../../projects/hooks/use-project";
+"use client";
+
 import { useData } from "./use-data";
 import { useInfiniteQuery } from "react-query";
 
 export const useInfiniteDocs = (collectionSlug: string, params?: any) => {
   const { getDocuments } = useData();
-  const { projectId } = useProject();
 
   return useInfiniteQuery({
     queryKey: ["getInfiniteDocuments", collectionSlug, params],
     queryFn: ({ pageParam }) =>
-      getDocuments(projectId, collectionSlug, { ...params, page: pageParam }),
+      getDocuments("", collectionSlug, { ...params, page: pageParam }),
     getNextPageParam: (lastPage, pages) => {
       const lastPageCount = pages[pages.length - 1]?.docs
         ? pages[pages.length - 1]?.docs.length

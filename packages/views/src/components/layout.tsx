@@ -1,17 +1,17 @@
+"use client";
+
 import * as React from "react";
 import { AppShell } from "@melony/ui/app-shell";
 import { ProjectContext, useConfig } from "@melony/core/react";
 import { Loader2 } from "lucide-react";
 
 export function Layout({
-  title,
-  nav,
   children,
+  navigation,
   account,
 }: {
-  title?: string;
-  nav: JSX.Element | React.ReactNode;
   children: JSX.Element | React.ReactNode;
+  navigation: JSX.Element | React.ReactNode;
   account: JSX.Element | React.ReactNode;
 }) {
   const isLoading = false;
@@ -32,7 +32,7 @@ export function Layout({
       <AppShell
         logo={ui?.logo}
         title={ui?.title || "Melony"}
-        nav={nav}
+        nav={navigation}
         account={account}
       >
         {children}

@@ -8,6 +8,7 @@ import { Button } from "@melony/ui/button";
 import { getValidation } from "../helpers/validate";
 import { Card } from "@melony/ui/card";
 import { filterEditableFields } from "../helpers/filter-editable-fields";
+import { Check } from "lucide-react";
 
 export function DocumentForm({
   onSubmit,
@@ -44,6 +45,7 @@ export function DocumentForm({
 
         <div className="flex justify-end">
           <Button type="submit" disabled={isSubmitting}>
+            <Check className="h-4 w-4 mr-2" />
             Submit
           </Button>
         </div>

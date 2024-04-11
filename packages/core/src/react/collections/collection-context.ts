@@ -20,8 +20,6 @@ export interface ICollectionContext {
   updateDoc: (data: any, params?: any) => void;
   createDoc: (data: any, params?: any) => void;
   deleteDoc: (id: string, params?: any) => void;
-  updateCollection: (data: any, params?: any) => void;
-  isUpdatingCollection?: boolean;
   isCreatingDoc?: boolean;
   isUpdatingDoc?: boolean;
   isDeletingDoc?: boolean;
@@ -57,6 +55,5 @@ export const CollectionContext = React.createContext<ICollectionContext>({
   createDoc: () => {},
   updateDoc: () => {},
   deleteDoc: () => {},
-  updateCollection: () => {},
   fetchNextPage: () => {},
 });

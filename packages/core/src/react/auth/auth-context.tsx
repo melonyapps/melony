@@ -1,5 +1,7 @@
+"use client";
+
 import * as React from "react";
-import { AuthProviderProps } from "../../types";
+import { AuthProvider } from "../../types";
 
 export type IdentityProps = {
   _id: string;
@@ -8,7 +10,7 @@ export type IdentityProps = {
   avatar?: string;
 };
 
-export const AuthContext = React.createContext<AuthProviderProps>({
+export const AuthContext = React.createContext<AuthProvider>({
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
   // getIdentity: () => Promise.resolve<IdentityProps | undefined>(undefined),

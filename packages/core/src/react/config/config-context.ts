@@ -7,6 +7,7 @@ export const ConfigContext = React.createContext<ConfigProvideProps>({
   config: {
     id: "undefined",
     collections: [],
+    triggers: [],
   },
 });
 

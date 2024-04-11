@@ -1,4 +1,5 @@
-import { useProject } from "../../projects";
+"use client";
+
 import { useMutation, useQueryClient } from "react-query";
 import { useData } from "./use-data";
 
@@ -7,11 +8,9 @@ export const useCreateDocument = (collectionSlug: string) => {
 
   const queryClient = useQueryClient();
 
-  const { projectId } = useProject();
-
   return useMutation(
     ["createDocument"],
-    (data: any) => createDocument(collectionSlug, { ...data, projectId }),
+    (data: any) => createDocument(collectionSlug, { ...data }),
     {
       // onMutate: async (newDoc) => {
       //   // Cancel any outgoing refetches

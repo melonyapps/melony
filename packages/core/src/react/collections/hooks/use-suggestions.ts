@@ -1,4 +1,5 @@
-import { useProject } from "../../projects/hooks/use-project";
+"use client";
+
 import { useData } from "./use-data";
 import { useQuery } from "react-query";
 
@@ -7,9 +8,8 @@ export const useSuggestions = (params?: {
   include?: string[];
 }) => {
   const { getSuggestions } = useData();
-  const { projectId } = useProject();
 
   return useQuery(["getSuggestions", params], () =>
-    getSuggestions(projectId, { ...params })
+    getSuggestions("", { ...params })
   );
 };

@@ -1,17 +1,17 @@
+"use client";
+
 import { useMutation, useQueryClient } from "react-query";
-import { useProject } from "../../projects/hooks/use-project";
 import { useData } from "./use-data";
 
 export const useLazyUpdateDocument = (collectionSlug: string) => {
   const { updateDocument } = useData();
-  const { projectId } = useProject();
 
   const queryClient = useQueryClient();
 
   const res = useMutation(
     ["updateDocument"],
     ({ id, data }: { id: string; data: any }) =>
-      updateDocument(collectionSlug, id, { ...data, projectId }),
+      updateDocument(collectionSlug, id, { ...data }),
     {
       // onMutate: async (newDoc) => {
       //   // Cancel any outgoing refetches

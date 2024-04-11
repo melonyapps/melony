@@ -1,3 +1,5 @@
+"use client";
+
 import { useQuery } from "react-query";
 import { useData } from "../..";
 

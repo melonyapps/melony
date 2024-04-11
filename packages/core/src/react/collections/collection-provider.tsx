@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   CollectionContext,
@@ -8,7 +10,6 @@ import {
   useInfiniteDocs,
   useLazyDeleteDocument,
   useLazyUpdateDocument,
-  useUpdateCollection,
 } from ".";
 import { useConfig } from "..";
 
@@ -18,7 +19,6 @@ export function CollectionProvider({
   viewSlug,
   baseParams,
   parentDocId,
-  onUpdateParams,
 }: {
   children: React.ReactNode;
   slug: string;
@@ -56,9 +56,6 @@ export function CollectionProvider({
 
   const { mutate: deleteDoc, isLoading: isDeletingDoc } =
     useLazyDeleteDocument(slug);
-
-  const { mutate: updateCollection, isLoading: isUpdatingCollection } =
-    useUpdateCollection(slug);
 
   const handleSearch = (searchTerm: string) => {
     setParams({ searchTerm });
@@ -100,8 +97,6 @@ export function CollectionProvider({
     updateDoc,
     createDoc,
     deleteDoc,
-    updateCollection,
-    isUpdatingCollection,
     isUpdatingDoc,
     isCreatingDoc,
     isDeletingDoc,

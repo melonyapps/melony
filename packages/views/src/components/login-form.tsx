@@ -1,3 +1,5 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@melony/ui/form";
 import * as React from "react";

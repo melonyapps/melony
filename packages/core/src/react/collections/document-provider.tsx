@@ -1,3 +1,5 @@
+"use client";
+
 import { DocContext } from ".";
 
 export function DocumentProvider({

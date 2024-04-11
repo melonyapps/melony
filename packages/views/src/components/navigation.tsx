@@ -1,25 +1,29 @@
 import React from "react";
 import { useConfig } from "@melony/core/react";
-import { NavLink, useLocation } from "react-router-dom";
 import { cn } from "@melony/ui/lib";
-import { Eye, Folder, Rocket } from "lucide-react";
 import { NavigationItemProps } from "@melony/core/config";
+import * as icons from "lucide-react";
 
-export function Navigation() {
-  const location = useLocation();
+export function Navigation({
+  onClickItem,
+}: {
+  onClickItem: (item: NavigationItemProps) => void;
+}) {
   const { config } = useConfig();
+
+  const collections = config?.collections || [];
 
   const ViewsFlatten: NavigationItemProps[] = [];
 
   // TODO: keeping reduce here for nested navigation if needed
-  const Views = config.collections.reduce(
+  const Views = collections.reduce(
     (prev, curr) => {
       if (curr?.views) {
         prev[curr?.label || curr.slug] = (curr?.views || []).map((view) => {
           const viewItem = {
             title: view?.label || view.slug,
             to: `/c/${curr.slug}/v/${view.slug}`,
-            icon: view?.icon || <Eye className="h-4 w-4" />,
+            icon: view?.icon || "Eye",
           };
 
           ViewsFlatten.push(viewItem);
@@ -33,19 +37,19 @@ export function Navigation() {
     {} as Record<string, NavigationItemProps[]>
   );
 
-  const defaultNav: Record<string, NavigationItemProps[]> = {
-    Views: ViewsFlatten,
-    Collections: config.collections.map((collection) => ({
+  const defaultNav: Record<string, NavigationItemProps[]> = {};
+
+  if (ViewsFlatten.length > 0) {
+    defaultNav["Views"] = ViewsFlatten;
+  }
+
+  if (collections.length > 0) {
+    defaultNav["Collections"] = collections.map((collection) => ({
       title: collection?.label || collection.slug,
       to: `/c/${collection.slug}/v/base`,
-      icon: <Folder className="h-4 w-4" />,
-    })),
-    Triggers: (config?.triggers || []).map((trigger) => ({
-      title: trigger?.label || trigger.slug,
-      to: `/c/${trigger?.collectionSlug}/t/${trigger.slug}`,
-      icon: <Rocket className="h-4 w-4" />,
-    })),
-  };
+      icon: "Folder",
+    }));
+  }
 
   const nav = config?.ui?.navigation || defaultNav;
 
@@ -57,22 +61,28 @@ export function Navigation() {
             <div className="text-xs opacity-60 p-2.5">{title}</div>
 
             <nav className="flex flex-col gap-0.5">
-              {(nav?.[title] || []).map((item) => (
-                <NavLink
-                  key={item.to}
-                  to={item.to}
-                  className={cn(
-                    "inline-flex items-center whitespace-nowrap text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 justify-start",
-                    {
-                      "text-accent-foreground bg-muted":
-                        location.pathname.includes(item.to),
-                    }
-                  )}
-                >
-                  <span className="mr-2">{item?.icon}</span>
-                  <span className="block truncate">{item?.title}</span>
-                </NavLink>
-              ))}
+              {(nav?.[title] || []).map((item) => {
+                const Icon = icons[item?.icon || "Folder"];
+
+                return (
+                  <div
+                    key={item.to}
+                    className={cn(
+                      "cursor-pointer inline-flex items-center whitespace-nowrap text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 justify-start",
+                      {
+                        "text-accent-foreground bg-muted":
+                          location.pathname.includes(item.to),
+                      }
+                    )}
+                    onClick={() => {
+                      onClickItem(item);
+                    }}
+                  >
+                    <Icon className="h-5 w-5 mr-2.5" />
+                    <span className="block truncate">{item?.title}</span>
+                  </div>
+                );
+              })}
             </nav>
           </div>
         );

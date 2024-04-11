@@ -10,14 +10,14 @@ import { Pencil } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Header } from "../components/header";
 import { Card } from "@melony/ui/card";
-import { FilterOperator } from "@melony/ui/advanced-filter-popover";
 import { CollectionWrapper } from "../components/collection-wrapper";
 import { Content } from "../components/content";
 import { DocumentFieldProps } from "@melony/core/config";
-import { Toolbar } from "../components/toolbar";
 import { FIELDS } from "../constants";
 import { DocumentDropdownMenu } from "../components/document-dropdown-menu";
 import { filterEditableFields } from "../helpers/filter-editable-fields";
+import { FilterOperator } from "@melony/core/filter";
+import { Toolbar } from "../components/toolbar";
 
 export function ShowPage({}: {}): JSX.Element {
   const params = useParams();
@@ -131,7 +131,7 @@ export function ShowPage({}: {}): JSX.Element {
                       ],
                     }}
                   >
-                    <Toolbar />
+                    <Toolbar small />
                     <Content />
                   </CollectionWrapper>
                 </TabsContent>

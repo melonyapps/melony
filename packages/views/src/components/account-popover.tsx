@@ -11,23 +11,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@melony/ui/dropdown-menu";
-import { useNavigate } from "react-router-dom";
 import { useSession } from "next-auth/react";
 
 type AccountPopoverProps = {
-  hideName?: boolean;
-  small?: boolean;
-  onLogout?: () => void;
+  onLogoutSuccess: () => void;
 };
 
-export function AccountPopover({
-  hideName = false,
-  small = false,
-  onLogout,
-}: AccountPopoverProps) {
+export function AccountPopover({ onLogoutSuccess }: AccountPopoverProps) {
   const { data: session } = useSession();
   const { mutate: logout } = useLogout();
-  const navigate = useNavigate();
 
   const handleLogout = async () => {
     // const res = await signOut({
@@ -36,8 +28,8 @@ export function AccountPopover({
     // });
 
     logout(undefined, {
-      onSuccess: async (res) => {
-        navigate(res?.redirectUrl);
+      onSuccess: () => {
+        onLogoutSuccess();
       },
     });
   };

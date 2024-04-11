@@ -1,16 +1,16 @@
+"use client";
+
 import { useMutation, useQueryClient } from "react-query";
-import { useProject } from "../../projects/hooks/use-project";
 import { useData } from "./use-data";
 
 export const useDeleteDocument = (collectionSlug: string, id: string) => {
   const { deleteDocument } = useData();
-  const { projectId } = useProject();
 
   const queryClient = useQueryClient();
 
   return useMutation(
     ["deleteDocument", id],
-    () => deleteDocument(collectionSlug, id, projectId),
+    () => deleteDocument(collectionSlug, id, ""),
     {
       onSettled: () => {
         Promise.all([

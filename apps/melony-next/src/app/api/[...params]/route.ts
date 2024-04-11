@@ -19,7 +19,7 @@ export const { GET, POST, PUT, DELETE } = serve({
         fields.document({
           slug: "65a2cb777f0c2c91ea054cb6_id",
           label: "კლიენტი",
-          collectionSlug: "65a2cb777f0c2c91ea054cb6",
+          collectionSlug: "clients",
         }),
         fields.document({
           slug: "status",
@@ -32,12 +32,22 @@ export const { GET, POST, PUT, DELETE } = serve({
           collectionSlug: "65a30f4db68869084c9faa42",
           // defaultViewSlug: "cardsView",
         }),
+        fields.documents({
+          slug: "files",
+          label: "ფაილები",
+          collectionSlug: "project_files",
+        }),
+        fields.documents({
+          slug: "invoices",
+          label: "ინვოისები",
+          collectionSlug: "orders",
+        }),
       ],
       views: [
         views.cards({
           slug: "projectsByDate",
-          label: "თარიღის მიხედვით",
-          icon: "🚧",
+          label: "პროექტები",
+          icon: "Folder",
         }),
       ],
     },
@@ -63,10 +73,22 @@ export const { GET, POST, PUT, DELETE } = serve({
         }),
       ],
       views: [
-        views.cards({
+        views.table({
           slug: "cardsView",
-          label: "ქარდებად დალაგება",
-          icon: "🛋️",
+          label: "წარმოება",
+          icon: "Folder",
+        }),
+      ],
+    },
+    {
+      slug: "orders",
+      label: "ინვოისები",
+      schema: [
+        fields.input({ slug: "title" }),
+        fields.document({
+          slug: "client_id",
+          collectionSlug: "65a2cb777f0c2c91ea054cb6",
+          label: "კლიენტი",
         }),
       ],
     },
@@ -79,6 +101,11 @@ export const { GET, POST, PUT, DELETE } = serve({
       ],
     },
     {
+      slug: "project_files",
+      label: "პროექტის ფაილები",
+      schema: [fields.input({ slug: "title" })],
+    },
+    {
       slug: "65a30f57b68869084c9faa43",
       label: "არტიკულის სტატუსები",
       schema: [
@@ -87,7 +114,7 @@ export const { GET, POST, PUT, DELETE } = serve({
       ],
     },
     {
-      slug: "65a2cb777f0c2c91ea054cb6",
+      slug: "clients",
       label: "კლიენტები",
       schema: [fields.input({ slug: "title" })],
     },

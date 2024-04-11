@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { cn } from "../lib";
 import { Button } from "./ui/button";
@@ -35,7 +37,7 @@ export function Sidebar({
   return (
     <aside
       className={cn(
-        `fixed left-0 right-0 top-0 z-50 w-full flex flex-col border-r transition-[width] md:bottom-0 md:right-auto md:h-svh ${isCollapsed ? "md:w-14" : "md:w-64"}`,
+        `bg-muted/10 fixed left-0 right-0 top-0 z-50 w-full flex flex-col border-r transition-[width] md:bottom-0 md:right-auto md:h-svh ${isCollapsed ? "md:w-14" : "md:w-64"}`,
         className
       )}
     >
@@ -44,7 +46,7 @@ export function Sidebar({
         className={`absolute inset-0 transition-[opacity] delay-100 duration-700 ${navOpened ? "h-svh opacity-50" : "h-0 opacity-0"} w-full bg-black md:hidden`}
       />
 
-      <div className="flex gap-2 h-[52px] items-center justify-between px-4 border-b">
+      <div className="flex gap-2 h-[52px] items-center justify-between px-4">
         {!isCollapsed && (
           <div className="flex items-center gap-2">
             {logo && <div>{logo}</div>}
@@ -79,7 +81,7 @@ export function Sidebar({
 
       <div className="flex-1 overflow-y-auto p-2">{nav}</div>
 
-      <div className="p-2 border-t">{account}</div>
+      <div className="p-2">{account}</div>
     </aside>
   );
 }

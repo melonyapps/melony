@@ -26,7 +26,7 @@
     "@melony/ui": "*",
     "axios": "^1.6.7",
     "date-fns": "^3.6.0",
-    "lucide-react": "^0.360.0",
+    "lucide-react": "^0.367.0",
     "next-auth": "^5.0.0-beta.16",
     "react-hook-form": "^7.51.1",
     "react-query": "^3.39.3",
