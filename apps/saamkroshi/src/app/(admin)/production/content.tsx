@@ -13,7 +13,7 @@ export default function PageContent() {
   return (
     <Table
       onRowClick={(row) => {
-        router.push(`/projects/${row._id}`);
+        router.push(`/production/${row._id}`);
       }}
     />
   );

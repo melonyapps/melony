@@ -14,3 +14,6 @@ export * from "./components/search-input";
 export * from "./components/create-button";
 export * from "./components/advanced-filter";
 export * from "./components/sort";
+export * from "./components/document-header";
+export * from "./components/document-details";
+export * from "./components/document-subcollections";

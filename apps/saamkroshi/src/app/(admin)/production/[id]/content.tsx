@@ -1,11 +1,7 @@
 "use client";
 
 import { DocumentProvider } from "@melony/core/react";
-import {
-  DocumentDetails,
-  DocumentHeader,
-  DocumentSubcollections,
-} from "@melony/views";
+import { DocumentDetails, DocumentHeader } from "@melony/views";
 import { useParams, useRouter } from "next/navigation";
 
 export const metadata = {
@@ -20,7 +16,6 @@ export default function PageContent() {
     <DocumentProvider id={params.id}>
       <DocumentHeader />
       <DocumentDetails />
-      <DocumentSubcollections />
     </DocumentProvider>
   );
 }

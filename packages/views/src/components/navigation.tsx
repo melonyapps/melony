@@ -57,8 +57,6 @@ export function Navigation({
 
   const nav = config?.ui?.navigation || defaultNav;
 
-  console.log(pathname);
-
   return (
     <div className="flex flex-col gap-2">
       {Object.keys(nav).map((title) => {

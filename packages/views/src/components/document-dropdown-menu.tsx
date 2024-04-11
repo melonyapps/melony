@@ -11,12 +11,9 @@ import { Button } from "@melony/ui/button";
 import { EllipsisVertical, Trash } from "lucide-react";
 import { ConfirmDeleteModal } from "./confirm-delete-modal";
 import { useCollection } from "@melony/core/react";
-import { useNavigate } from "react-router-dom";
 
 export function DocumentDropdownMenu({ docId }: { docId: string }) {
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
-
-  const navigate = useNavigate();
 
   const {
     slug: collectionSlug,
@@ -53,7 +50,7 @@ export function DocumentDropdownMenu({ docId }: { docId: string }) {
           deleteDoc(docId, {
             onSuccess: () => {
               setShowDeleteModal(false);
-              navigate(`/c/${collectionSlug}/v/${view?.slug || "base"}`);
+              // navigate(`/c/${collectionSlug}/v/${view?.slug || "base"}`);
             },
           });
         }}

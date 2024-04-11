@@ -6,7 +6,7 @@
   @apply border-border;
 }
 body {
-  @apply bg-background text-foreground min-h-screen;
+  @apply bg-background text-foreground min-h-screen antialiased;
   font-feature-settings:
     "rlig" 1,
     "calt" 1;

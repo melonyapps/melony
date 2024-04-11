@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { DocumentProvider, useCollection } from "@melony/core/react";
+import { useCollection } from "@melony/core/react";
 import { DataTable } from "@melony/ui/data-table";
 import { FIELDS } from "../constants";
 import { Card } from "@melony/ui/card";
@@ -20,7 +20,6 @@ export function Table({
     <Card>
       <DataTable<{ _id: string }, any>
         isLoading={isLoading}
-        rowWrapper={DocumentProvider}
         columns={filteredSchema.map((field) => {
           const Comp =
             FIELDS[field?.type || "TEXT"]?.["default"] || (() => <></>);

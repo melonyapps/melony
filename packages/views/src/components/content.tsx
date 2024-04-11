@@ -59,7 +59,6 @@ export function Content() {
           <Card>
             <DataTable<{ _id: string }, any>
               isLoading={isLoading}
-              rowWrapper={DocumentProvider}
               columns={filteredSchema.map((field) => {
                 const Comp =
                   FIELDS[field?.type || "TEXT"]?.["default"] || (() => <></>);

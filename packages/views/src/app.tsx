@@ -6,6 +6,7 @@ import {
   Outlet,
   Route,
   Routes,
+  useLocation,
   useNavigate,
 } from "react-router-dom";
 import { Layout } from "./components/layout";
@@ -48,11 +49,13 @@ export function MelonyApp({}: MelonyAppProps) {
 
 const LayoutWrapper = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <Layout
       navigation={
         <Navigation
+          pathname={location.pathname}
           onClickItem={(item) => {
             navigate(item.to);
           }}

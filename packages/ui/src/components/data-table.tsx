@@ -18,7 +18,6 @@ import { Skeleton } from "./ui/skeleton";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  rowWrapper?: any;
   isLoading?: boolean;
   onClickRow: (data: TData) => void;
 }
@@ -26,7 +25,6 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
-  rowWrapper,
   isLoading,
   onClickRow,
 }: DataTableProps<TData, TValue>) {
@@ -35,8 +33,6 @@ export function DataTable<TData, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
-
-  const RowWrapperComponent = rowWrapper || <></>;
 
   const renderBody = () => {
     if (isLoading)
@@ -52,22 +48,20 @@ export function DataTable<TData, TValue>({
 
     return table.getRowModel().rows?.length ? (
       table.getRowModel().rows.map((row) => (
-        <RowWrapperComponent data={row.original} key={row.id}>
-          <TableRow
-            key={row.id}
-            data-state={row.getIsSelected() && "selected"}
-            onClick={() => {
-              onClickRow(row.original);
-            }}
-            className="cursor-pointer"
-          >
-            {row.getVisibleCells().map((cell) => (
-              <TableCell key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </TableCell>
-            ))}
-          </TableRow>
-        </RowWrapperComponent>
+        <TableRow
+          key={row.id}
+          data-state={row.getIsSelected() && "selected"}
+          onClick={() => {
+            onClickRow(row.original);
+          }}
+          className="cursor-pointer"
+        >
+          {row.getVisibleCells().map((cell) => (
+            <TableCell key={cell.id}>
+              {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            </TableCell>
+          ))}
+        </TableRow>
       ))
     ) : (
       <TableRow>

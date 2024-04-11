@@ -8,7 +8,7 @@ export const { GET, POST, PUT, DELETE } = serve({
   ui: {
     title: "საამქროში",
     navigation: {
-      Navigation: [
+      ნავიგაცია: [
         {
           title: "პროექტები",
           to: "/projects",

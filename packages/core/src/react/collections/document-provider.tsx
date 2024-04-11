@@ -1,15 +1,19 @@
 "use client";
 
-import { DocContext } from ".";
+import { DocContext, useCollection, useGetDocument } from ".";
 
 export function DocumentProvider({
   children,
-  data,
+  id,
 }: {
   children: JSX.Element | JSX.Element[];
-  data: any;
+  id: any;
 }) {
-  const value = { data };
+  const { slug } = useCollection();
+
+  const { data: docRes, isLoading } = useGetDocument(slug, id);
+
+  const value = { data: docRes?.data || {} };
 
   return <DocContext.Provider value={value}>{children}</DocContext.Provider>;
 }
