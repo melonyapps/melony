@@ -2,11 +2,14 @@
 
 import { DocumentProvider } from "@melony/core/react";
 import {
+  Between,
   DocumentDetails,
-  DocumentHeader,
+  DocumentHeading,
   DocumentSubcollections,
+  Stack,
 } from "@melony/views";
 import { useParams } from "next/navigation";
+import EditButton from "./edit-button";
 
 export const metadata = {
   title: "Melony",
@@ -15,10 +18,18 @@ export const metadata = {
 export default function PageContent() {
   const params = useParams();
 
+  const documentId = params.id as string;
+
   return (
-    <DocumentProvider id={params.id}>
-      <DocumentHeader />
+    <DocumentProvider id={documentId}>
+      <Stack horizontal>
+        <DocumentHeading />
+        <Between />
+        <EditButton />
+      </Stack>
+
       <DocumentDetails />
+
       <DocumentSubcollections />
     </DocumentProvider>
   );

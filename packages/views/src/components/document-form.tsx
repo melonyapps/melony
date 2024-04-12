@@ -13,7 +13,7 @@ import { Check } from "lucide-react";
 export function DocumentForm({ onSuccess }: { onSuccess: () => void }) {
   const { schema, createDoc, updateDoc, isUpdatingDoc, isCreatingDoc } =
     useCollection();
-  const { data: docData } = useDocument();
+  const { data: docData, isLoading } = useDocument();
 
   const filteredSchema = filterEditableFields(schema);
 
@@ -25,7 +25,7 @@ export function DocumentForm({ onSuccess }: { onSuccess: () => void }) {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: docData,
+    values: docData,
   });
 
   const handleSubmit = (inputData: any) => {
@@ -47,15 +47,15 @@ export function DocumentForm({ onSuccess }: { onSuccess: () => void }) {
     }
   };
 
+  if (isLoading) return <>Loading...</>;
+
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit, (err) => console.log(err))}
         className="space-y-4"
       >
-        <Card>
-          <FormFields schema={filteredSchema} />
-        </Card>
+        <FormFields schema={filteredSchema} />
 
         <div className="flex justify-end">
           <Button type="submit" disabled={isCreatingDoc || isUpdatingDoc}>

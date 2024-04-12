@@ -17,41 +17,39 @@ export function Table({
   const filteredSchema = filterEditableFields(schema);
 
   return (
-    <Card>
-      <DataTable<{ _id: string }, any>
-        isLoading={isLoading}
-        columns={filteredSchema.map((field) => {
-          const Comp =
-            FIELDS[field?.type || "TEXT"]?.["default"] || (() => <></>);
+    <DataTable<{ _id: string }, any>
+      isLoading={isLoading}
+      columns={filteredSchema.map((field) => {
+        const Comp =
+          FIELDS[field?.type || "TEXT"]?.["default"] || (() => <></>);
 
-          const textAlignClass = ["CURRENCY", "NUMBER"].includes(
-            field?.type || ""
-          )
-            ? "text-right"
-            : "text-left";
+        const textAlignClass = ["CURRENCY", "NUMBER"].includes(
+          field?.type || ""
+        )
+          ? "text-right"
+          : "text-left";
 
-          const columnId =
-            field.type === "DOCUMENT" ? `${field.slug}_full` : field.slug;
+        const columnId =
+          field.type === "DOCUMENT" ? `${field.slug}_full` : field.slug;
 
-          return {
-            accessorKey: columnId,
-            header: () => (
-              <div className={textAlignClass}>{field?.label || field.slug}</div>
-            ),
-            cell: ({ row }) => {
-              return (
-                <div className={textAlignClass}>
-                  <Comp field={field} defaultValue={row.getValue(columnId)} />
-                </div>
-              );
-            },
-          };
-        })}
-        data={result.docs}
-        onClickRow={(doc) => {
-          onRowClick(doc);
-        }}
-      />
-    </Card>
+        return {
+          accessorKey: columnId,
+          header: () => (
+            <div className={textAlignClass}>{field?.label || field.slug}</div>
+          ),
+          cell: ({ row }) => {
+            return (
+              <div className={textAlignClass}>
+                <Comp field={field} defaultValue={row.getValue(columnId)} />
+              </div>
+            );
+          },
+        };
+      })}
+      data={result.docs}
+      onClickRow={(doc) => {
+        onRowClick(doc);
+      }}
+    />
   );
 }

@@ -5,11 +5,11 @@ export const metadata = {
   title: "Melony",
 };
 
-export default async function ProjectCreatePage() {
+export default async function ProjectEditPage() {
   return (
     <Container>
       <Stack>
-        <Heading>ახალი პროექტის დამატება</Heading>
+        <Heading>პროექტის რედაქტირება</Heading>
         <PageContent />
       </Stack>
     </Container>

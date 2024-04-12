@@ -17,16 +17,16 @@ export function DocumentHeader({}: {}): JSX.Element {
       title={isLoading ? <Skeleton className="w-40 h-4" /> : data?.title}
       toolbar={
         <div className="flex gap-2">
-          <Button
+          {/* <Button
             variant="outline"
             onClick={() => {
-              //   navigate(
-              //     `/c/${collectionSlug}/v/${view?.slug || "base"}/d/edit/${documentId}`
-              //   );
+                navigate(
+                  `/c/${collectionSlug}/v/${view?.slug || "base"}/d/edit/${documentId}`
+                );
             }}
           >
             <Pencil className="h-4 w-4 mr-2" /> Edit
-          </Button>
+          </Button> */}
 
           <DocumentDropdownMenu docId={documentId} />
         </div>

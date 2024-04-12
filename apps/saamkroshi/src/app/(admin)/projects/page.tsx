@@ -18,14 +18,16 @@ export default async function ProjectsPage() {
   return (
     <Container>
       <Stack>
-        <Heading>პროექტები</Heading>
+        <Stack horizontal gapSize="sm">
+          <Heading>პროექტები</Heading>
+          <Between />
+          <CreateButton />
+        </Stack>
 
         <Stack horizontal gapSize="sm">
           <SearchInput />
           <AdvancedFilter />
           <Sort />
-          <Between />
-          <CreateButton />
         </Stack>
 
         <PageContent />
