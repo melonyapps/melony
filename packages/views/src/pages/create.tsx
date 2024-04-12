@@ -1,10 +1,10 @@
-import { useCollection, useView } from "@melony/core/react";
+import { useCollection } from "@melony/core/react";
 import { DocumentForm } from "../components/document-form";
 import { useNavigate } from "react-router-dom";
 
 export function CreatePage() {
   const navigate = useNavigate();
-  const { slug, createDoc, isCreatingDoc, view } = useCollection();
+  const { slug, view } = useCollection();
 
   return (
     <div className="flex flex-col h-screen">
@@ -14,14 +14,9 @@ export function CreatePage() {
 
       <div className="flex-1 overflow-auto p-4">
         <DocumentForm
-          onSubmit={(data) =>
-            createDoc(data, {
-              onSuccess: () => {
-                navigate(`/c/${slug}/v/${view?.slug || "base"}`);
-              },
-            })
-          }
-          isSubmitting={isCreatingDoc}
+          onSuccess={() => {
+            navigate(`/c/${slug}/v/${view?.slug || "base"}`);
+          }}
         />
       </div>
     </div>

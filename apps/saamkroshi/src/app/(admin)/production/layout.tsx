@@ -1,7 +1,7 @@
 import { CollectionProvider } from "@melony/core/react";
 
 export const metadata = {
-  title: "Next Melony",
+  title: "Melony",
 };
 
 export default async function ProjectsLayout({

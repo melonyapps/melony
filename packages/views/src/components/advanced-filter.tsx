@@ -89,7 +89,7 @@ export function AdvancedFilter() {
       </PopoverTrigger>
       <PopoverContent className="w-[400px] p-0" align="start">
         {items.length === 0 && (
-          <p className="text-sm text-muted p-4">No filters are applied.</p>
+          <p className="text-sm text-foreground p-4">No filters are applied.</p>
         )}
 
         <div className="space-y-2 p-4">

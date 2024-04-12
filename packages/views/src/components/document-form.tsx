@@ -10,15 +10,10 @@ import { Card } from "@melony/ui/card";
 import { filterEditableFields } from "../helpers/filter-editable-fields";
 import { Check } from "lucide-react";
 
-export function DocumentForm({
-  onSubmit,
-  isSubmitting,
-}: {
-  onSubmit: (data: any) => void;
-  isSubmitting?: boolean;
-}) {
-  const { schema } = useCollection();
-  const { data } = useDocument();
+export function DocumentForm({ onSuccess }: { onSuccess: () => void }) {
+  const { schema, createDoc, updateDoc, isUpdatingDoc, isCreatingDoc } =
+    useCollection();
+  const { data: docData } = useDocument();
 
   const filteredSchema = filterEditableFields(schema);
 
@@ -30,13 +25,32 @@ export function DocumentForm({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: data,
+    defaultValues: docData,
   });
+
+  const handleSubmit = (inputData: any) => {
+    if (docData?._id) {
+      updateDoc(
+        { id: docData?._id, data: inputData },
+        {
+          onSuccess: () => {
+            onSuccess();
+          },
+        }
+      );
+    } else {
+      createDoc(inputData, {
+        onSuccess: () => {
+          onSuccess();
+        },
+      });
+    }
+  };
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit, (err) => console.log(err))}
+        onSubmit={form.handleSubmit(handleSubmit, (err) => console.log(err))}
         className="space-y-4"
       >
         <Card>
@@ -44,7 +58,7 @@ export function DocumentForm({
         </Card>
 
         <div className="flex justify-end">
-          <Button type="submit" disabled={isSubmitting}>
+          <Button type="submit" disabled={isCreatingDoc || isUpdatingDoc}>
             <Check className="h-4 w-4 mr-2" />
             Submit
           </Button>

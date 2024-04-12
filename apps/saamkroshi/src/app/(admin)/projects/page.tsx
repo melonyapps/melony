@@ -2,17 +2,16 @@ import {
   AdvancedFilter,
   Between,
   Container,
-  CreateButton,
   Heading,
   SearchInput,
   Sort,
   Stack,
-  Table,
 } from "@melony/views";
 import PageContent from "./content";
+import CreateButton from "./create-button";
 
 export const metadata = {
-  title: "Next Melony",
+  title: "Melony",
 };
 
 export default async function ProjectsPage() {

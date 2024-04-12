@@ -2,14 +2,13 @@
 
 import { DocumentProvider } from "@melony/core/react";
 import { DocumentDetails, DocumentHeader } from "@melony/views";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 
 export const metadata = {
-  title: "Next Melony",
+  title: "Melony",
 };
 
 export default function PageContent() {
-  const router = useRouter();
   const params = useParams();
 
   return (

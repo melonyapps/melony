@@ -2,7 +2,6 @@ import {
   AdvancedFilter,
   Between,
   Container,
-  CreateButton,
   Heading,
   SearchInput,
   Sort,
@@ -11,7 +10,7 @@ import {
 import PageContent from "./content";
 
 export const metadata = {
-  title: "Next Melony",
+  title: "Melony",
 };
 
 export default async function ProductionPage() {
@@ -25,7 +24,6 @@ export default async function ProductionPage() {
           <AdvancedFilter />
           <Sort />
           <Between />
-          <CreateButton />
         </Stack>
 
         <PageContent />

@@ -4,7 +4,7 @@ import { Table } from "@melony/views";
 import { useRouter } from "next/navigation";
 
 export const metadata = {
-  title: "Next Melony",
+  title: "Melony",
 };
 
 export default function PageContent() {
