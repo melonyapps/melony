@@ -5,9 +5,5 @@ export const metadata = {
 };
 
 export default async function LoginPage() {
-  return (
-    <>
-      <LoginForm />
-    </>
-  );
+  return <LoginForm />;
 }
