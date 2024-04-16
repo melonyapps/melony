@@ -8,7 +8,7 @@ export type NavigationItemProps = {
   icon?: keyof typeof icons;
 };
 
-type Ui = {
+type UI = {
   title?: string;
   logo?: any;
   navigation?: Record<string, NavigationItemProps[]>;
@@ -39,8 +39,8 @@ export type Field = InputFieldProps | DocumentFieldProps;
 
 export type Collection = {
   slug: string;
-  schema: Field[];
   label?: string;
+  schema: Field[];
   views?: View[];
 };
 
@@ -63,7 +63,7 @@ export type Trigger = DbTrigger;
 
 export type Config = {
   id: string;
-  ui?: Ui;
+  ui?: UI;
   adapter: ({
     id,
     collections,
