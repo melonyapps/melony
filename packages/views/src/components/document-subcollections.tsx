@@ -14,7 +14,6 @@ import { SearchInput } from "./search-input";
 import { Between } from "./between";
 import { CreateButton } from "./create-button";
 import { Table } from "./table";
-import { Card } from "@melony/ui/card";
 
 export function DocumentSubcollections({}: {}): JSX.Element {
   const { slug: collectionSlug, schema } = useCollection();
@@ -28,6 +27,8 @@ export function DocumentSubcollections({}: {}): JSX.Element {
   const subcollectionFields: DocumentFieldProps[] = schema.filter(
     (x) => x.type === "DOCUMENTS"
   );
+
+  if (subcollectionFields.length === 0) return <></>;
 
   return (
     <Tabs defaultValue={subcollectionFields[0]?.slug}>
@@ -64,9 +65,7 @@ export function DocumentSubcollections({}: {}): JSX.Element {
                   <CreateButton />
                 </Stack>
 
-                <Card>
-                  <Table />
-                </Card>
+                <Table />
               </Stack>
             </CollectionProvider>
           </TabsContent>
