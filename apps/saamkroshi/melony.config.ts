@@ -6,20 +6,6 @@ export const melonyConfig: Config = {
   adapter: mongodbAdapter,
   ui: {
     title: "საამქროში",
-    navigation: {
-      ნავიგაცია: [
-        {
-          title: "პროექტები",
-          to: "/projects",
-          icon: "FolderKanban",
-        },
-        {
-          title: "წარმოება",
-          to: "/production",
-          icon: "Armchair",
-        },
-      ],
-    },
   },
   collections: [
     {
@@ -59,7 +45,7 @@ export const melonyConfig: Config = {
         views.cards({
           slug: "projectsByDate",
           label: "პროექტები",
-          icon: "🚧",
+          icon: "Smile",
         }),
       ],
     },
@@ -88,7 +74,7 @@ export const melonyConfig: Config = {
         views.table({
           slug: "cardsView",
           label: "წარმოება",
-          icon: "🛋️",
+          icon: "AlertTriangle",
         }),
       ],
     },

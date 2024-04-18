@@ -5,14 +5,12 @@ import { useConfig } from "@melony/core/react";
 import { cn } from "@melony/ui/lib";
 import { NavigationItemProps } from "@melony/core/config";
 import * as icons from "lucide-react";
+import { useMelonyPathname } from "../hooks/use-melony-pathname";
+import { useMelonyNavigate } from "../hooks/use-melony-navigate";
 
-export function Navigation({
-  pathname = "",
-  onClickItem,
-}: {
-  pathname?: string;
-  onClickItem: (item: NavigationItemProps) => void;
-}) {
+export function Navigation() {
+  const pathname = useMelonyPathname();
+  const navigate = useMelonyNavigate();
   const { config } = useConfig();
 
   const collections = config?.collections || [];
@@ -72,7 +70,7 @@ export function Navigation({
                   <div
                     key={item.to}
                     className={cn(
-                      "cursor-pointer inline-flex items-center whitespace-nowrap text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 justify-start",
+                      "relative cursor-pointer inline-flex overflow-hidden items-center whitespace-nowrap text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 justify-start",
                       {
                         "text-accent-foreground bg-muted": pathname.includes(
                           item.to
@@ -80,10 +78,13 @@ export function Navigation({
                       }
                     )}
                     onClick={() => {
-                      onClickItem(item);
+                      navigate(item.to);
                     }}
                   >
-                    <Icon className="h-5 w-5 mr-2.5" />
+                    {pathname.includes(item.to) && (
+                      <div className="absolute w-[4px] h-full bg-primary left-0 rounded-l-md"></div>
+                    )}
+                    {Icon && <Icon className="h-5 w-5 mr-2.5" />}
                     <span className="block truncate">{item?.title}</span>
                   </div>
                 );

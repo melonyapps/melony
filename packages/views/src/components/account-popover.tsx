@@ -13,11 +13,7 @@ import {
 } from "@melony/ui/dropdown-menu";
 import { useSession } from "next-auth/react";
 
-type AccountPopoverProps = {
-  onLogoutSuccess: () => void;
-};
-
-export function AccountPopover({ onLogoutSuccess }: AccountPopoverProps) {
+export function AccountPopover() {
   const { data: session } = useSession();
   const { mutate: logout } = useLogout();
 
@@ -29,7 +25,7 @@ export function AccountPopover({ onLogoutSuccess }: AccountPopoverProps) {
 
     logout(undefined, {
       onSuccess: () => {
-        onLogoutSuccess();
+        // onLogoutSuccess();
       },
     });
   };

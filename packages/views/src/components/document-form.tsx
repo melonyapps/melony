@@ -1,3 +1,5 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCollection, useDocument } from "@melony/core/react";
 import { Form } from "@melony/ui/form";
@@ -9,10 +11,19 @@ import { getValidation } from "../helpers/validate";
 import { Card } from "@melony/ui/card";
 import { filterEditableFields } from "../helpers/filter-editable-fields";
 import { Check } from "lucide-react";
+import { useMelonyNavigate } from "../hooks/use-melony-navigate";
 
-export function DocumentForm({ onSuccess }: { onSuccess: () => void }) {
-  const { schema, createDoc, updateDoc, isUpdatingDoc, isCreatingDoc } =
-    useCollection();
+export function DocumentForm() {
+  const navigate = useMelonyNavigate();
+  const {
+    slug,
+    view,
+    schema,
+    createDoc,
+    updateDoc,
+    isUpdatingDoc,
+    isCreatingDoc,
+  } = useCollection();
   const { data: docData, isLoading } = useDocument();
 
   const filteredSchema = filterEditableFields(schema);
@@ -34,14 +45,15 @@ export function DocumentForm({ onSuccess }: { onSuccess: () => void }) {
         { id: docData?._id, data: inputData },
         {
           onSuccess: () => {
-            onSuccess();
+            navigate(`/c/${slug}/v/${view?.slug || "base"}`);
           },
         }
       );
     } else {
       createDoc(inputData, {
         onSuccess: () => {
-          onSuccess();
+          // onSuccess();
+          navigate(`/c/${slug}/v/${view?.slug || "base"}`);
         },
       });
     }
@@ -55,7 +67,9 @@ export function DocumentForm({ onSuccess }: { onSuccess: () => void }) {
         onSubmit={form.handleSubmit(handleSubmit, (err) => console.log(err))}
         className="space-y-4"
       >
-        <FormFields schema={filteredSchema} />
+        {/* <Card> */}
+          <FormFields schema={filteredSchema} />
+        {/* </Card> */}
 
         <div className="flex justify-end">
           <Button type="submit" disabled={isCreatingDoc || isUpdatingDoc}>
