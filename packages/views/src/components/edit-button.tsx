@@ -2,21 +2,23 @@
 
 import * as React from "react";
 import { Button } from "@melony/ui/button";
-import { Plus } from "lucide-react";
-import { useCollection } from "@melony/core/react";
+import { Pencil } from "lucide-react";
+import { useCollection, useDocument } from "@melony/core/react";
 import { useMelonyNavigate } from "../hooks/use-melony-navigate";
 
-export function CreateButton() {
+export function EditButton() {
   const navigate = useMelonyNavigate();
   const { slug, view } = useCollection();
+  const { data } = useDocument();
 
   return (
     <Button
+      variant="outline"
       onClick={() => {
-        navigate(`/c/${slug}/v/${view?.slug || "base"}/d/create`);
+        navigate(`/c/${slug}/v/${view?.slug || "base"}/d/edit/${data._id}`);
       }}
     >
-      <Plus className="h-4 w-4 mr-2" /> Create
+      <Pencil className="h-4 w-4 mr-2" /> Edit
     </Button>
   );
 }

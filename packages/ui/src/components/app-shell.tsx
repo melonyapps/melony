@@ -28,7 +28,7 @@ export function AppShell({
       />
       <main
         id="content"
-        className={`min-h-screen overflow-x-hidden pt-16 transition-[margin] md:overflow-y-hidden md:pt-0 ${isCollapsed ? "md:ml-14" : "md:ml-64"} h-full`}
+        className={`min-h-screen overflow-x-hidden transition-[margin] md:overflow-y-hidden ${isCollapsed ? "md:ml-14" : "md:ml-64"} h-full`}
       >
         {children}
       </main>

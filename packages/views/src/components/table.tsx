@@ -4,15 +4,12 @@ import * as React from "react";
 import { useCollection } from "@melony/core/react";
 import { DataTable } from "@melony/ui/data-table";
 import { FIELDS } from "../constants";
-import { Card } from "@melony/ui/card";
 import { filterEditableFields } from "../helpers/filter-editable-fields";
+import { useMelonyNavigate } from "../hooks/use-melony-navigate";
 
-export function Table({
-  onRowClick,
-}: {
-  onRowClick: (row: { _id: string }) => void;
-}) {
-  const { isLoading, schema, result } = useCollection();
+export function Table() {
+  const navigate = useMelonyNavigate();
+  const { slug, view, isLoading, schema, result } = useCollection();
 
   const filteredSchema = filterEditableFields(schema);
 
@@ -48,7 +45,7 @@ export function Table({
       })}
       data={result.docs}
       onClickRow={(doc) => {
-        onRowClick(doc);
+        navigate(`/c/${slug}/v/${view?.slug || "base"}/d/${doc._id}`);
       }}
     />
   );

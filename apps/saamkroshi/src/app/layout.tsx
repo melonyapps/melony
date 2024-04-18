@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@melony/ui/globals.css";
-import { MelonyProvider } from "@melony/views";
+
+import { MelonyApp } from "@melony/views";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <MelonyProvider>{children}</MelonyProvider>
+        <MelonyApp />
       </body>
     </html>
   );

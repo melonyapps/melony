@@ -1,16 +1,20 @@
 "use client";
 
 import React from "react";
-import { useCollection, useDocument } from "@melony/core/react";
+import {
+  CollectionProvider,
+  useCollection,
+  useDocument,
+} from "@melony/core/react";
 import { DocumentFieldProps } from "@melony/core/config";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@melony/ui/tabs";
-import { CollectionWrapper } from "./collection-wrapper";
 import { FilterOperator } from "@melony/core/filter";
 import { Stack } from "./stack";
 import { SearchInput } from "./search-input";
 import { Between } from "./between";
 import { CreateButton } from "./create-button";
 import { Table } from "./table";
+import { Card } from "@melony/ui/card";
 
 export function DocumentSubcollections({}: {}): JSX.Element {
   const { slug: collectionSlug, schema } = useCollection();
@@ -40,8 +44,8 @@ export function DocumentSubcollections({}: {}): JSX.Element {
       {subcollectionFields.map((colField) => {
         return (
           <TabsContent key={colField.slug} value={colField.slug}>
-            <CollectionWrapper
-              collectionSlug={colField.collectionSlug}
+            <CollectionProvider
+              slug={colField.collectionSlug}
               viewSlug={colField?.defaultViewSlug}
               baseParams={{
                 filter: [
@@ -59,9 +63,12 @@ export function DocumentSubcollections({}: {}): JSX.Element {
                   <Between />
                   <CreateButton />
                 </Stack>
-                <Table />
+
+                <Card>
+                  <Table />
+                </Card>
               </Stack>
-            </CollectionWrapper>
+            </CollectionProvider>
           </TabsContent>
         );
       })}
