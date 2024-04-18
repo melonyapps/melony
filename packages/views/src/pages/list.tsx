@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Header } from "../components/header";
-import { Content } from "../components/content";
+import { View } from "../components/view";
 import { useCollection } from "@melony/core/react";
 import { Toolbar } from "../components/toolbar";
 
@@ -13,7 +13,7 @@ export function ListPage() {
       <Toolbar />
 
       <div className="h-full overflow-auto">
-        <Content />
+        <View />
       </div>
     </div>
   );

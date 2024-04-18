@@ -38,6 +38,7 @@ import { DocumentDetails } from "./components/document-details";
 import { DocumentForm } from "./components/document-form";
 import { DocumentSubcollections } from "./components/document-subcollections";
 import { EditButton } from "./components/edit-button";
+import { View } from "./components/view";
 
 type MelonyAppProps = {};
 
@@ -68,6 +69,10 @@ type MelonyAppProps = {};
 export function MelonyApp({}: MelonyAppProps) {
   const { params } = useMelonyParams();
 
+  const renderView = () => {
+    return <Table />;
+  };
+
   const renderContent = () => {
     if (params) {
       switch (params.length) {
@@ -75,7 +80,10 @@ export function MelonyApp({}: MelonyAppProps) {
         case 4:
           return (
             <Layout>
-              <CollectionProvider slug={params[1] as string}>
+              <CollectionProvider
+                slug={params[1] as string}
+                viewSlug={params[3]}
+              >
                 <Container>
                   <Stack horizontal gapSize="sm">
                     <Heading>პროექტები</Heading>
@@ -88,9 +96,8 @@ export function MelonyApp({}: MelonyAppProps) {
                     <AdvancedFilter />
                     <Sort />
                   </Stack>
-                  <Card>
-                    <Table />
-                  </Card>
+
+                  <View />
                 </Container>
               </CollectionProvider>
             </Layout>
@@ -124,6 +131,7 @@ export function MelonyApp({}: MelonyAppProps) {
                       <Between />
                       <EditButton />
                     </Stack>
+
                     <Card>
                       <DocumentDetails />
                     </Card>

@@ -22,12 +22,12 @@ export function DocumentDetails({}: {}): JSX.Element {
 
         return (
           <div key={field.slug} className="grid grid-cols-12 py-2.5 gap-8">
-            <div className="col-span-4 text-right truncate">
+            <div className="col-span-3 truncate px-4">
               <div className="text-muted-foreground block truncate">
                 {field?.label || field.slug}
               </div>
             </div>
-            <div className="col-span-8">
+            <div className="col-span-9">
               <Comp field={field} defaultValue={data?.[fieldId]} />
             </div>
           </div>
