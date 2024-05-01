@@ -1,6 +1,5 @@
 import React from "react";
 import { useCollection, useDocument } from "@melony/core/react";
-import { Card } from "@melony/ui/card";
 import { FIELDS } from "../constants";
 import { filterEditableFields } from "../helpers/filter-editable-fields";
 

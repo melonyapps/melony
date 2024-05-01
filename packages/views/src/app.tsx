@@ -39,6 +39,7 @@ import { DocumentForm } from "./components/document-form";
 import { DocumentSubcollections } from "./components/document-subcollections";
 import { EditButton } from "./components/edit-button";
 import { View } from "./components/view";
+import { Group } from "./components/group";
 
 type MelonyAppProps = {};
 
@@ -86,7 +87,7 @@ export function MelonyApp({}: MelonyAppProps) {
               >
                 <Container>
                   <Stack horizontal gapSize="sm">
-                    <Heading>პროექტები</Heading>
+                    <Heading>title</Heading>
                     <Between />
                     <CreateButton />
                   </Stack>
@@ -95,6 +96,7 @@ export function MelonyApp({}: MelonyAppProps) {
                     <SearchInput />
                     <AdvancedFilter />
                     <Sort />
+                    <Group />
                   </Stack>
 
                   <View />

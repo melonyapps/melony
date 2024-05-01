@@ -31,7 +31,7 @@ export function DocumentSubcollections({}: {}): JSX.Element {
   if (subcollectionFields.length === 0) return <></>;
 
   return (
-    <Tabs defaultValue={subcollectionFields[0]?.slug}>
+    <Tabs defaultValue={subcollectionFields[0]?.slug} className="mt-8">
       <TabsList>
         {subcollectionFields.map((colField) => {
           return (
