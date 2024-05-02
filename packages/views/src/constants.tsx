@@ -3,6 +3,8 @@ import { FieldText } from "./components/fields/field-text";
 import { FieldDocument } from "./components/fields/field-document";
 import { FormCombobox } from "./components/form/form-combobox";
 import { FieldCurrency } from "./components/fields/field-currency";
+import { FieldPassword } from "./components/fields/field-password";
+import { FormPassword } from "./components/form/form-password";
 
 export const FIELDS: Record<
   any,
@@ -19,5 +21,9 @@ export const FIELDS: Record<
   DOCUMENT: {
     default: FieldDocument,
     form: FormCombobox,
+  },
+  PASSWORD: {
+    default: FieldPassword,
+    form: FormPassword,
   },
 };

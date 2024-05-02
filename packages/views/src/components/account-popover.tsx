@@ -12,20 +12,17 @@ import {
   DropdownMenuTrigger,
 } from "@melony/ui/dropdown-menu";
 import { useSession } from "next-auth/react";
+import { useMelonyNavigate } from "../hooks/use-melony-navigate";
 
 export function AccountPopover() {
   const { data: session } = useSession();
   const { mutate: logout } = useLogout();
+  const navigate = useMelonyNavigate();
 
   const handleLogout = async () => {
-    // const res = await signOut({
-    //   redirect: false,
-    //   callbackUrl: "/login",
-    // });
-
     logout(undefined, {
       onSuccess: () => {
-        // onLogoutSuccess();
+        navigate("/login");
       },
     });
   };

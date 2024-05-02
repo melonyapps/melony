@@ -1,3 +1,6 @@
+import { Collection } from "@melony/core/config";
+import crypto from "crypto";
+
 export const getParams = (req: Request) => {
   let url;
   try {
@@ -11,3 +14,32 @@ export const getParams = (req: Request) => {
     .map((x) => decodeURIComponent(x))
     .filter(Boolean);
 };
+
+export const hashPassword = (password: string) => {
+  return crypto.createHash("sha256").update(password).digest("hex");
+};
+
+export function refineData({
+  collection,
+  data,
+}: {
+  collection?: Collection;
+  data: any;
+}) {
+  const schema = collection?.schema || [];
+
+  const refinedData = { ...data };
+
+  const passwordFields = schema.filter((x) => x.type === "PASSWORD");
+
+  passwordFields.map((passwordField) => {
+    const key = passwordField.slug;
+    const value = data?.[key];
+
+    const securedPassword = hashPassword(value);
+
+    refinedData[key] = securedPassword;
+  });
+
+  return refinedData;
+}

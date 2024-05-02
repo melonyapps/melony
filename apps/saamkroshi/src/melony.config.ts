@@ -116,6 +116,15 @@ export const melonyConfig: Config = {
       label: "კლიენტები",
       schema: [fields.input({ slug: "title" })],
     },
+    {
+      slug: "users",
+      label: "Users",
+      schema: [
+        fields.input({ slug: "email", label: "Email" }),
+        fields.input({ slug: "name", label: "Name" }),
+        fields.password({ slug: "password", label: "Password" }),
+      ],
+    },
   ],
   triggers: [
     triggers.db({

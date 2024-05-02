@@ -39,6 +39,7 @@ import { DocumentForm } from "./components/document-form";
 import { DocumentSubcollections } from "./components/document-subcollections";
 import { EditButton } from "./components/edit-button";
 import { View } from "./components/view";
+import { useMelonyPathname } from "./hooks/use-melony-pathname";
 
 type MelonyAppProps = {};
 
@@ -68,6 +69,7 @@ type MelonyAppProps = {};
 
 export function MelonyApp({}: MelonyAppProps) {
   const { params } = useMelonyParams();
+  const pathname = useMelonyPathname();
 
   const renderView = () => {
     return <Table />;
@@ -159,6 +161,19 @@ export function MelonyApp({}: MelonyAppProps) {
               </CollectionProvider>
             </Layout>
           );
+
+        case 1:
+          switch (pathname) {
+            case "/login":
+              return (
+                <div className="h-screen">
+                  <LoginPage />
+                </div>
+              );
+
+            default:
+              return <>Not found</>;
+          }
 
         default:
           return <>Not found</>;

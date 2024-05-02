@@ -4,14 +4,17 @@ import * as React from "react";
 import { AppShell } from "@melony/ui/app-shell";
 import { ProjectContext, useConfig } from "@melony/core/react";
 import { Loader2 } from "lucide-react";
-import { Navigation } from "./navigation";
+import { Navigation as MelonyNavigation } from "./navigation";
 import { AccountPopover } from "./account-popover";
+import { useMelonyNavigate } from "../hooks/use-melony-navigate";
 
 export function Layout({
   children,
 }: {
   children: JSX.Element | React.ReactNode;
 }) {
+  const navigate = useMelonyNavigate();
+
   const isLoading = false;
 
   const {
@@ -28,9 +31,9 @@ export function Layout({
   return (
     <ProjectContext.Provider value={{ projectId: id }}>
       <AppShell
-        logo={'l'}
+        logo={"l"}
         title={ui?.title || "Melony"}
-        nav={<Navigation />}
+        nav={<MelonyNavigation />}
         account={<AccountPopover />}
       >
         {children}
