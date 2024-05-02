@@ -9,7 +9,9 @@
     "./filter": "./src/filter/index.ts",
     "./utils": "./src/utils/index.ts"
   },
-  "scripts": {},
+  "scripts": {
+    "clean": "rimraf .turbo && rimraf node_modules"
+  },
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
