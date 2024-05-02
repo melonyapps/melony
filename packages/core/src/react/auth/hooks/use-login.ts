@@ -6,5 +6,5 @@ import { useAuth } from "..";
 export const useLogin = () => {
   const { login } = useAuth();
 
-  return useMutation(["login"], () => login());
+  return useMutation(["login"], (data: any) => login(data));
 };

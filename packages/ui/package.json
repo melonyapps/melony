@@ -12,6 +12,7 @@
     "./app-shell": "./src/components/app-shell.tsx",
     "./sidebar": "./src/components/sidebar.tsx",
     "./data-table": "./src/components/data-table.tsx",
+    "./navigation": "./src/components/navigation.tsx",
     "./advanced-filter-popover": "./src/components/advanced-filter-popover.tsx",
     "./button": "./src/components/ui/button.tsx",
     "./select": "./src/components/ui/select.tsx",

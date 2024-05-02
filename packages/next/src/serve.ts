@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Config } from "@melony/core/config";
-import { getParams } from "./utils";
-import GoogleProvider from "next-auth/providers/google";
+import { getParams, hashPassword, refineData } from "./utils";
 import NextAuth from "next-auth";
 import { authConfig } from "./auth.config";
 import EventEmitter from "events";
 import queryString from "qs";
+
+import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { FilterOperator } from "@melony/core/filter";
 
 export const serve = (config: Config) => {
   const { id, adapter, collections, triggers } = config;
@@ -19,6 +22,37 @@ export const serve = (config: Config) => {
       GoogleProvider({
         clientId: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      }),
+      CredentialsProvider({
+        credentials: {
+          email: {},
+          password: {},
+        },
+        authorize: async (credentials) => {
+          const res = await dbCrudAdapter.getDocuments({
+            collectionSlug: "users",
+            filter: [
+              {
+                field: "email",
+                operator: FilterOperator.Is,
+                value: credentials.email,
+              },
+            ],
+          });
+
+          if (res.docs.length > 0) {
+            const user: any = res.docs[0];
+
+            if (
+              hashPassword((credentials?.password as string) || "") ===
+              user?.password
+            ) {
+              return user;
+            }
+          }
+
+          return null;
+        },
       }),
     ],
   });
@@ -111,11 +145,27 @@ export const serve = (config: Config) => {
     POST: async (req: NextRequest) => {
       const params = getParams(req);
 
+      let data: any = {};
+
+      try {
+        data = await req.json();
+      } catch (err) {}
+
       if (params?.[0] === "login") {
         try {
-          const redirectUrl = await signIn("google", { redirect: false });
-          return Response.json({ redirectUrl });
-        } catch (err) {}
+          if (data?.email) {
+            await signIn("credentials", { ...data, redirect: false });
+
+            return NextResponse.json({ success: true });
+          }
+
+          if (data?.provider === "google") {
+            const redirectUrl = await signIn("google", { redirect: false });
+            return NextResponse.json({ redirectUrl });
+          }
+        } catch (err) {
+          return NextResponse.json({ error: "Error" }, { status: 401 });
+        }
       }
 
       if (params?.[0] === "logout") {
@@ -123,19 +173,22 @@ export const serve = (config: Config) => {
           await signOut({ redirect: false });
 
           return NextResponse.json({ redirectUrl: "/login" });
-        } catch (err) {}
+        } catch (err) {
+          return Response.json({});
+        }
       }
 
       // create
       if (params.length === 1) {
         try {
           const collectionSlug = params[0] || "unknown";
+          const collection = collections.find((x) => x.slug === collectionSlug);
 
-          const data = await req.json();
+          const refinedData = refineData({ data, collection });
 
           await dbCrudAdapter.createDocument({
             collectionSlug,
-            data,
+            data: refinedData,
             auth,
           });
 
