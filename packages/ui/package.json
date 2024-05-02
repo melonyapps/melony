@@ -34,7 +34,8 @@
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
-    "generate:component": "turbo gen react-component"
+    "generate:component": "turbo gen react-component",
+    "clean": "rimraf .turbo && rimraf node_modules"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
