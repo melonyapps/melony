@@ -9,6 +9,11 @@ import queryString from "qs";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { FilterOperator } from "@melony/core/filter";
+import {
+	S3Client,
+	PutObjectCommand,
+	PutObjectCommandInput,
+} from "@aws-sdk/client-s3";
 
 export const serve = (config: Config) => {
 	const { id, adapter, collections, triggers } = config;
@@ -145,14 +150,10 @@ export const serve = (config: Config) => {
 		POST: async (req: NextRequest) => {
 			const params = getParams(req);
 
-			let data: any = {};
-
-			try {
-				data = await req.json();
-			} catch (err) {}
-
 			if (params?.[0] === "login") {
 				try {
+					const data = await req.json();
+
 					if (data?.email) {
 						await signIn("credentials", { ...data, redirect: false });
 
@@ -178,9 +179,72 @@ export const serve = (config: Config) => {
 				}
 			}
 
+			if (params?.[0] === "upload") {
+				const Bucket = process.env.AMPLIFY_BUCKET;
+
+				let space = new S3Client({
+					forcePathStyle: false, // Configures to use subdomain/virtual calling format.
+					endpoint: `https://${process.env.AWS_REGION}.digitaloceanspaces.com`,
+					region: "us-east-1", // aws specific, do not pay attention
+					credentials: {
+						accessKeyId: process.env.AWS_ACCESS_KEY_ID as string,
+						secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string,
+					},
+				});
+
+				try {
+					const formData = await req.formData();
+					const files = formData.getAll("files") as File[];
+
+					const filesRes = await Promise.all(
+						files.map(async (item) => {
+							const date = new Date();
+							const filePath = date.toISOString().slice(0, 7) + "/" + item.name;
+
+							let Body;
+							try {
+								Body = (await item.arrayBuffer()) as Buffer;
+							} catch (err) {
+								console.log(err);
+							}
+
+							await space.send(
+								new PutObjectCommand({
+									Bucket,
+									Key: filePath,
+									Body,
+									ACL: "public-read",
+								}),
+								{},
+							);
+
+							const downloadUrl = `https://${process.env.AMPLIFY_BUCKET}.${process.env.AWS_REGION}.cdn.digitaloceanspaces.com/${filePath}`;
+
+							const fileRes = await dbCrudAdapter.createDocument({
+								collectionSlug: "files",
+								data: {
+									downloadUrl,
+									originalName: item.name,
+								},
+								auth,
+							});
+
+							return { ...fileRes, downloadUrl };
+						}),
+					);
+
+					return NextResponse.json({ files: filesRes });
+				} catch (err) {
+					console.log(err);
+					return Response.json({ error: "Error during file upload" });
+				}
+			}
+
 			// create
 			if (params.length === 1) {
 				try {
+					const data = await req.json();
+
 					const collectionSlug = params[0] || "unknown";
 
 					const collection = collections.find((x) => x.slug === collectionSlug);

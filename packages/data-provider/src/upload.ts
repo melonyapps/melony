@@ -7,7 +7,7 @@ export const upload = async (
 ) => {
   try {
     const res = await fetchClient.postForm(
-      apiUrl + `/uploads?projectId=${projectId}`,
+      apiUrl + `/upload?projectId=${projectId}`,
       data
     );
     return res.data;

@@ -125,6 +125,7 @@ export const melonyConfig: Config = {
 			slug: "users",
 			label: "Users",
 			schema: [
+				fields.image({ slug: "image" }),
 				fields.input({ slug: "email", label: "Email" }),
 				fields.input({ slug: "name", label: "Name" }),
 				fields.password({ slug: "password", label: "Password" }),

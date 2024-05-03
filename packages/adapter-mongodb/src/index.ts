@@ -47,8 +47,8 @@ export const mongodbAdapter = ({
 
         pipeline.push({ $match: { ...matches } });
 
-        // TODO: unlike sql dvs, nosql lookup is super expensive. solution needed for denormalization.
-        // TODO: type script organisation needed with multiple fields enum
+        // TODO: unlike sql, nosql lookup is super expensive. solution needed for denormalization.
+        // TODO: typescript organisation needed with multiple fields enum
         const docFields: DocumentFieldProps[] = schema.filter((field) =>
           ["DOCUMENT"].includes(field.type || "")
         );

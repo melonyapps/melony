@@ -13,6 +13,8 @@ import { FieldNumber } from "./components/fields/field-number";
 import { FormNumber } from "./components/form/form-number";
 import { FieldDate } from "./components/fields/field-date";
 import { FormDate } from "./components/form/form-date";
+import { FieldImage } from "./components/fields/field-image";
+import { FormImage } from "./components/form/form-image";
 
 export const FIELDS: Record<
 	any,
@@ -49,5 +51,9 @@ export const FIELDS: Record<
 	DATE: {
 		default: FieldDate,
 		form: FormDate,
+	},
+	IMAGE: {
+		default: FieldImage,
+		form: FormImage,
 	},
 };
