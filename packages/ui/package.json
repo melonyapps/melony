@@ -13,6 +13,7 @@
     "./sidebar": "./src/components/sidebar.tsx",
     "./data-table": "./src/components/data-table.tsx",
     "./navigation": "./src/components/navigation.tsx",
+    "./color-picker": "./src/components/color-picker.tsx",
     "./advanced-filter-popover": "./src/components/advanced-filter-popover.tsx",
     "./button": "./src/components/ui/button.tsx",
     "./select": "./src/components/ui/select.tsx",
