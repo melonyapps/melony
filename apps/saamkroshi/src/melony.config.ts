@@ -114,7 +114,10 @@ export const melonyConfig: Config = {
 		{
 			slug: "clients",
 			label: "კლიენტები",
-			schema: [fields.input({ slug: "title" })],
+			schema: [
+				fields.input({ slug: "title" }),
+				fields.checkbox({ slug: "internal" }),
+			],
 		},
 		{
 			slug: "users",

@@ -1,12 +1,12 @@
+import { InputFieldProps } from "@melony/core/config";
 import * as React from "react";
-import { FieldProps } from "@melony/core/react";
 
 export const FieldText = ({
-  field,
-  defaultValue,
+	field,
+	defaultValue,
 }: {
-  field: FieldProps;
-  defaultValue: any;
+	field: InputFieldProps;
+	defaultValue: any;
 }) => {
-  return <span className="block truncate">{defaultValue || "-"}</span>;
+	return <span className="block truncate">{defaultValue || "-"}</span>;
 };

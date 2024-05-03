@@ -7,6 +7,8 @@ import { FieldPassword } from "./components/fields/field-password";
 import { FormPassword } from "./components/form/form-password";
 import { FieldColor } from "./components/fields/field-color";
 import { FormColor } from "./components/form/form-color";
+import { FieldCheckbox } from "./components/fields/field-checkbox";
+import { FormCheckbox } from "./components/form/form-checkbox";
 
 export const FIELDS: Record<
 	any,
@@ -31,5 +33,9 @@ export const FIELDS: Record<
 	COLOR: {
 		default: FieldColor,
 		form: FormColor,
+	},
+	CHECKBOX: {
+		default: FieldCheckbox,
+		form: FormCheckbox,
 	},
 };
