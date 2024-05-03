@@ -11,6 +11,8 @@ import { FieldCheckbox } from "./components/fields/field-checkbox";
 import { FormCheckbox } from "./components/form/form-checkbox";
 import { FieldNumber } from "./components/fields/field-number";
 import { FormNumber } from "./components/form/form-number";
+import { FieldDate } from "./components/fields/field-date";
+import { FormDate } from "./components/form/form-date";
 
 export const FIELDS: Record<
 	any,
@@ -43,5 +45,9 @@ export const FIELDS: Record<
 	CHECKBOX: {
 		default: FieldCheckbox,
 		form: FormCheckbox,
+	},
+	DATE: {
+		default: FieldDate,
+		form: FormDate,
 	},
 };

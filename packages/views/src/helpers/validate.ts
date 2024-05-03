@@ -20,6 +20,9 @@ export const getValidation = (field?: Field) => {
 		case "CHECKBOX":
 			if (field.isRequired) return z.boolean();
 			return z.boolean().optional();
+		case "DATE":
+			if (field.isRequired) return z.string();
+			return z.string().optional();
 
 		default:
 			return z.string();
