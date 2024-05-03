@@ -9,6 +9,8 @@ import { FieldColor } from "./components/fields/field-color";
 import { FormColor } from "./components/form/form-color";
 import { FieldCheckbox } from "./components/fields/field-checkbox";
 import { FormCheckbox } from "./components/form/form-checkbox";
+import { FieldNumber } from "./components/fields/field-number";
+import { FormNumber } from "./components/form/form-number";
 
 export const FIELDS: Record<
 	any,
@@ -17,6 +19,10 @@ export const FIELDS: Record<
 	TEXT: {
 		default: FieldText,
 		form: FormInput,
+	},
+	NUMBER: {
+		default: FieldNumber,
+		form: FormNumber,
 	},
 	CURRENCY: {
 		default: FieldCurrency,

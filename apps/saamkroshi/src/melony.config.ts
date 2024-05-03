@@ -117,6 +117,7 @@ export const melonyConfig: Config = {
 			schema: [
 				fields.input({ slug: "title" }),
 				fields.checkbox({ slug: "internal" }),
+				fields.number({ slug: "number" }),
 			],
 		},
 		{
