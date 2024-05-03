@@ -1,22 +1,21 @@
+import React from "react";
 import { InputFieldProps } from "@melony/core/config";
 import { FormControl } from "@melony/ui/form";
-import { Input } from "@melony/ui/input";
+import { Checkbox } from "@melony/ui/checkbox";
 import { ControllerRenderProps, FieldValues } from "react-hook-form";
 
-export function FormNumber({
+export function FormCheckbox({
+	type,
 	field,
 }: {
 	field: ControllerRenderProps<FieldValues, string>;
 } & InputFieldProps) {
 	return (
 		<FormControl>
-			<Input
-				type="number"
-				placeholder={""}
-				value={field.value}
-				onChange={(e) => {
-					field.onChange(e.target.valueAsNumber);
-				}}
+			<Checkbox
+				checked={Boolean(field.value)}
+				disabled={field?.disabled}
+				onCheckedChange={field.onChange}
 			/>
 		</FormControl>
 	);
