@@ -118,6 +118,7 @@ export const melonyConfig: Config = {
 				fields.input({ slug: "title" }),
 				fields.checkbox({ slug: "internal" }),
 				fields.number({ slug: "number" }),
+				fields.date({ slug: "date" }),
 			],
 		},
 		{

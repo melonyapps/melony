@@ -3,84 +3,92 @@ import * as icons from "lucide-react";
 
 // config
 export type NavigationItemProps = {
-  to: string;
-  title?: string;
-  icon?: keyof typeof icons;
+	to: string;
+	title?: string;
+	icon?: keyof typeof icons;
 };
 
 type UI = {
-  title?: string;
-  logo?: any;
-  navigation?: Record<string, NavigationItemProps[]>;
+	title?: string;
+	logo?: any;
+	navigation?: Record<string, NavigationItemProps[]>;
 };
 
 export type InputFieldProps = {
-  slug: string;
-  label?: string;
-  type?: string;
-  isRequired?: boolean;
-  symbol?: string;
+	slug: string;
+	label?: string;
+	type?: string;
+	isRequired?: boolean;
+	symbol?: string;
+};
+
+export type DateFieldProps = {
+	slug: string;
+	label?: string;
+	type?: string;
+	isRequired?: boolean;
+	hasTime?: boolean;
 };
 
 export type DocumentFieldProps = {
-  slug: string;
-  label?: string;
-  type?: string;
-  validation?: any;
-  collectionSlug: string;
-  creatable?: string;
-  isRequired?: boolean;
-  defaultViewSlug?: string;
-  foreignField?: string;
-  colorField?: string;
+	slug: string;
+	label?: string;
+	type?: string;
+	validation?: any;
+	collectionSlug: string;
+	creatable?: string;
+	isRequired?: boolean;
+	defaultViewSlug?: string;
+	foreignField?: string;
+	colorField?: string;
 };
 
 export type Field = InputFieldProps | DocumentFieldProps;
 
 export type Collection = {
-  slug: string;
-  label?: string;
-  schema: Field[];
-  views?: View[];
+	slug: string;
+	label?: string;
+	schema: Field[];
+	views?: View[];
 };
 
 export type View = {
-  slug: string;
-  label?: string;
-  type?: string;
-  icon?: keyof typeof icons;
+	slug: string;
+	label?: string;
+	type?: string;
+	icon?: keyof typeof icons;
 };
 
 export type DbTrigger = {
-  slug: string;
-  collectionSlug: string;
-  label?: string;
-  on?: string[];
-  func: any;
+	slug: string;
+	collectionSlug: string;
+	label?: string;
+	on?: string[];
+	func: any;
 };
 
 export type Trigger = DbTrigger;
 
 export type Config = {
-  id: string;
-  ui?: UI;
-  adapter: ({
-    id,
-    collections,
-  }: {
-    id: string;
-    collections: Collection[];
-  }) => Adapter & { auth: any };
-  collections: Collection[];
-  triggers: Trigger[];
+	id: string;
+	ui?: UI;
+	adapter: ({
+		id,
+		collections,
+	}: {
+		id: string;
+		collections: Collection[];
+	}) => Adapter & { auth: any };
+	collections: Collection[];
+	triggers: Trigger[];
 };
 
 export function config(config: Config) {
-  return config;
+	return config;
 }
 
 export function collection(collection: Collection) {
-  return collection;
+	return collection;
 }
 
 export * as fields from "./fields";

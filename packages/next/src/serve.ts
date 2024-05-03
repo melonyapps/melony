@@ -11,249 +11,254 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { FilterOperator } from "@melony/core/filter";
 
 export const serve = (config: Config) => {
-  const { id, adapter, collections, triggers } = config;
+	const { id, adapter, collections, triggers } = config;
 
-  const dbCrudAdapter = adapter({ id, collections });
+	const dbCrudAdapter = adapter({ id, collections });
 
-  const { handlers, auth, signIn, signOut } = NextAuth({
-    ...authConfig,
-    adapter: dbCrudAdapter.auth,
-    providers: [
-      GoogleProvider({
-        clientId: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      }),
-      CredentialsProvider({
-        credentials: {
-          email: {},
-          password: {},
-        },
-        authorize: async (credentials) => {
-          const res = await dbCrudAdapter.getDocuments({
-            collectionSlug: "users",
-            filter: [
-              {
-                field: "email",
-                operator: FilterOperator.Is,
-                value: credentials.email,
-              },
-            ],
-          });
+	const { handlers, auth, signIn, signOut } = NextAuth({
+		...authConfig,
+		adapter: dbCrudAdapter.auth,
+		providers: [
+			GoogleProvider({
+				clientId: process.env.GOOGLE_CLIENT_ID,
+				clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+			}),
+			CredentialsProvider({
+				credentials: {
+					email: {},
+					password: {},
+				},
+				authorize: async (credentials) => {
+					const res = await dbCrudAdapter.getDocuments({
+						collectionSlug: "users",
+						filter: [
+							{
+								field: "email",
+								operator: FilterOperator.Is,
+								value: credentials.email,
+							},
+						],
+					});
 
-          if (res.docs.length > 0) {
-            const user: any = res.docs[0];
+					if (res.docs.length > 0) {
+						const user: any = res.docs[0];
 
-            if (
-              hashPassword((credentials?.password as string) || "") ===
-              user?.password
-            ) {
-              return user;
-            }
-          }
+						if (
+							hashPassword((credentials?.password as string) || "") ===
+							user?.password
+						) {
+							return user;
+						}
+					}
 
-          return null;
-        },
-      }),
-    ],
-  });
+					return null;
+				},
+			}),
+		],
+	});
 
-  const eventEmitter = new EventEmitter();
+	const eventEmitter = new EventEmitter();
 
-  eventEmitter.on("docChange", async (changeEvent) => {
-    Object.keys(triggers).map((triggerKey) => {
-      const trigger = triggers[triggerKey];
+	eventEmitter.on("docChange", async (changeEvent) => {
+		Object.keys(triggers).map((triggerKey) => {
+			const trigger = triggers[triggerKey];
 
-      if (trigger?.collectionSlug === changeEvent.collectionSlug) {
-        if (trigger?.on?.includes(changeEvent.type)) {
-          // execute
-          trigger.task({ dbCrudAdapter, type: changeEvent.type }); // TODO: dbCrudAdapter or db? need to decide
-        }
-      }
-    });
-  });
+			if (trigger?.collectionSlug === changeEvent.collectionSlug) {
+				if (trigger?.on?.includes(changeEvent.type)) {
+					// execute
+					trigger.task({ dbCrudAdapter, type: changeEvent.type }); // TODO: dbCrudAdapter or db? need to decide
+				}
+			}
+		});
+	});
 
-  return {
-    GET: async (req: NextRequest) => {
-      const params = getParams(req);
-      const searchParams = req.nextUrl.searchParams;
-      const search = req.nextUrl.search;
+	return {
+		GET: async (req: NextRequest) => {
+			const params = getParams(req);
+			const searchParams = req.nextUrl.searchParams;
+			const search = req.nextUrl.search;
 
-      const parsedQs = queryString.parse(search);
-      const filter = parsedQs?.["filter"];
-      const sort = parsedQs?.["sort"];
-      const searchTerm = parsedQs?.["searchTerm"];
+			const parsedQs = queryString.parse(search);
+			const filter = parsedQs?.["filter"];
+			const sort = parsedQs?.["sort"];
+			const searchTerm = parsedQs?.["searchTerm"];
 
-      // auth (used for callbacks)
-      if (params?.[0] === "auth") {
-        return handlers.GET(req);
-      }
+			// auth (used for callbacks)
+			if (params?.[0] === "auth") {
+				return handlers.GET(req);
+			}
 
-      if (params?.[0] === "init") {
-        return Response.json(config);
-      }
+			if (params?.[0] === "init") {
+				return Response.json(config);
+			}
 
-      // db actions
-      // length === 1 - list
-      if (params.length === 1) {
-        if (params[0] === "suggestions") {
-          try {
-            const res = await dbCrudAdapter.getSuggestions({
-              collectionSlug: searchParams.get("collectionSlug") || "unknown",
-            });
+			// db actions
+			// length === 1 - list
+			if (params.length === 1) {
+				if (params[0] === "suggestions") {
+					try {
+						const res = await dbCrudAdapter.getSuggestions({
+							collectionSlug: searchParams.get("collectionSlug") || "unknown",
+						});
 
-            return Response.json(res);
-          } catch (err) {
-            return Response.json({});
-          }
-        }
+						return Response.json(res);
+					} catch (err) {
+						return Response.json({});
+					}
+				}
 
-        const collectionSlug = params[0] || "unknown";
+				const collectionSlug = params[0] || "unknown";
 
-        try {
-          const res = await dbCrudAdapter.getDocuments({
-            collectionSlug,
-            searchTerm,
-            filter,
-            sort,
-          });
+				try {
+					const res = await dbCrudAdapter.getDocuments({
+						collectionSlug,
+						searchTerm,
+						filter,
+						sort,
+					});
 
-          return Response.json(res);
-        } catch (err) {
-          return Response.json({});
-        }
-      }
+					return Response.json(res);
+				} catch (err) {
+					return Response.json({});
+				}
+			}
 
-      // length === 2 - show
-      if (params.length === 2) {
-        const collectionSlug = params[0] || "unknown";
-        const docId = params[1] || "unknown";
+			// length === 2 - show
+			if (params.length === 2) {
+				const collectionSlug = params[0] || "unknown";
+				const docId = params[1] || "unknown";
 
-        try {
-          const res = await dbCrudAdapter.getDocument({
-            collectionSlug,
-            docId,
-          });
+				try {
+					const res = await dbCrudAdapter.getDocument({
+						collectionSlug,
+						docId,
+					});
 
-          return Response.json(res);
-        } catch (err) {
-          return Response.json({});
-        }
-      }
+					return Response.json(res);
+				} catch (err) {
+					return Response.json({});
+				}
+			}
 
-      return Response.json({});
-    },
-    POST: async (req: NextRequest) => {
-      const params = getParams(req);
+			return Response.json({});
+		},
+		POST: async (req: NextRequest) => {
+			const params = getParams(req);
 
-      let data: any = {};
+			let data: any = {};
 
-      try {
-        data = await req.json();
-      } catch (err) {}
+			try {
+				data = await req.json();
+			} catch (err) {}
 
-      if (params?.[0] === "login") {
-        try {
-          if (data?.email) {
-            await signIn("credentials", { ...data, redirect: false });
+			if (params?.[0] === "login") {
+				try {
+					if (data?.email) {
+						await signIn("credentials", { ...data, redirect: false });
 
-            return NextResponse.json({ success: true });
-          }
+						return NextResponse.json({ success: true });
+					}
 
-          if (data?.provider === "google") {
-            const redirectUrl = await signIn("google", { redirect: false });
-            return NextResponse.json({ redirectUrl });
-          }
-        } catch (err) {
-          return NextResponse.json({ error: "Error" }, { status: 401 });
-        }
-      }
+					if (data?.provider === "google") {
+						const redirectUrl = await signIn("google", { redirect: false });
+						return NextResponse.json({ redirectUrl });
+					}
+				} catch (err) {
+					return NextResponse.json({ error: "Error" }, { status: 401 });
+				}
+			}
 
-      if (params?.[0] === "logout") {
-        try {
-          await signOut({ redirect: false });
+			if (params?.[0] === "logout") {
+				try {
+					await signOut({ redirect: false });
 
-          return NextResponse.json({ redirectUrl: "/login" });
-        } catch (err) {
-          return Response.json({});
-        }
-      }
+					return NextResponse.json({ redirectUrl: "/login" });
+				} catch (err) {
+					return Response.json({});
+				}
+			}
 
-      // create
-      if (params.length === 1) {
-        try {
-          const collectionSlug = params[0] || "unknown";
-          const collection = collections.find((x) => x.slug === collectionSlug);
+			// create
+			if (params.length === 1) {
+				try {
+					const collectionSlug = params[0] || "unknown";
 
-          const refinedData = refineData({ data, collection });
+					const collection = collections.find((x) => x.slug === collectionSlug);
 
-          await dbCrudAdapter.createDocument({
-            collectionSlug,
-            data: refinedData,
-            auth,
-          });
+					const refinedData = refineData({ data, collection });
 
-          eventEmitter.emit("docChange", {
-            type: "create",
-          });
+					await dbCrudAdapter.createDocument({
+						collectionSlug,
+						data: refinedData,
+						auth,
+					});
 
-          return Response.json({});
-        } catch (err) {}
-      }
+					eventEmitter.emit("docChange", {
+						type: "create",
+					});
 
-      return Response.json({});
-    },
-    PUT: auth(async (req) => {
-      const params = getParams(req);
+					return Response.json({});
+				} catch (err) {}
+			}
 
-      // update doc
-      if (params.length === 2) {
-        try {
-          const collectionSlug = params[0] || "unknown";
-          const docId = params[1] || "unknown";
+			return Response.json({});
+		},
+		PUT: auth(async (req) => {
+			const params = getParams(req);
 
-          const data = await req.json();
+			// update doc
+			if (params.length === 2) {
+				try {
+					const collectionSlug = params[0] || "unknown";
+					const docId = params[1] || "unknown";
 
-          await dbCrudAdapter.updateDocument({
-            collectionSlug,
-            docId,
-            data,
-          });
+					const collection = collections.find((x) => x.slug === collectionSlug);
 
-          eventEmitter.emit("docChange", {
-            type: "update",
-            collectionSlug,
-          });
+					const data = await req.json();
 
-          return Response.json({});
-        } catch (err) {}
-      }
+					const refinedData = refineData({ data, collection });
 
-      return Response.json({});
-    }),
-    DELETE: auth(async (req) => {
-      const params = getParams(req);
+					await dbCrudAdapter.updateDocument({
+						collectionSlug,
+						docId,
+						data: refinedData,
+					});
 
-      // delete doc
-      if (params.length === 2) {
-        try {
-          const collectionSlug = params[0] || "unknown";
-          const docId = params[1] || "unknown";
+					eventEmitter.emit("docChange", {
+						type: "update",
+						collectionSlug,
+					});
 
-          await dbCrudAdapter.deleteDocument({
-            collectionSlug,
-            docId,
-          });
+					return Response.json({});
+				} catch (err) {}
+			}
 
-          eventEmitter.emit("docChange", {
-            type: "delete",
-            collectionSlug,
-          });
+			return Response.json({});
+		}),
+		DELETE: auth(async (req) => {
+			const params = getParams(req);
 
-          return Response.json({});
-        } catch (err) {}
-      }
+			// delete doc
+			if (params.length === 2) {
+				try {
+					const collectionSlug = params[0] || "unknown";
+					const docId = params[1] || "unknown";
 
-      return Response.json({});
-    }),
-  };
+					await dbCrudAdapter.deleteDocument({
+						collectionSlug,
+						docId,
+					});
+
+					eventEmitter.emit("docChange", {
+						type: "delete",
+						collectionSlug,
+					});
+
+					return Response.json({});
+				} catch (err) {}
+			}
+
+			return Response.json({});
+		}),
+	};
 };

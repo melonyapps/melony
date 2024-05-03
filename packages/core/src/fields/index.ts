@@ -6,3 +6,4 @@ export { password } from "./password";
 export { color } from "./color";
 export { checkbox } from "./checkbox";
 export { number } from "./number";
+export { date } from "./date";
