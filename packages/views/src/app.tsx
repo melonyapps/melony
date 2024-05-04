@@ -42,6 +42,7 @@ import { View } from "./components/view";
 import { useMelonyPathname } from "./hooks/use-melony-pathname";
 import { CollectionHeader } from "./components/collection-header";
 import { DocumentContent } from "./components/document-content";
+import { DocumentHeader } from "./components/document-header";
 
 type MelonyAppProps = {};
 
@@ -120,11 +121,7 @@ export function MelonyApp({}: MelonyAppProps) {
 							<CollectionProvider slug={params[1] as string}>
 								<DocumentProvider id={params[5] as string}>
 									<Container>
-										<div className="flex items-center">
-											<DocumentHeading />
-											<Between />
-											<EditButton />
-										</div>
+										<DocumentHeader />
 
 										<DocumentContent />
 									</Container>

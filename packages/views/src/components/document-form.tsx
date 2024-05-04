@@ -62,7 +62,7 @@ export function DocumentForm() {
 	if (isLoading) return <>Loading...</>;
 
 	return (
-		<Card className="flex-1 flex flex-col overflow-hidden">
+		<Card className="flex-1 flex flex-col overflow-hidden py-4 px-2">
 			<div className="grid grid-cols-12">
 				<div className="col-span-8">
 					<Form {...form}>
