@@ -9,11 +9,7 @@ import queryString from "qs";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { FilterOperator } from "@melony/core/filter";
-import {
-	S3Client,
-	PutObjectCommand,
-	PutObjectCommandInput,
-} from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
 export const serve = (config: Config) => {
 	const { id, adapter, collections, triggers } = config;

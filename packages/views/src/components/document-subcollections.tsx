@@ -2,9 +2,9 @@
 
 import React from "react";
 import {
-  CollectionProvider,
-  useCollection,
-  useDocument,
+	CollectionProvider,
+	useCollection,
+	useDocument,
 } from "@melony/core/react";
 import { DocumentFieldProps } from "@melony/core/config";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@melony/ui/tabs";
@@ -16,61 +16,70 @@ import { CreateButton } from "./create-button";
 import { Table } from "./table";
 
 export function DocumentSubcollections({}: {}): JSX.Element {
-  const { slug: collectionSlug, schema } = useCollection();
-  const { data, isLoading } = useDocument();
+	const { slug: collectionSlug, schema } = useCollection();
+	const { data, isLoading } = useDocument();
 
-  if (isLoading) {
-    return <></>;
-  }
+	if (isLoading) {
+		return <></>;
+	}
 
-  // TODO: we need to auto-detect the type
-  const subcollectionFields: DocumentFieldProps[] = schema.filter(
-    (x) => x.type === "DOCUMENTS"
-  );
+	// TODO: we need to auto-detect the type
+	const subcollectionFields: DocumentFieldProps[] = schema.filter(
+		(x) => x.type === "DOCUMENTS",
+	);
 
-  if (subcollectionFields.length === 0) return <></>;
+	if (subcollectionFields.length === 0) return <></>;
 
-  return (
-    <Tabs defaultValue={subcollectionFields[0]?.slug}>
-      <TabsList>
-        {subcollectionFields.map((colField) => {
-          return (
-            <TabsTrigger key={colField.slug} value={colField.slug}>
-              {colField?.label || colField.slug}
-            </TabsTrigger>
-          );
-        })}
-      </TabsList>
+	return (
+		<Tabs
+			defaultValue={subcollectionFields[0]?.slug}
+			className="flex flex-col h-full overflow-hidden"
+		>
+			<TabsList>
+				{subcollectionFields.map((colField) => {
+					return (
+						<TabsTrigger key={colField.slug} value={colField.slug}>
+							{colField?.label || colField.slug}
+						</TabsTrigger>
+					);
+				})}
+			</TabsList>
 
-      {subcollectionFields.map((colField) => {
-        return (
-          <TabsContent key={colField.slug} value={colField.slug}>
-            <CollectionProvider
-              slug={colField.collectionSlug}
-              viewSlug={colField?.defaultViewSlug}
-              baseParams={{
-                filter: [
-                  {
-                    field: colField?.foreignField || `${collectionSlug}_id`,
-                    operator: FilterOperator.Is,
-                    value: data?._id,
-                  },
-                ],
-              }}
-            >
-              <Stack>
-                <Stack horizontal gapSize="sm">
-                  <SearchInput />
-                  <Between />
-                  <CreateButton />
-                </Stack>
+			{subcollectionFields.map((colField) => {
+				return (
+					<TabsContent
+						key={colField.slug}
+						value={colField.slug}
+						className="overflow-auto"
+					>
+						<CollectionProvider
+							slug={colField.collectionSlug}
+							viewSlug={colField?.defaultViewSlug}
+							baseParams={{
+								filter: [
+									{
+										field: colField?.foreignField || `${collectionSlug}_id`,
+										operator: FilterOperator.Is,
+										value: data?._id,
+									},
+								],
+							}}
+						>
+							<div className="p-2 border-b">
+								<Stack horizontal gapSize="sm">
+									<SearchInput />
+									<Between />
+									<CreateButton />
+								</Stack>
+							</div>
 
-                <Table />
-              </Stack>
-            </CollectionProvider>
-          </TabsContent>
-        );
-      })}
-    </Tabs>
-  );
+							<div className="flex-1 overflow-auto">
+								<Table />
+							</div>
+						</CollectionProvider>
+					</TabsContent>
+				);
+			})}
+		</Tabs>
+	);
 }

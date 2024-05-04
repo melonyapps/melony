@@ -11,6 +11,7 @@ import { getValidation } from "../helpers/validate";
 import { filterEditableFields } from "../helpers/filter-editable-fields";
 import { Check } from "lucide-react";
 import { useMelonyNavigate } from "../hooks/use-melony-navigate";
+import { Card } from "@melony/ui/card";
 
 export function DocumentForm() {
 	const navigate = useMelonyNavigate();
@@ -61,20 +62,29 @@ export function DocumentForm() {
 	if (isLoading) return <>Loading...</>;
 
 	return (
-		<Form {...form}>
-			<form
-				onSubmit={form.handleSubmit(handleSubmit, (err) => console.log(err))}
-				className="space-y-4"
-			>
-				<FormFields schema={filteredSchema} />
+		<Card className="flex-1 flex flex-col overflow-hidden">
+			<div className="grid grid-cols-12">
+				<div className="col-span-8">
+					<Form {...form}>
+						<form
+							onSubmit={form.handleSubmit(handleSubmit, (err) =>
+								console.log(err),
+							)}
+							className="space-y-4"
+						>
+							<FormFields schema={filteredSchema} />
 
-				<div className="flex justify-end">
-					<Button type="submit" disabled={isCreatingDoc || isUpdatingDoc}>
-						<Check className="h-4 w-4 mr-2" />
-						Submit
-					</Button>
+							<div className="flex justify-end p-4">
+								<Button type="submit" disabled={isCreatingDoc || isUpdatingDoc}>
+									<Check className="h-4 w-4 mr-2" />
+									Submit
+								</Button>
+							</div>
+						</form>
+					</Form>
 				</div>
-			</form>
-		</Form>
+				<div className="col-span-8"></div>
+			</div>
+		</Card>
 	);
 }
