@@ -1,28 +1,18 @@
 "use client";
 
-import { ConfigContext, useInit } from ".";
+import { ConfigContext } from ".";
+import { Config } from "../../config";
 
-export function ConfigProvider({ children }: { children: React.ReactNode }) {
-  const { data = { id: "undefined", collections: [] }, isLoading } = useInit();
+export function ConfigProvider({
+	config,
+	children,
+}: {
+	config: Config;
+	children: React.ReactNode;
+}) {
+	const value = { config };
 
-  if (isLoading)
-    return (
-      <div
-        style={{
-          height: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        Initializing app...
-      </div>
-    );
-
-  const value = { config: data };
-
-  return (
-    <ConfigContext.Provider value={value}>{children}</ConfigContext.Provider>
-  );
+	return (
+		<ConfigContext.Provider value={value}>{children}</ConfigContext.Provider>
+	);
 }

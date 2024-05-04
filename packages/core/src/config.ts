@@ -74,7 +74,7 @@ export type Trigger = DbTrigger;
 export type Config = {
 	id: string;
 	ui?: UI;
-	adapter: ({
+	adapter?: ({
 		id,
 		collections,
 	}: {
@@ -82,7 +82,7 @@ export type Config = {
 		collections: Collection[];
 	}) => Adapter & { auth: any };
 	collections: Collection[];
-	triggers: Trigger[];
+	triggers?: Trigger[];
 };
 
 export function config(config: Config) {

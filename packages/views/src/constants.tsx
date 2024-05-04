@@ -30,7 +30,7 @@ export const FIELDS: Record<
 	},
 	CURRENCY: {
 		default: FieldCurrency,
-		form: FormInput,
+		form: FormNumber,
 	},
 	DOCUMENT: {
 		default: FieldDocument,
