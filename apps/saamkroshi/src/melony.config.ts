@@ -1,5 +1,5 @@
 import { mongodbAdapter } from "@melony/adapter-mongodb";
-import { Config, fields, triggers, views } from "@melony/core/config";
+import { type Config, fields, triggers, views } from "@melony/core/config";
 
 export const melonyConfig: Config = {
 	id: "65a2b2167f0c2c91ea054cb3",
@@ -98,10 +98,7 @@ export const melonyConfig: Config = {
 		{
 			slug: "65a307f0b68869084c9faa3e",
 			label: "პროექტის სტატუსები",
-			schema: [
-				fields.input({ slug: "title" }),
-				fields.color({ slug: "color" }),
-			],
+			schema: [fields.input({ slug: "title" }), fields.color({ slug: "color" })],
 		},
 		{
 			slug: "project_files",
@@ -111,10 +108,7 @@ export const melonyConfig: Config = {
 		{
 			slug: "65a30f57b68869084c9faa43",
 			label: "არტიკულის სტატუსები",
-			schema: [
-				fields.input({ slug: "title" }),
-				fields.color({ slug: "color" }),
-			],
+			schema: [fields.input({ slug: "title" }), fields.color({ slug: "color" })],
 		},
 		{
 			slug: "clients",

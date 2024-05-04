@@ -1,17 +1,13 @@
 import { CollectionProvider } from "@melony/core/react";
 
 export const metadata = {
-  title: "Melony",
+	title: "Melony",
 };
 
 export default async function ProjectsLayout({
-  children,
+	children,
 }: {
-  children: React.ReactNode;
+	children: React.ReactNode;
 }) {
-  return (
-    <CollectionProvider slug="65a30f4db68869084c9faa42">
-      {children}
-    </CollectionProvider>
-  );
+	return <CollectionProvider slug="65a30f4db68869084c9faa42">{children}</CollectionProvider>;
 }

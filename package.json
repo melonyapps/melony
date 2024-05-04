@@ -5,12 +5,11 @@
     "preinstall": "npx only-allow pnpm",
     "build": "turbo build",
     "dev": "turbo dev",
-    "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "lint": "turbo run lint --parallel",
     "clean": "turbo run clean --parallel && rimraf .turbo && rimraf node_modules"
   },
   "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
+    "@biomejs/biome": "1.7.2",
     "@repo/typescript-config": "workspace:*",
     "pnpm": "8.15.4",
     "prettier": "^3.2.5",

@@ -4,17 +4,17 @@ import { Table } from "@melony/views";
 import { useRouter } from "next/navigation";
 
 export const metadata = {
-  title: "Melony",
+	title: "Melony",
 };
 
 export default function PageContent() {
-  const router = useRouter();
+	const router = useRouter();
 
-  return (
-    <Table
-      onRowClick={(row) => {
-        router.push(`/projects/${row._id}`);
-      }}
-    />
-  );
+	return (
+		<Table
+			onRowClick={row => {
+				router.push(`/projects/${row._id}`);
+			}}
+		/>
+	);
 }

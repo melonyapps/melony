@@ -1,36 +1,30 @@
 "use client";
 
 import { DocumentProvider } from "@melony/core/react";
-import {
-  Between,
-  DocumentDetails,
-  DocumentHeading,
-  DocumentSubcollections,
-  Stack,
-} from "@melony/views";
+import { Between, DocumentDetails, DocumentHeading, DocumentSubcollections, Stack } from "@melony/views";
 import { useParams } from "next/navigation";
 import EditButton from "./edit-button";
 
 export const metadata = {
-  title: "Melony",
+	title: "Melony",
 };
 
 export default function PageContent() {
-  const params = useParams();
+	const params = useParams();
 
-  const documentId = params.id as string;
+	const documentId = params.id as string;
 
-  return (
-    <DocumentProvider id={documentId}>
-      <Stack horizontal>
-        <DocumentHeading />
-        <Between />
-        <EditButton />
-      </Stack>
+	return (
+		<DocumentProvider id={documentId}>
+			<Stack horizontal>
+				<DocumentHeading />
+				<Between />
+				<EditButton />
+			</Stack>
 
-      <DocumentDetails />
+			<DocumentDetails />
 
-      <DocumentSubcollections />
-    </DocumentProvider>
-  );
+			<DocumentSubcollections />
+		</DocumentProvider>
+	);
 }

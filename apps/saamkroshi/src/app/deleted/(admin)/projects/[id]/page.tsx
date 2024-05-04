@@ -2,15 +2,15 @@ import { Container, Stack } from "@melony/views";
 import PageContent from "./content";
 
 export const metadata = {
-  title: "Melony",
+	title: "Melony",
 };
 
 export default async function ProjectsPage() {
-  return (
-    <Container>
-      <Stack>
-        <PageContent />
-      </Stack>
-    </Container>
-  );
+	return (
+		<Container>
+			<Stack>
+				<PageContent />
+			</Stack>
+		</Container>
+	);
 }

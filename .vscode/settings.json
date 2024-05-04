@@ -1,0 +1,26 @@
+{
+	"editor.defaultFormatter": "biomejs.biome",
+	"editor.tabSize": 2,
+	"[typescript]": {
+		"editor.formatOnSave": true,
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[typescriptreact]": {
+		"editor.formatOnSave": true,
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"editor.minimap.enabled": true,
+	"eslint.workingDirectories": [{ "mode": "auto" }],
+	"editor.codeActionsOnSave": {
+		"source.fixAll": "always",
+		"quickfix.biome": "always",
+		"source.organizeImports.biome": "always"
+	},
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"jest.runMode": "deferred",
+	"npm-scripts.showStartNotification": false,
+	"vitest.commandLine": "npx vitest",
+	"vitest.include": ["**/*.{test,unit}.{js,ts,jsx,tsx}"],
+	"prettier.requireConfig": true,
+	"eslint.enable": false
+}

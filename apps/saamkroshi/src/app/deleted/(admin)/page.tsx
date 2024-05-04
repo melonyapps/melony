@@ -1,7 +1,7 @@
 export const metadata = {
-  title: "Melony Index",
+	title: "Melony Index",
 };
 
 export default async function IndexPage() {
-  return <></>;
+	return <></>;
 }

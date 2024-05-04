@@ -4,17 +4,17 @@ import { DocumentForm } from "@melony/views";
 import { useRouter } from "next/navigation";
 
 export const metadata = {
-  title: "Create",
+	title: "Create",
 };
 
 export default function PageContent() {
-  const router = useRouter();
+	const router = useRouter();
 
-  return (
-    <DocumentForm
-      onSuccess={() => {
-        router.push("/projects");
-      }}
-    />
-  );
+	return (
+		<DocumentForm
+			onSuccess={() => {
+				router.push("/projects");
+			}}
+		/>
+	);
 }
