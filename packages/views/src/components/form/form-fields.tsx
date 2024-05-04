@@ -8,7 +8,7 @@ export function FormFields({ schema }: { schema: Field[] }) {
   const { control } = useFormContext();
 
   return (
-    <div className="flex flex-col divide-y">
+    <div className="flex flex-col">
       {schema.map((schemaField) => {
         const Comp =
           FIELDS[schemaField?.type || "TEXT"]?.["form"] || (() => <></>);

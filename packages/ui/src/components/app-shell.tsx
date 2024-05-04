@@ -17,7 +17,7 @@ export function AppShell({
   const [isCollapsed, setIsCollapsed] = useIsCollapsed();
 
   return (
-    <div className="relative overflow-hidden bg-background min-h-screen">
+    <div className="relative overflow-hidden bg-muted/40 min-h-screen">
       <Sidebar
         logo={logo}
         title={title}
