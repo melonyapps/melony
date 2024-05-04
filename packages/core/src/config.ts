@@ -40,7 +40,6 @@ export type DocumentFieldProps = {
 	isRequired?: boolean;
 	defaultViewSlug?: string;
 	foreignField?: string;
-	colorField?: string;
 };
 
 export type Field = InputFieldProps | DocumentFieldProps;
@@ -50,6 +49,9 @@ export type Collection = {
 	label?: string;
 	schema: Field[];
 	views?: View[];
+	title?: string; // defaults to title
+	color?: string; // defaults to color
+	image?: string; // defaults to image
 };
 
 export type View = {

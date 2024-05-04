@@ -18,7 +18,7 @@ export function View() {
 			return (
 				<Card className="flex-1 flex flex-col overflow-hidden">
 					<Stack horizontal gapSize="sm">
-						<div className="p-2 flex gap-2 border-b w-full">
+						<div className="px-3 py-2.5 flex gap-2 border-b w-full">
 							<SearchInput />
 							<AdvancedFilter />
 							<Sort />

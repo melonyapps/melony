@@ -23,6 +23,11 @@ export const melonyConfig: Config = {
 					label: "სტატუსი",
 					collectionSlug: "65a307f0b68869084c9faa3e",
 				}),
+				fields.document({
+					slug: "owner",
+					label: "Owner",
+					collectionSlug: "users",
+				}),
 				fields.currency({ slug: "amount", label: "ღირებულება" }),
 				fields.documents({
 					slug: "items",
@@ -124,6 +129,7 @@ export const melonyConfig: Config = {
 		{
 			slug: "users",
 			label: "Users",
+			title: "name",
 			schema: [
 				fields.image({ slug: "image" }),
 				fields.input({ slug: "email", label: "Email" }),
