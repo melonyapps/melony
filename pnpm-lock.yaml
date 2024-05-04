@@ -387,6 +387,9 @@ importers:
       '@aws-sdk/client-s3':
         specifier: 3.569.0
         version: 3.569.0
+      '@melony/adapter-mongodb':
+        specifier: '*'
+        version: link:../adapter-mongodb
       '@melony/core':
         specifier: '*'
         version: link:../core

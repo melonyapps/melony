@@ -42,9 +42,9 @@ export function Navigation() {
 
 	const defaultNav: Record<string, NavigationItemProps[]> = {};
 
-	if (ViewsFlatten.length > 0) {
-		defaultNav["Views"] = ViewsFlatten;
-	}
+	// if (ViewsFlatten.length > 0) {
+	// 	defaultNav["Views"] = ViewsFlatten;
+	// }
 
 	if (collections.length > 0) {
 		defaultNav["Collections"] = collections.map((collection) => ({

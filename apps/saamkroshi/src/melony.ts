@@ -1,9 +1,7 @@
-import { mongodbAdapter } from "@melony/adapter-mongodb";
-import { Config, fields, triggers, views } from "@melony/core/config";
+import { Config, fields, views } from "@melony/core/config";
 
-export const melonyConfig: Config = {
+export const melony: Config = {
 	id: "65a2b2167f0c2c91ea054cb3",
-	adapter: mongodbAdapter,
 	ui: {
 		title: "საამქროში",
 	},
@@ -137,13 +135,5 @@ export const melonyConfig: Config = {
 				fields.password({ slug: "password", label: "Password" }),
 			],
 		},
-	],
-	triggers: [
-		triggers.db({
-			slug: "autoIncrementProjectId",
-			collectionSlug: "65a307eab68869084c9faa3d",
-			on: ["update", "create", "delete"],
-			func: async ({ db, type, oldDocument, newDocument }) => {},
-		}),
 	],
 };

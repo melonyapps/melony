@@ -43,8 +43,11 @@ import { useMelonyPathname } from "./hooks/use-melony-pathname";
 import { CollectionHeader } from "./components/collection-header";
 import { DocumentContent } from "./components/document-content";
 import { DocumentHeader } from "./components/document-header";
+import { Config } from "@melony/core/config";
 
-type MelonyAppProps = {};
+type MelonyAppProps = {
+	config: Config;
+};
 
 // export function MelonyApp({}: MelonyAppProps) {
 //   return (
@@ -70,7 +73,7 @@ type MelonyAppProps = {};
 //   );
 // }
 
-export function MelonyApp({}: MelonyAppProps) {
+export function MelonyApp({ config }: MelonyAppProps) {
 	const { params } = useMelonyParams();
 	const pathname = useMelonyPathname();
 
@@ -168,5 +171,5 @@ export function MelonyApp({}: MelonyAppProps) {
 		return <Layout>{""}</Layout>;
 	};
 
-	return <MelonyProvider>{renderContent()}</MelonyProvider>;
+	return <MelonyProvider config={config}>{renderContent()}</MelonyProvider>;
 }
