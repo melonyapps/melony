@@ -1,17 +1,11 @@
 "use client";
 
 import React from "react";
-import {
-	CollectionProvider,
-	useCollection,
-	useDocument,
-} from "@melony/core/react";
-import { DocumentFieldProps } from "@melony/core/config";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@melony/ui/tabs";
-import { FilterOperator } from "@melony/core/filter";
-import { Stack } from "./stack";
+import { CollectionProvider, useCollection, useDocument } from "@melony/core";
+import { DocumentFieldProps } from "@melony/core";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@melony/ui";
+import { FilterOperator } from "@melony/core";
 import { SearchInput } from "./search-input";
-import { Between } from "./between";
 import { CreateButton } from "./create-button";
 import { Table } from "./table";
 
@@ -24,9 +18,9 @@ export function DocumentSubcollections({}: {}): JSX.Element {
 	}
 
 	// TODO: we need to auto-detect the type
-	const subcollectionFields: DocumentFieldProps[] = schema.filter(
+	const subcollectionFields = schema.filter(
 		(x) => x.type === "DOCUMENTS",
-	);
+	) as DocumentFieldProps[];
 
 	if (subcollectionFields.length === 0) return <></>;
 
@@ -59,18 +53,16 @@ export function DocumentSubcollections({}: {}): JSX.Element {
 								filter: [
 									{
 										field: colField?.foreignField || `${collectionSlug}_id`,
-										operator: FilterOperator.Is,
+										operator: "Is",
 										value: data?._id,
 									},
 								],
 							}}
 						>
-							<div className="p-2 border-b">
-								<Stack horizontal gapSize="sm">
-									<SearchInput />
-									<Between />
-									<CreateButton />
-								</Stack>
+							<div className="p-2 flex items-center border-b">
+								<SearchInput />
+								<div className="ml-auto" />
+								<CreateButton />
 							</div>
 
 							<div className="flex-1 overflow-auto">

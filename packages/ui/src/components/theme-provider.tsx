@@ -1,7 +1,6 @@
 "use client";
 
 import { createContext, useContext, useEffect } from "react";
-import { useLocalStorage } from "../hooks";
 
 type Theme = "dark" | "light" | "system";
 
@@ -29,28 +28,22 @@ export function ThemeProvider({
 	storageKey = "melony-ui-theme",
 	...props
 }: ThemeProviderProps) {
-	const [theme, setTheme] = useLocalStorage({
-		key: "theme-mode",
-		defaultValue:
-			(typeof window !== "undefined" &&
-				(localStorage.getItem(storageKey) as Theme)) ||
-			defaultTheme,
-	});
+	const theme: Theme = "dark";
 
 	useEffect(() => {
 		const root = window.document.documentElement;
 
 		root.classList.remove("light", "dark");
 
-		if (theme === "system") {
-			const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-				.matches
-				? "dark"
-				: "light";
+		// if (theme === "system") {
+		// 	const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+		// 		.matches
+		// 		? "dark"
+		// 		: "light";
 
-			root.classList.add(systemTheme);
-			return;
-		}
+		// 	root.classList.add(systemTheme);
+		// 	return;
+		// }
 
 		root.classList.add(theme);
 	}, [theme]);
@@ -59,7 +52,7 @@ export function ThemeProvider({
 		theme,
 		setTheme: (theme: Theme) => {
 			typeof window !== "undefined" && localStorage.setItem(storageKey, theme);
-			setTheme(theme);
+			// setTheme(theme);
 		},
 	};
 

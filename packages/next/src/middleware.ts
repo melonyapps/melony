@@ -1,17 +1,29 @@
-import NextAuth from "next-auth";
-import { authConfig } from "./auth.config";
+import { cookies } from "next/headers";
+import { NextRequest, NextResponse } from "next/server";
+import { decrypt } from "./lib/session";
 
-const { auth } = NextAuth(authConfig);
+const protectedRoutes = ["/"];
+const publicRoutes = ["/login", "/signup"];
 
-export const middleware = auth((req) => {
-  const { nextUrl } = req;
+export async function middleware(req: NextRequest) {
+	const path = req.nextUrl.pathname;
+	const isProtectedRoute = protectedRoutes.includes(path);
+	const isPublicRoute = publicRoutes.includes(path);
 
-  const isAuthenticated = !!req.auth;
-  const isPublicRoute = ["/login"].includes(nextUrl.pathname);
+	const cookie = cookies().get("session")?.value;
+	const session = await decrypt(cookie);
 
-  if (isPublicRoute && isAuthenticated)
-    return Response.redirect(new URL("/", nextUrl));
+	if (isProtectedRoute && !session?.userId) {
+		return NextResponse.redirect(new URL("/login", req.nextUrl));
+	}
 
-  if (!isAuthenticated && !isPublicRoute)
-    return Response.redirect(new URL("/login", nextUrl));
-});
+	if (
+		isPublicRoute &&
+		session?.userId &&
+		!req.nextUrl.pathname.startsWith("/")
+	) {
+		return NextResponse.redirect(new URL("/", req.nextUrl));
+	}
+
+	return NextResponse.next();
+}

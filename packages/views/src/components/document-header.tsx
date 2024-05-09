@@ -1,13 +1,13 @@
-import { useCollection, useDocument } from "@melony/core/react";
-import { Button } from "@melony/ui/button";
+import { useCollection, useDocument } from "@melony/core";
+import { Button } from "@melony/ui";
 import { Pencil } from "lucide-react";
 import { Header } from "./header";
 import { DocumentDropdownMenu } from "./document-dropdown-menu";
-import { Skeleton } from "@melony/ui/skeleton";
-import { useMelonyNavigate } from "../hooks/use-melony-navigate";
+import { Skeleton } from "@melony/ui";
+import { useNavigate } from "react-router-dom";
 
 export function DocumentHeader({}: {}): JSX.Element {
-	const navigate = useMelonyNavigate();
+	const navigate = useNavigate();
 	const { slug: collectionSlug, view, data: collectionData } = useCollection();
 	const { data, isLoading } = useDocument();
 

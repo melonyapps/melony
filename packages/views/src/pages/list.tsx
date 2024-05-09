@@ -1,20 +1,31 @@
-import * as React from "react";
-import { Header } from "../components/header";
-import { View } from "../components/view";
-import { useCollection } from "@melony/core/react";
-import { Toolbar } from "../components/toolbar";
+"use client";
+
+import { useParams } from "react-router-dom";
+import { CollectionProvider } from "@melony/core";
+import { Container } from "../components/container";
+import { Table } from "../components/table";
+import { PageContent } from "../components/page-content";
+import { CollectionHeader } from "../components/collection-header";
+import { SearchInput } from "../components/search-input";
+import { AdvancedFilter } from "../components/advanced-filter";
+import { Sort } from "../components/sort";
 
 export function ListPage() {
-  const { data: collectionData, view } = useCollection();
+	const params = useParams();
 
-  return (
-    <div className="flex flex-col h-full">
-      <Header title={view?.label || collectionData?.label || ""} />
-      <Toolbar />
-
-      <div className="h-full overflow-auto">
-        <View />
-      </div>
-    </div>
-  );
+	return (
+		<Container>
+			<CollectionProvider slug={params?.collectionSlug || "unknown"}>
+				<CollectionHeader />
+				<PageContent>
+					<div className="px-3 py-2.5 flex gap-2 border-b w-full">
+						<SearchInput />
+						<AdvancedFilter />
+						<Sort />
+					</div>
+					<Table />
+				</PageContent>
+			</CollectionProvider>
+		</Container>
+	);
 }

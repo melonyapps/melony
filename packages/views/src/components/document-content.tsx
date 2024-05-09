@@ -1,11 +1,11 @@
 "use client";
 
-import { Card } from "@melony/ui/card";
+import { Card } from "@melony/ui";
 import { DocumentDetails } from "./document-details";
 import { DocumentSubcollections } from "./document-subcollections";
-import { useCollection } from "@melony/core/react";
-import { cn } from "@melony/ui/lib";
-import { DocumentFieldProps } from "@melony/core/config";
+import { useCollection } from "@melony/core";
+import { cn } from "@melony/ui";
+import { DocumentFieldProps } from "@melony/core";
 
 type DocumentContentProps = {};
 
@@ -13,9 +13,9 @@ export function DocumentContent({}: DocumentContentProps) {
 	const { schema } = useCollection();
 
 	// TODO: we need to auto-detect the type
-	const subcollectionFields: DocumentFieldProps[] = schema.filter(
+	const subcollectionFields = schema.filter(
 		(x) => x.type === "DOCUMENTS",
-	);
+	) as DocumentFieldProps[];
 
 	return (
 		<Card className="flex-1 grid grid-cols-12 overflow-hidden">

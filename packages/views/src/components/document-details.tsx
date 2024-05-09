@@ -1,6 +1,6 @@
-import { useCollection, useDocument } from "@melony/core/react";
-import { FIELDS } from "../constants";
-import { filterEditableFields } from "../helpers/filter-editable-fields";
+import { useCollection, useDocument } from "@melony/core";
+import { FIELDS_MAP } from "./fields/fields-map";
+import { filterEditableFields } from "../lib/filter-editable-fields";
 
 export function DocumentDetails({}: {}): JSX.Element {
 	const { data } = useDocument();
@@ -13,7 +13,7 @@ export function DocumentDetails({}: {}): JSX.Element {
 		<div className="flex flex-col py-2 px-0">
 			{filteredSchema.map((field) => {
 				const Comp =
-					FIELDS[field?.type || "TEXT"]?.["default"] || (() => <></>);
+					FIELDS_MAP[field?.type || "TEXT"]?.["default"] || (() => <></>);
 
 				const fieldId =
 					field.type === "DOCUMENT" ? `${field.slug}_full` : field.slug;
