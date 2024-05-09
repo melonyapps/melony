@@ -1,17 +1,16 @@
 import * as React from "react";
-import { Heading } from "./heading";
 
 export function Header({
-  title,
-  toolbar,
+	title,
+	toolbar,
 }: {
-  title: string;
-  toolbar?: JSX.Element;
+	title: string;
+	toolbar?: JSX.Element;
 }) {
-  return (
-    <div className="flex items-center justify-between gap-4">
-      <Heading>{title}</Heading>
-      {toolbar}
-    </div>
-  );
+	return (
+		<div className="flex items-center justify-between gap-4">
+			<div className="leading-9">{title}</div>
+			{toolbar}
+		</div>
+	);
 }

@@ -1,24 +1,20 @@
-import { useCollection } from "@melony/core/react";
+"use client";
+
+import { useParams } from "react-router-dom";
+import { CollectionProvider } from "@melony/core";
+import { Container } from "../components/container";
 import { DocumentForm } from "../components/document-form";
-import { useNavigate } from "react-router-dom";
+import { Header } from "../components/header";
 
 export function CreatePage() {
-  const navigate = useNavigate();
-  const { slug, view } = useCollection();
+	const params = useParams();
 
-  return (
-    <div className="flex flex-col h-screen">
-      <div className="flex items-center gap-4 px-4 h-[52px] border-b">
-        <div className="text-lg">Create doc</div>
-      </div>
-
-      <div className="flex-1 overflow-auto p-4">
-        <DocumentForm
-          onSuccess={() => {
-            navigate(`/c/${slug}/v/${view?.slug || "base"}`);
-          }}
-        />
-      </div>
-    </div>
-  );
+	return (
+		<Container>
+			<CollectionProvider slug={params?.collectionSlug as string}>
+				<Header title="Create" />
+				<DocumentForm />
+			</CollectionProvider>
+		</Container>
+	);
 }

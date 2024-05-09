@@ -1,13 +1,13 @@
 "use client";
 
-import { useCollection } from "@melony/core/react";
-import { DataTable } from "@melony/ui/data-table";
-import { FIELDS } from "../constants";
-import { filterEditableFields } from "../helpers/filter-editable-fields";
-import { useMelonyNavigate } from "../hooks/use-melony-navigate";
+import { useCollection } from "@melony/core";
+import { DataTable } from "@melony/ui";
+import { useNavigate } from "react-router-dom";
+import { filterEditableFields } from "../lib/filter-editable-fields";
+import { FIELDS_MAP } from "./fields/fields-map";
 
 export function Table() {
-	const navigate = useMelonyNavigate();
+	const navigate = useNavigate();
 	const { slug, view, isLoading, schema, result } = useCollection();
 
 	const filteredSchema = filterEditableFields(schema);
@@ -17,7 +17,7 @@ export function Table() {
 			isLoading={isLoading}
 			columns={filteredSchema.map((field) => {
 				const Comp =
-					FIELDS[field?.type || "TEXT"]?.["default"] || (() => <></>);
+					FIELDS_MAP[field?.type || "TEXT"]?.["default"] || (() => <></>);
 
 				const textAlignClass = ["CURRENCY", "NUMBER"].includes(
 					field?.type || "",
@@ -44,7 +44,7 @@ export function Table() {
 			})}
 			data={result.docs}
 			onClickRow={(doc) => {
-				navigate(`/c/${slug}/v/${view?.slug || "base"}/d/${doc._id}`);
+				navigate(`/${slug}/${doc._id}`);
 			}}
 		/>
 	);

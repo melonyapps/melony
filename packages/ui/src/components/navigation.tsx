@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@melony/ui/lib";
+import { cn } from "../lib";
 
 export function Navigation({
 	children,
@@ -19,7 +19,7 @@ export function NavigationItem({
 	title?: string;
 	active?: boolean;
 	onClick?: () => void;
-	icon?: JSX.Element;
+	icon?: any;
 }) {
 	return (
 		<div

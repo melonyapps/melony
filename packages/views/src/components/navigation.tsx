@@ -1,17 +1,14 @@
 "use client";
 
 import React from "react";
-import { useConfig } from "@melony/core/react";
-import { cn } from "@melony/ui/lib";
-import { NavigationItemProps } from "@melony/core/config";
-import * as icons from "lucide-react";
-import { useMelonyPathname } from "../hooks/use-melony-pathname";
-import { useMelonyNavigate } from "../hooks/use-melony-navigate";
-import { NavigationItem } from "@melony/ui/navigation";
+import { useConfig } from "@melony/core";
+import { NavigationItemProps } from "@melony/core";
+import { NavigationItem } from "@melony/ui";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export function Navigation() {
-	const pathname = useMelonyPathname();
-	const navigate = useMelonyNavigate();
+	const navigate = useNavigate();
+	const location = useLocation();
 	const { config } = useConfig();
 
 	const collections = config?.collections || [];
@@ -49,7 +46,7 @@ export function Navigation() {
 	if (collections.length > 0) {
 		defaultNav["Collections"] = collections.map((collection) => ({
 			title: collection?.label || collection.slug,
-			to: `/c/${collection.slug}/v/base`,
+			to: `/${collection.slug}`,
 			icon: "Folder",
 		}));
 	}
@@ -61,11 +58,11 @@ export function Navigation() {
 			{Object.keys(nav).map((title) => {
 				return (
 					<div key={title}>
-						<div className="text-xs opacity-60 p-2.5">{title}</div>
+						<div className="text-xs opacity-60 p-2">{title}</div>
 
 						<nav className="flex flex-col gap-0.5">
 							{(nav?.[title] || []).map((item) => {
-								const Icon = icons[item?.icon || "Folder"];
+								// const Icon: any = icons[item?.icon || "Folder"];
 
 								return (
 									<NavigationItem
@@ -73,9 +70,9 @@ export function Navigation() {
 										onClick={() => {
 											navigate(item.to);
 										}}
-										icon={Icon && <Icon className="h-4 w-4 mr-2.5" />}
+										// icon={Icon && <Icon className="h-4 w-4 mr-2.5" />}
 										title={item?.title}
-										active={pathname.includes(item.to)}
+										active={location.pathname.includes(item.to)}
 									/>
 								);
 							})}

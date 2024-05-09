@@ -1,36 +1,13 @@
 import { Config } from "./config";
-import { CollectionParams } from "./react";
+import { CollectionParams } from ".";
 
-export type AuthProvider = {
+export type AuthProviderProps = {
 	login: (props?: { onSuccess: (user: any) => void }) => Promise<any>;
 	logout: (props?: { onSuccess: () => void }) => Promise<any>;
+	session: (props?: { onSuccess: () => void }) => Promise<any>;
 };
 
-export type DataProvider = {
-	// signIn: () => Promise<any>;
-
-	// createMember: (data: any) => Promise<any>;
-	// deleteMember: (id: string, params: any) => Promise<any>;
-	// getMembers: (params: any) => Promise<any>;
-
-	// getProject: (id: string) => Promise<any>;
-	// getProjects: () => Promise<any>;
-
-	// createView: (data: any) => Promise<any>;
-	// deleteView: (id: string, projectId: string) => Promise<any>;
-	// getView: (id: string, projectId: string, params: any) => Promise<any>;
-	// getViews: (params: { projectId: string }) => Promise<any>;
-	// updateView: (id: string, data: any) => Promise<any>;
-
-	// addField: (collectionSlug: string, data: any) => Promise<any>;
-	// createCollection: (data: any) => Promise<any>;
-	// deleteCollection: (slug: string, projectId: string) => Promise<any>;
-	// getCollection: (slug: string, projectId: string) => Promise<any>;
-	// getCollections: (params: { projectId: string }) => Promise<any>;
-	// updateCollection: (id: string, data: any) => Promise<any>;
-
-	init: () => Promise<any>;
-
+export type DataProviderProps = {
 	createDocument: (collectionSlug: string, data: any) => Promise<any>;
 	deleteDocument: (
 		collectionSlug: string,
@@ -61,7 +38,7 @@ export type ConfigProvideProps = {
 	config: Config;
 };
 
-export type Adapter = {
+export type AdapterProps = {
 	getSuggestions: ({
 		collectionSlug,
 	}: {

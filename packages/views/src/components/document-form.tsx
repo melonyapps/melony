@@ -1,20 +1,20 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCollection, useDocument } from "@melony/core/react";
-import { Form } from "@melony/ui/form";
+import { useCollection, useDocument } from "@melony/core";
+import { Form } from "@melony/ui";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { FormFields } from "./form/form-fields";
-import { Button } from "@melony/ui/button";
-import { getValidation } from "../helpers/validate";
-import { filterEditableFields } from "../helpers/filter-editable-fields";
+import { Button } from "@melony/ui";
 import { Check } from "lucide-react";
-import { useMelonyNavigate } from "../hooks/use-melony-navigate";
-import { Card } from "@melony/ui/card";
+import { Card } from "@melony/ui";
+import { useNavigate } from "react-router-dom";
+import { getValidation } from "../lib/validate";
+import { FormFields } from "./fields/form-fields";
+import { filterEditableFields } from "../lib/filter-editable-fields";
 
 export function DocumentForm() {
-	const navigate = useMelonyNavigate();
+	const navigate = useNavigate();
 	const {
 		slug,
 		view,
@@ -45,7 +45,7 @@ export function DocumentForm() {
 				{ id: docData?._id, data: inputData },
 				{
 					onSuccess: () => {
-						navigate(`/c/${slug}/v/${view?.slug || "base"}`);
+						navigate(`/${slug}`);
 					},
 				},
 			);
@@ -53,7 +53,7 @@ export function DocumentForm() {
 			createDoc(inputData, {
 				onSuccess: () => {
 					// onSuccess();
-					navigate(`/c/${slug}/v/${view?.slug || "base"}`);
+					navigate(`/${slug}`);
 				},
 			});
 		}
