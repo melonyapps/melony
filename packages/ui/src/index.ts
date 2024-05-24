@@ -1,3 +1,5 @@
+"use client";
+
 export * from "./components/ui/accordion";
 export * from "./components/ui/alert-dialog";
 export * from "./components/ui/avatar";
@@ -22,6 +24,18 @@ export * from "./components/color-picker";
 export * from "./components/data-table";
 export * from "./components/navigation";
 export * from "./components/sidebar";
-export * from "./components/theme-provider";
+export * from "./components/providers/theme-provider";
+export * from "./components/providers/query-provider";
+export * from "./components/providers/action-provider";
+export * from "./components/providers/auth-provider";
+export * from "./components/smart/smart-table";
+export * from "./components/smart/smart-form";
+export * from "./components/smart/smart-auth";
+export * from "./components/providers/action-provider";
+export * from "./components/page";
+export * from "./components/account-popover";
+export * from "./components/login-form";
+export * from "./components/protected";
+export * from "./components/loading-spinner";
 export * from "./hooks/index";
 export * from "./lib/index";

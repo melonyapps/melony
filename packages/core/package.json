@@ -1,45 +1,69 @@
 {
-	"name": "@melony/core",
-	"version": "0.1.8",
-	"main": "./dist/index.js",
-	"module": "./dist/index.mjs",
-	"types": "./dist/index.d.ts",
+	"name": "melony",
+	"version": "0.0.2",
 	"exports": {
-		".": {
+		"./core": {
 			"import": {
-				"types": "./dist/index.d.mts",
-				"default": "./dist/index.mjs"
+				"types": "./dist/core.d.mts",
+				"default": "./dist/core.mjs"
 			},
 			"require": {
-				"types": "./dist/index.d.ts",
-				"default": "./dist/index.js"
+				"types": "./dist/core.d.ts",
+				"default": "./dist/core.js"
+			}
+		},
+		"./next": {
+			"import": {
+				"types": "./dist/next.d.mts",
+				"default": "./dist/next.mjs"
+			},
+			"require": {
+				"types": "./dist/next.d.ts",
+				"default": "./dist/next.js"
+			}
+		},
+		"./prisma": {
+			"import": {
+				"types": "./dist/prisma.d.mts",
+				"default": "./dist/prisma.mjs"
+			},
+			"require": {
+				"types": "./dist/prisma.d.ts",
+				"default": "./dist/prisma.js"
 			}
 		}
 	},
 	"scripts": {
+		"dev": "npm run build -- --watch",
+		"lint": "eslint . --max-warnings 0",
+		"generate:component": "turbo gen react-component",
 		"clean": "rimraf .turbo && rimraf node_modules",
-		"build": "rimraf dist && tsup src/index.ts --format cjs,esm --dts",
+		"build": "tsup",
 		"publish": "npm publish --access public"
 	},
-	"devDependencies": {
-		"@repo/eslint-config": "*",
-		"@repo/typescript-config": "*",
-		"@turbo/gen": "^1.11.3",
-		"@types/eslint": "^8.56.1",
-		"@types/node": "^20.10.6",
-		"@types/react": "^18.2.46",
-		"@types/react-dom": "^18.2.18",
-		"eslint": "^8.56.0",
-		"react": "^18.2.0",
-		"tsup": "8.0.2",
-		"typescript": "^5.3.3"
-	},
 	"dependencies": {
-		"axios": "^1.6.7",
-		"lucide-react": "^0.367.0",
-		"react-query": "^3.39.3"
+		"@melony/types": "workspace:*",
+		"@melony/ui": "workspace:*",
+		"@prisma/client": "5.14.0",
+		"bcryptjs": "2.4.3",
+		"jose": "5.3.0",
+		"next": "14.2.3",
+		"react": "18.3.1",
+		"server-only": "0.0.1",
+		"tsup": "8.0.2"
 	},
 	"peerDependencies": {
-		"react": "^18.2.0"
+		"@prisma/client": "5.14.0",
+		"@types/react": "18.3.1",
+		"react": "18.3.1",
+		"react-dom": "^18"
+	},
+	"devDependencies": {
+		"@types/bcryptjs": "2.4.6",
+		"@types/node": "20.12.12",
+		"@types/react": "18.3.1",
+		"@types/react-dom": "^18",
+		"next": "14.2.3",
+		"react-dom": "^18"
 	}
 }
