@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { getDocs, getModels } from "@/prisma";
+import {
+	listAction,
+	getModels,
+	createAction,
+	updateAction,
+	deleteAction,
+} from "@/prisma";
 import {
 	AccountPopover,
 	ActionProvider,
@@ -24,8 +30,11 @@ export function makeApp(config?: MelonyApp) {
 		return (
 			<QueryProvider>
 				<ActionProvider
-					listAction={getDocs}
 					actions={config?.actions}
+					listAction={listAction}
+					createAction={createAction}
+					updateAction={updateAction}
+					deleteAction={deleteAction}
 					loginAction={loginAction}
 					logoutAction={logoutAction}
 					getUserAction={getUserAction}

@@ -1,14 +1,20 @@
 "use server";
+import {
+	CreateActionPayload,
+	DeleteActionPayload,
+	ListActionPayload,
+	UpdateActionPayload,
+} from "@melony/types";
 import { prisma } from "./prisma";
 
-export const getDocs = async ({ modelName }: { modelName: string }) => {
+export const listAction = async ({ modelName }: ListActionPayload) => {
 	"use server";
 	// @ts-ignore
 	const res = await prisma[modelName].findMany();
 	return res;
 };
 
-export const getDoc = async ({
+export const getAction = async ({
 	modelName,
 	where,
 }: {
@@ -20,13 +26,12 @@ export const getDoc = async ({
 	return res;
 };
 
-export const createDoc = async ({
+export const createAction = async ({
 	modelName,
 	data: inputData,
-}: {
-	modelName: string;
-	data: any;
-}) => {
+}: CreateActionPayload) => {
+	"use server";
+
 	const data = { ...inputData };
 	delete data.id;
 
@@ -38,13 +43,12 @@ export const createDoc = async ({
 	return res;
 };
 
-export const updateDoc = async ({
+export const updateAction = async ({
 	modelName,
 	data: inputData,
-}: {
-	modelName: string;
-	data: any;
-}) => {
+}: UpdateActionPayload) => {
+	"use server";
+
 	const data = { ...inputData };
 	delete data.id;
 
@@ -54,6 +58,20 @@ export const updateDoc = async ({
 			id: inputData?.id,
 		},
 		data,
+	});
+
+	return res;
+};
+
+export const deleteAction = async ({
+	modelName,
+	where,
+}: DeleteActionPayload) => {
+	"use server";
+
+	// @ts-ignore
+	const res = await prisma[modelName].delete({
+		where,
 	});
 
 	return res;

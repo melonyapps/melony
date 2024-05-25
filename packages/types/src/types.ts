@@ -34,3 +34,22 @@ export type LoginActionPayload = {
 	email: string;
 	password: string;
 };
+
+export type ListActionPayload = {
+	modelName: string;
+};
+
+export type CreateActionPayload = {
+	modelName: string;
+	data: any;
+};
+
+export type UpdateActionPayload = {
+	modelName: string;
+	data: any;
+};
+
+export type DeleteActionPayload = {
+	modelName: string;
+	where: any;
+};

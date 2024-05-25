@@ -1,17 +1,24 @@
 "use client";
 
-import { Action, LoginActionPayload } from "@melony/types";
+import {
+	Action,
+	CreateActionPayload,
+	DeleteActionPayload,
+	ListActionPayload,
+	LoginActionPayload,
+	UpdateActionPayload,
+} from "@melony/types";
 import { createContext, useContext } from "react";
 
 type DefaultActions = {
-	listAction: ({ modelName }: GetDocsProps) => Promise<any>;
+	listAction: ({ modelName }: ListActionPayload) => Promise<any>;
+	createAction: ({ modelName, data }: CreateActionPayload) => Promise<any>;
+	updateAction: ({ modelName, data }: UpdateActionPayload) => Promise<any>;
+	deleteAction: ({ modelName, where }: DeleteActionPayload) => Promise<any>;
+
 	loginAction: (payload: LoginActionPayload) => Promise<any>;
 	logoutAction: () => Promise<any>;
 	getUserAction: () => Promise<any>;
-};
-
-type GetDocsProps = {
-	modelName: string;
 };
 
 type ActionProviderProps = {
@@ -26,6 +33,10 @@ const ActionContext = createContext<
 >({
 	getModelActions: () => {},
 	listAction: () => Promise.resolve(),
+	createAction: () => Promise.resolve(),
+	updateAction: () => Promise.resolve(),
+	deleteAction: () => Promise.resolve(),
+
 	loginAction: () => Promise.resolve(),
 	logoutAction: () => Promise.resolve(),
 	getUserAction: () => Promise.resolve(),

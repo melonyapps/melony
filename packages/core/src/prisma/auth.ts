@@ -5,7 +5,7 @@ import {
 	comparePasswords,
 	createSession,
 	deleteSession,
-	getDoc,
+	getAction,
 	verifySession,
 } from "..";
 
@@ -15,7 +15,7 @@ export async function loginAction(
 	"use server"; // TODO: i dont understand why the module at top not working
 
 	try {
-		const user = await getDoc({
+		const user = await getAction({
 			modelName: "users",
 			where: { email: payload.email },
 		});
@@ -54,7 +54,7 @@ export const getUserAction = async () => {
 	if (!session) return null;
 
 	try {
-		const user = await getDoc({
+		const user = await getAction({
 			modelName: "users",
 			where: { id: session.userId },
 		});

@@ -1,5 +1,5 @@
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Model } from "@melony/types";
 import { DialogTitle } from "@radix-ui/react-dialog";
 
@@ -16,11 +16,28 @@ export function SmartTable({ model }: { model: Model }) {
 		data?: any;
 	} | null>(null);
 
-	const { listAction, getModelActions } = useAction();
+	const { listAction, createAction, updateAction, getModelActions } =
+		useAction();
 
 	const { data = [], isLoading } = useQuery({
 		queryKey: [model.name],
 		queryFn: () => listAction({ modelName: model.name }),
+	});
+
+	const { mutate: create, isPending: isCreating } = useMutation({
+		mutationKey: ["create"],
+		mutationFn: (data: any) => createAction({ modelName: model.name, data }),
+		onSuccess: () => {
+			setActiveDoc(null);
+		},
+	});
+
+	const { mutate: update, isPending: isUpdating } = useMutation({
+		mutationKey: ["update"],
+		mutationFn: (data: any) => updateAction({ modelName: model.name, data }),
+		onSuccess: () => {
+			setActiveDoc(null);
+		},
 	});
 
 	const modelActions = getModelActions(model.name);
@@ -65,7 +82,11 @@ export function SmartTable({ model }: { model: Model }) {
 						<DialogTitle>Create</DialogTitle>
 					</DialogHeader>
 
-					<SmartForm model={model} onSubmit={() => {}} />
+					<SmartForm
+						model={model}
+						onSubmit={create}
+						isSubmitting={isCreating}
+					/>
 				</DialogContent>
 			</Dialog>
 
@@ -81,7 +102,8 @@ export function SmartTable({ model }: { model: Model }) {
 					<SmartForm
 						model={model}
 						values={activeDoc?.data}
-						onSubmit={() => {}}
+						onSubmit={update}
+						isSubmitting={isUpdating}
 					/>
 				</DialogContent>
 			</Dialog>
