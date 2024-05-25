@@ -17,21 +17,8 @@ export const getModels = (): Model[] => {
 	}));
 };
 
-export const getModel = (modelName: string): Model => {
+export const getModel = (modelName: string): Model | undefined => {
 	const prismaModel = getModels().find((x) => x.name === modelName);
 
-	return {
-		name: prismaModel?.name || "unknown",
-		fields:
-			prismaModel?.fields.map((field) => ({
-				name: field.name,
-				isRequired: field.isRequired,
-				isList: field.isList,
-				isUnique: field.isUnique,
-				isId: field.isId,
-				isReadOnly: field.isReadOnly,
-				type: field.type,
-				documentation: field?.documentation,
-			})) || [],
-	};
+	return prismaModel;
 };

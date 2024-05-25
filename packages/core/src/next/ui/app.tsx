@@ -36,7 +36,7 @@ export function makeApp(config?: MelonyApp) {
 								logo=""
 								title="Melony"
 								nav={
-									<Navigation>
+									<Navigation initialPathname={pathArr[pathArr.length - 1]}>
 										{models.map((model) => {
 											return (
 												<NavigationItem
@@ -45,7 +45,6 @@ export function makeApp(config?: MelonyApp) {
 													icon=""
 													title={model.name}
 													href={model.name}
-													active={model.name === pathArr[pathArr.length - 1]}
 												/>
 											);
 										})}

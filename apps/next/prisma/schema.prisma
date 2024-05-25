@@ -7,6 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model projects {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  title  String
+  number String
+}
+
 /// some comment here
 model users {
   id       String  @id @default(auto()) @map("_id") @db.ObjectId

@@ -19,7 +19,7 @@ export function SmartTable({ model }: { model: Model }) {
 	const { listAction, getModelActions } = useAction();
 
 	const { data = [], isLoading } = useQuery({
-		queryKey: ["todos"],
+		queryKey: [model.name],
 		queryFn: () => listAction({ modelName: model.name }),
 	});
 
@@ -45,11 +45,9 @@ export function SmartTable({ model }: { model: Model }) {
 			</div>
 			<div className="flex-1">
 				<DataTable
-					columns={[
-						{ accessorKey: "id" },
-						{ accessorKey: "name" },
-						{ accessorKey: "image" },
-					]}
+					columns={model.fields.map((field) => ({
+						accessorKey: field.name,
+					}))}
 					data={data}
 					isLoading={isLoading}
 					onClickRow={(data) => {
