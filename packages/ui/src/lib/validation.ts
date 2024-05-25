@@ -4,8 +4,6 @@ import { z } from "zod";
 export function getFieldValidation(field: Field): z.ZodType {
 	let zodType: z.ZodType = z.unknown(); // Default to unknown for flexibility
 
-	console.log(field);
-
 	switch (field.type) {
 		case "Int":
 		case "BigInt":

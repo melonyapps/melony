@@ -37,5 +37,6 @@ export * from "./components/account-popover";
 export * from "./components/login-form";
 export * from "./components/protected";
 export * from "./components/loading-spinner";
+export * from "./components/confirm-dialog";
 export * from "./hooks/index";
 export * from "./lib/index";

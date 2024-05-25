@@ -1,40 +1,56 @@
 import React from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { Model } from "@melony/types";
-import { DialogTitle } from "@radix-ui/react-dialog";
 
 import { DataTable } from "../data-table";
 import { useAction } from "../providers/action-provider";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { Dialog, DialogContent, DialogHeader } from "../ui/dialog";
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+} from "../ui/dialog";
 import { SmartForm } from "./smart-form";
+import { useCreate, useUpdate, useList, useDelete } from "@/hooks";
+import { EllipsisVertical, X } from "lucide-react";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { ConfirmDialog } from "../confirm-dialog";
 
 export function SmartTable({ model }: { model: Model }) {
 	const [activeDoc, setActiveDoc] = React.useState<{
-		mode: "show" | "update" | "create";
+		mode: "show" | "update" | "create" | "delete";
 		data?: any;
 	} | null>(null);
 
-	const { listAction, createAction, updateAction, getModelActions } =
-		useAction();
+	const { getModelActions } = useAction();
 
-	const { data = [], isLoading } = useQuery({
-		queryKey: [model.name],
-		queryFn: () => listAction({ modelName: model.name }),
+	const { data = [], isLoading } = useList({
+		modelName: model.name,
 	});
 
-	const { mutate: create, isPending: isCreating } = useMutation({
-		mutationKey: ["create"],
-		mutationFn: (data: any) => createAction({ modelName: model.name, data }),
+	const { mutate: create, isPending: isCreating } = useCreate({
+		modelName: model.name,
 		onSuccess: () => {
 			setActiveDoc(null);
 		},
 	});
 
-	const { mutate: update, isPending: isUpdating } = useMutation({
-		mutationKey: ["update"],
-		mutationFn: (data: any) => updateAction({ modelName: model.name, data }),
+	const { mutate: update, isPending: isUpdating } = useUpdate({
+		modelName: model.name,
+		onSuccess: () => {
+			setActiveDoc(null);
+		},
+	});
+
+	const { mutate: remove, isPending: isRemoving } = useDelete({
+		modelName: model.name,
 		onSuccess: () => {
 			setActiveDoc(null);
 		},
@@ -96,7 +112,36 @@ export function SmartTable({ model }: { model: Model }) {
 			>
 				<DialogContent className="max-w-[44rem]">
 					<DialogHeader>
-						<DialogTitle>Update</DialogTitle>
+						<div className="flex justify-between items-center">
+							<DialogTitle>Update</DialogTitle>
+							<div className="flex gap-2 items-center">
+								<DropdownMenu>
+									<DropdownMenuTrigger asChild>
+										<Button size="sm" variant="ghost">
+											<EllipsisVertical className="h-4 w-4" />
+										</Button>
+									</DropdownMenuTrigger>
+									<DropdownMenuContent align="end">
+										<DropdownMenuItem
+											onClick={() => {
+												setActiveDoc((prev) => ({
+													mode: "delete",
+													data: prev?.data,
+												}));
+											}}
+										>
+											Delete
+										</DropdownMenuItem>
+									</DropdownMenuContent>
+								</DropdownMenu>
+
+								<DialogClose asChild>
+									<Button size="sm" variant="ghost">
+										<X className="h-4 w-4" />
+									</Button>
+								</DialogClose>
+							</div>
+						</div>
 					</DialogHeader>
 
 					<SmartForm
@@ -107,6 +152,15 @@ export function SmartTable({ model }: { model: Model }) {
 					/>
 				</DialogContent>
 			</Dialog>
+
+			<ConfirmDialog
+				open={activeDoc?.mode === "delete"}
+				onClose={() => setActiveDoc(null)}
+				onConfirm={() => {
+					remove({ id: activeDoc?.data?.id });
+				}}
+				isConfirming={isRemoving}
+			/>
 		</div>
 	);
 }
