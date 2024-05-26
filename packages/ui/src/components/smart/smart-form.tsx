@@ -6,10 +6,17 @@ import { getFieldValidation } from "@/lib/validation";
 import z from "zod";
 import { Button } from "../ui/button";
 import { Check } from "lucide-react";
+import { makeFormFields } from "./helpers";
 import { FormInput } from "../form/form-input";
+import { FormCombobox } from "../form/form-combobox";
 
 const FIELDS_MAP = {
 	String: FormInput,
+
+	// Melony specific "component"
+	Document: FormCombobox,
+	Image: FormInput,
+	Color: FormInput,
 };
 
 export function SmartForm({
@@ -44,7 +51,7 @@ export function SmartForm({
 				onSubmit={form.handleSubmit(handleSubmit, (err) => console.log(err))}
 				className="space-y-4"
 			>
-				<FormFields fields={model.fields} />
+				<FormFields fields={makeFormFields(model.fields)} />
 
 				<div className="flex justify-end">
 					<Button type="submit" disabled={isSubmitting}>
@@ -63,14 +70,14 @@ export function FormFields({ fields }: { fields: Field[] }) {
 	return (
 		<div className="flex flex-col">
 			{fields.map((field) => {
-				const Comp = FIELDS_MAP["String"];
+				const Comp = FIELDS_MAP[field?.component || "String"];
 
 				return (
 					<FormField
 						key={field.name}
 						control={control}
 						name={field.name}
-						render={({ field: formField }) => {
+						render={({ field: formFieldProps }) => {
 							return (
 								<FormItem>
 									<div className="grid grid-cols-12 gap-2">
@@ -78,7 +85,7 @@ export function FormFields({ fields }: { fields: Field[] }) {
 											<FormLabel>{field.name}</FormLabel>
 										</div>
 										<div className="col-span-9 py-1.5">
-											<Comp formField={formField} />
+											<Comp formFieldProps={formFieldProps} field={field} />
 											<FormMessage />
 										</div>
 									</div>

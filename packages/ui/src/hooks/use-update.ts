@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAction } from "..";
+import { useApp } from "..";
 
 export function useUpdate({
 	modelName,
@@ -10,7 +10,7 @@ export function useUpdate({
 }) {
 	const queryClient = useQueryClient();
 
-	const { updateAction } = useAction();
+	const { updateAction } = useApp();
 
 	return useMutation({
 		mutationKey: ["update"],

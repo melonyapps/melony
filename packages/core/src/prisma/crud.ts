@@ -10,7 +10,7 @@ import { prisma } from "./prisma";
 export const listAction = async ({ modelName }: ListActionPayload) => {
 	"use server";
 	// @ts-ignore
-	const res = await prisma[modelName].findMany();
+	const res = await prisma[modelName].findMany(); // TODO: here modelName is camelCase so im not sure how it works when prisma.user model is always lowerCase.
 	return res;
 };
 

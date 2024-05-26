@@ -8,7 +8,6 @@ import {
 } from "@/prisma";
 import {
 	AccountPopover,
-	ActionProvider,
 	AuthProvider,
 	AppShell,
 	Navigation,
@@ -19,6 +18,7 @@ import {
 import { MelonyApp } from "@melony/types";
 import { getPathname } from "../lib/url";
 import { getUserAction, loginAction, logoutAction } from "@/prisma/auth";
+import { AppProvider } from "@melony/ui";
 
 export function makeApp(config?: MelonyApp) {
 	return async function App({ children }: { children: React.ReactNode }) {
@@ -29,7 +29,8 @@ export function makeApp(config?: MelonyApp) {
 
 		return (
 			<QueryProvider>
-				<ActionProvider
+				<AppProvider
+					models={models}
 					actions={config?.actions}
 					listAction={listAction}
 					createAction={createAction}
@@ -65,7 +66,7 @@ export function makeApp(config?: MelonyApp) {
 							</AppShell>
 						</Protected>
 					</AuthProvider>
-				</ActionProvider>
+				</AppProvider>
 			</QueryProvider>
 		);
 	};

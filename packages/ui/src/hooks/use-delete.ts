@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAction } from "..";
+import { useApp } from "..";
 
 export function useDelete({
 	modelName,
@@ -10,7 +10,7 @@ export function useDelete({
 }) {
 	const queryClient = useQueryClient();
 
-	const { deleteAction } = useAction();
+	const { deleteAction } = useApp();
 
 	return useMutation({
 		mutationKey: ["delete"],

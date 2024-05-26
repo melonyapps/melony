@@ -9,12 +9,12 @@ import {
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { useMutation } from "@tanstack/react-query";
-import { useAction } from "./providers/action-provider";
 import { useAuth } from "./providers/auth-provider";
+import { useApp } from "./providers/app-provider";
 
 export function AccountPopover() {
 	const { user, handleLogout } = useAuth();
-	const { logoutAction } = useAction();
+	const { logoutAction } = useApp();
 
 	const { mutate: logout } = useMutation({
 		mutationKey: ["logout"],

@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { useAction } from "..";
+import { useApp } from "..";
 
 export function useList({ modelName }: { modelName: string }) {
-	const { listAction } = useAction();
+	const { listAction } = useApp();
 
 	return useQuery({
 		queryKey: [modelName],

@@ -9,14 +9,16 @@ import {
 	verifySession,
 } from "..";
 
+const USERS_COLLECTION = "user"; // TODO: User collection is hardcoded for now
+
 export async function loginAction(
 	payload: LoginActionPayload,
 ): Promise<User | null> {
-	"use server"; // TODO: i dont understand why the module at top not working
+	"use server"; // TODO: i dont understand why the module directive at the top of the file not working
 
 	try {
 		const user = await getAction({
-			modelName: "users",
+			modelName: USERS_COLLECTION,
 			where: { email: payload.email },
 		});
 
@@ -55,7 +57,7 @@ export const getUserAction = async () => {
 
 	try {
 		const user = await getAction({
-			modelName: "users",
+			modelName: USERS_COLLECTION,
 			where: { id: session.userId },
 		});
 

@@ -6,6 +6,7 @@ import {
 	DeleteActionPayload,
 	ListActionPayload,
 	LoginActionPayload,
+	Model,
 	UpdateActionPayload,
 } from "@melony/types";
 import { createContext, useContext } from "react";
@@ -21,13 +22,16 @@ type DefaultActions = {
 	getUserAction: () => Promise<any>;
 };
 
-type ActionProviderProps = {
+type AppProviderProps = {
 	children: React.ReactNode;
 	actions?: Record<string, Action[]>;
+	models?: Model[];
 } & DefaultActions;
 
-const ActionContext = createContext<
+const AppContext = createContext<
 	{
+		models?: Model[];
+		actions?: Record<string, Action[]>;
 		getModelActions: (modelName: string) => void;
 	} & DefaultActions
 >({
@@ -42,27 +46,26 @@ const ActionContext = createContext<
 	getUserAction: () => Promise.resolve(),
 });
 
-export function ActionProvider({
+export function AppProvider({
 	children,
 	actions,
+	models,
 	...rest
-}: ActionProviderProps) {
+}: AppProviderProps) {
 	const getModelActions = (modelName: string) => {
 		return actions ? actions[modelName] : [];
 	};
 
-	const value = { getModelActions, ...rest };
+	const value = { getModelActions, actions, models, ...rest };
 
-	return (
-		<ActionContext.Provider value={value}>{children}</ActionContext.Provider>
-	);
+	return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }
 
-export const useAction = () => {
-	const context = useContext(ActionContext);
+export const useApp = () => {
+	const context = useContext(AppContext);
 
 	if (context === undefined)
-		throw new Error("useAction must be used within a ActionProvider");
+		throw new Error("useApp must be used within a AppProvider");
 
 	return context;
 };

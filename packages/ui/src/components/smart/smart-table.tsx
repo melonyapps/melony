@@ -1,8 +1,7 @@
 import React from "react";
-import { Model } from "@melony/types";
+import { Field, Model } from "@melony/types";
 
 import { DataTable } from "../data-table";
-import { useAction } from "../providers/action-provider";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import {
@@ -14,7 +13,7 @@ import {
 } from "../ui/dialog";
 import { SmartForm } from "./smart-form";
 import { useCreate, useUpdate, useList, useDelete } from "@/hooks";
-import { EllipsisVertical, X } from "lucide-react";
+import { Ellipsis, X } from "lucide-react";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -22,6 +21,54 @@ import {
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { ConfirmDialog } from "../confirm-dialog";
+import { ColumnDef } from "@tanstack/react-table";
+import { Checkbox } from "../ui/checkbox";
+import { useApp } from "../providers/app-provider";
+
+const generateColumnsFromFields = (fields: Field[]) => {
+	const result: ColumnDef<
+		{
+			[x: string]: {};
+		},
+		unknown
+	>[] = [];
+
+	result.push({
+		id: "select",
+		header: ({ table }) => (
+			<Checkbox
+				checked={
+					table.getIsAllPageRowsSelected() ||
+					(table.getIsSomePageRowsSelected() && "indeterminate")
+				}
+				onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+				aria-label="Select all"
+			/>
+		),
+		cell: ({ row }) => (
+			<Checkbox
+				checked={row.getIsSelected()}
+				onCheckedChange={(value) => row.toggleSelected(!!value)}
+				aria-label="Select row"
+			/>
+		),
+		enableSorting: false,
+		enableHiding: false,
+	});
+
+	fields.map((field) => {
+		result.push({
+			accessorKey: field.name,
+			cell: ({ row }) => {
+				return (
+					<span className="block truncate">{row.getValue(field.name)}</span>
+				);
+			},
+		});
+	});
+
+	return result;
+};
 
 export function SmartTable({ model }: { model: Model }) {
 	const [activeDoc, setActiveDoc] = React.useState<{
@@ -29,7 +76,7 @@ export function SmartTable({ model }: { model: Model }) {
 		data?: any;
 	} | null>(null);
 
-	const { getModelActions } = useAction();
+	const { getModelActions } = useApp();
 
 	const { data = [], isLoading } = useList({
 		modelName: model.name,
@@ -78,9 +125,7 @@ export function SmartTable({ model }: { model: Model }) {
 			</div>
 			<div className="flex-1">
 				<DataTable
-					columns={model.fields.map((field) => ({
-						accessorKey: field.name,
-					}))}
+					columns={generateColumnsFromFields(model.fields)}
 					data={data}
 					isLoading={isLoading}
 					onClickRow={(data) => {
@@ -118,7 +163,7 @@ export function SmartTable({ model }: { model: Model }) {
 								<DropdownMenu>
 									<DropdownMenuTrigger asChild>
 										<Button size="sm" variant="ghost">
-											<EllipsisVertical className="h-4 w-4" />
+											<Ellipsis className="h-4 w-4" />
 										</Button>
 									</DropdownMenuTrigger>
 									<DropdownMenuContent align="end">

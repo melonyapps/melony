@@ -7,17 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model projects {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  title  String
-  number String
+model Project {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  title   String
+  number  String
+  owner   User   @relation(fields: [ownerId], references: [id])
+  ownerId String @db.ObjectId
 }
 
 /// some comment here
-model users {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  email    String
+model User {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  email    String /// displayField
   password String?
-  image    String? /// mask=image
+  image    String? /// component=Image
   name     String?
+  projects Project[]
 }

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAction } from "..";
+import { useApp } from "..";
 
 export function useCreate({
 	modelName,
@@ -10,7 +10,7 @@ export function useCreate({
 }) {
 	const queryClient = useQueryClient();
 
-	const { createAction } = useAction();
+	const { createAction } = useApp();
 
 	return useMutation({
 		mutationKey: ["create"],
