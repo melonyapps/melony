@@ -24,6 +24,17 @@ import { ConfirmDialog } from "../confirm-dialog";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "../ui/checkbox";
 import { useApp } from "../providers/app-provider";
+import { DisplayText } from "../display-fields/display-text";
+import { DisplayImage } from "../display-fields/display-image";
+
+const DISPLAY_FIELDS_MAP = {
+	String: DisplayText,
+
+	// Melony specific "component"
+	Document: DisplayText,
+	Image: DisplayImage,
+	Color: DisplayText,
+};
 
 const generateColumnsFromFields = (fields: Field[]) => {
 	const result: ColumnDef<
@@ -60,9 +71,9 @@ const generateColumnsFromFields = (fields: Field[]) => {
 		result.push({
 			accessorKey: field.name,
 			cell: ({ row }) => {
-				return (
-					<span className="block truncate">{row.getValue(field.name)}</span>
-				);
+				const Comp = DISPLAY_FIELDS_MAP[field?.component || "String"];
+
+				return <Comp field={field} defaultValue={row.getValue(field.name)} />;
 			},
 		});
 	});

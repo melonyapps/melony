@@ -10,7 +10,7 @@ import { makeFormFields } from "./helpers";
 import { FormInput } from "../form/form-input";
 import { FormCombobox } from "../form/form-combobox";
 
-const FIELDS_MAP = {
+const FORM_FIELDS_MAP = {
 	String: FormInput,
 
 	// Melony specific "component"
@@ -70,7 +70,7 @@ export function FormFields({ fields }: { fields: Field[] }) {
 	return (
 		<div className="flex flex-col">
 			{fields.map((field) => {
-				const Comp = FIELDS_MAP[field?.component || "String"];
+				const Comp = FORM_FIELDS_MAP[field?.component || "String"];
 
 				return (
 					<FormField

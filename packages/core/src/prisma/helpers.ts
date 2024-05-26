@@ -24,7 +24,10 @@ export const getModels = (): Model[] => {
 					relationFromFields: field?.relationFromFields
 						? [...field?.relationFromFields]
 						: undefined,
+
+					// melony specific
 					isDisplayField: options?.displayField as boolean,
+					component: options?.component as Model["fields"][0]["component"],
 				};
 			}),
 		};
