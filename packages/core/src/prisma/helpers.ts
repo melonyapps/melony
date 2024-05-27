@@ -3,7 +3,7 @@ import { Prisma } from "@prisma/client";
 
 export const getModels = (): Model[] => {
 	// console.log(
-	// 	Prisma.dmmf.datamodel.types.map((model) => console.log(model.fields)),
+	// 	Prisma.dmmf.datamodel.models.map((model) => console.log(model.fields)),
 	// );
 	return Prisma.dmmf.datamodel.models.map((model) => {
 		return {

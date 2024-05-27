@@ -27,27 +27,29 @@ export const makeFormFields = (fields: Field[]) => {
 };
 
 export const makeTableFields = (fields: Field[]) => {
-	const result: Field[] = [];
+	// collect all the relation scalar fields array
+	const flattenRelationFromFields = [
+		...fields
+			.filter((x) => !!x?.relationFromFields)
+			.map((y) => y.relationFromFields),
+	].flat();
 
-	const scalarFields = fields.filter((x) => x.kind === "scalar");
-	const objectFields = fields.filter((x) => x.kind === "object");
+	// filter out scalar relation fields as we already have a @relation field presented
+	const result = fields.reduce<Field[]>((prev, curr) => {
+		if (!flattenRelationFromFields.includes(curr.name)) {
+			let shouldBeDocumentField = false;
+			if (curr.kind === "object" && !curr.isList) shouldBeDocumentField = true;
 
-	// loop scalar fields and make relation with object fields
-	scalarFields.map((field) => {
-		const relationField = objectFields.find((x) =>
-			x.relationFromFields?.includes(field.name),
-		);
-
-		if (relationField) {
-			result.push({
-				...field,
-				relationModel: relationField.type,
-				component: "Document",
+			prev.push({
+				...curr,
+				component: shouldBeDocumentField ? "Document" : curr?.component,
 			});
-		} else {
-			result.push(field);
 		}
-	});
+
+		return prev;
+	}, []);
+
+	console.log(result);
 
 	return result;
 };

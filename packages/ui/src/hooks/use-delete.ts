@@ -1,11 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useApp } from "..";
+import { Model } from "@melony/types";
 
 export function useDelete({
-	modelName,
+	model,
 	onSuccess,
 }: {
-	modelName: string;
+	model: Model;
 	onSuccess: () => void;
 }) {
 	const queryClient = useQueryClient();
@@ -14,12 +15,12 @@ export function useDelete({
 
 	return useMutation({
 		mutationKey: ["delete"],
-		mutationFn: (where: any) => deleteAction({ modelName: modelName, where }),
+		mutationFn: (where: any) => deleteAction({ model, where }),
 		onSuccess: () => {
 			onSuccess();
 		},
 		onSettled: () => {
-			queryClient.invalidateQueries({ queryKey: [modelName] });
+			queryClient.invalidateQueries({ queryKey: [model.name] });
 		},
 	});
 }

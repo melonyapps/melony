@@ -8,13 +8,17 @@ import { useApp } from "../providers/app-provider";
 export function FormCombobox({ field, formFieldProps }: FormFieldProps) {
 	const { models } = useApp();
 
+	const relatedModel = models?.find((x) => x.name === field?.relationModel);
+
 	const { data = [], isLoading } = useList({
-		modelName: field?.relationModel || "unknown",
+		model: relatedModel || {
+			name: "unknown",
+			fields: [],
+		},
 	});
 
 	if (isLoading) return <>Loading...</>;
 
-	const relatedModel = models?.find((x) => x.name === field?.relationModel);
 	const relatedModelDisplayField = relatedModel?.fields?.find(
 		(x) => x.isDisplayField,
 	);

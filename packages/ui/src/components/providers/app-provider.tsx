@@ -12,10 +12,10 @@ import {
 import { createContext, useContext } from "react";
 
 type DefaultActions = {
-	listAction: ({ modelName }: ListActionPayload) => Promise<any>;
-	createAction: ({ modelName, data }: CreateActionPayload) => Promise<any>;
-	updateAction: ({ modelName, data }: UpdateActionPayload) => Promise<any>;
-	deleteAction: ({ modelName, where }: DeleteActionPayload) => Promise<any>;
+	listAction: ({ model }: ListActionPayload) => Promise<any>;
+	createAction: ({ model, data }: CreateActionPayload) => Promise<any>;
+	updateAction: ({ model, data }: UpdateActionPayload) => Promise<any>;
+	deleteAction: ({ model, where }: DeleteActionPayload) => Promise<any>;
 
 	loginAction: (payload: LoginActionPayload) => Promise<any>;
 	logoutAction: () => Promise<any>;

@@ -24,14 +24,16 @@ import { ConfirmDialog } from "../confirm-dialog";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "../ui/checkbox";
 import { useApp } from "../providers/app-provider";
+import { makeTableFields } from "./helpers";
 import { DisplayText } from "../display-fields/display-text";
 import { DisplayImage } from "../display-fields/display-image";
+import { DisplayDocument } from "../display-fields/display-document";
 
 const DISPLAY_FIELDS_MAP = {
 	String: DisplayText,
 
 	// Melony specific "component"
-	Document: DisplayText,
+	Document: DisplayDocument,
 	Image: DisplayImage,
 	Color: DisplayText,
 };
@@ -90,25 +92,25 @@ export function SmartTable({ model }: { model: Model }) {
 	const { getModelActions } = useApp();
 
 	const { data = [], isLoading } = useList({
-		modelName: model.name,
+		model,
 	});
 
 	const { mutate: create, isPending: isCreating } = useCreate({
-		modelName: model.name,
+		model,
 		onSuccess: () => {
 			setActiveDoc(null);
 		},
 	});
 
 	const { mutate: update, isPending: isUpdating } = useUpdate({
-		modelName: model.name,
+		model,
 		onSuccess: () => {
 			setActiveDoc(null);
 		},
 	});
 
 	const { mutate: remove, isPending: isRemoving } = useDelete({
-		modelName: model.name,
+		model,
 		onSuccess: () => {
 			setActiveDoc(null);
 		},
@@ -136,7 +138,7 @@ export function SmartTable({ model }: { model: Model }) {
 			</div>
 			<div className="flex-1">
 				<DataTable
-					columns={generateColumnsFromFields(model.fields)}
+					columns={generateColumnsFromFields(makeTableFields(model.fields))}
 					data={data}
 					isLoading={isLoading}
 					onClickRow={(data) => {

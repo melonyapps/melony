@@ -18,9 +18,9 @@ model Project {
 /// some comment here
 model User {
   id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  image    String? /// component=Image
   email    String /// displayField
   password String?
-  image    String? /// component=Image
   name     String?
   projects Project[]
 }

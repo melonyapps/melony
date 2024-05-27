@@ -1,6 +1,6 @@
 {
 	"name": "@melony/types",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"exports": {
 		".": {
 			"import": {
@@ -18,7 +18,7 @@
 		"lint": "eslint . --max-warnings 0",
 		"generate:component": "turbo gen react-component",
 		"clean": "rimraf .turbo && rimraf node_modules",
-		"build": "tsup",
+		"build": "rimraf dist && tsup",
 		"publish": "npm publish --access public"
 	},
 	"dependencies": {

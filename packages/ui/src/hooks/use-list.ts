@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { useApp } from "..";
+import { Model } from "@melony/types";
 
-export function useList({ modelName }: { modelName: string }) {
+export function useList({ model }: { model: Model }) {
 	const { listAction } = useApp();
 
 	return useQuery({
-		queryKey: [modelName],
-		queryFn: () => listAction({ modelName: modelName }),
+		queryKey: [model.name],
+		queryFn: () => listAction({ model }),
 	});
 }

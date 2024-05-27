@@ -44,20 +44,20 @@ export type LoginActionPayload = {
 };
 
 export type ListActionPayload = {
-	modelName: string;
+	model: Model;
 };
 
 export type CreateActionPayload = {
-	modelName: string;
+	model: Model;
 	data: any;
 };
 
 export type UpdateActionPayload = {
-	modelName: string;
+	model: Model;
 	data: any;
 };
 
 export type DeleteActionPayload = {
-	modelName: string;
+	model: Model;
 	where: any;
 };

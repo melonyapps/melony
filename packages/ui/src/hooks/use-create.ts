@@ -1,11 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useApp } from "..";
+import { Model } from "@melony/types";
 
 export function useCreate({
-	modelName,
+	model,
 	onSuccess,
 }: {
-	modelName: string;
+	model: Model;
 	onSuccess: () => void;
 }) {
 	const queryClient = useQueryClient();
@@ -14,12 +15,12 @@ export function useCreate({
 
 	return useMutation({
 		mutationKey: ["create"],
-		mutationFn: (data: any) => createAction({ modelName: modelName, data }),
+		mutationFn: (data: any) => createAction({ model, data }),
 		onSuccess: () => {
 			onSuccess();
 		},
 		onSettled: () => {
-			queryClient.invalidateQueries({ queryKey: [modelName] });
+			queryClient.invalidateQueries({ queryKey: [model.name] });
 		},
 	});
 }
