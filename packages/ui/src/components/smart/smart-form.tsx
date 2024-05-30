@@ -15,6 +15,7 @@ const FORM_FIELDS_MAP = {
 
 	// Melony specific "component"
 	Document: FormCombobox,
+	Documents: FormCombobox, // its not used here yet. we have separated tables for related many docs. here its just for to avoid TS errors.
 	Image: FormInput,
 	Color: FormInput,
 };

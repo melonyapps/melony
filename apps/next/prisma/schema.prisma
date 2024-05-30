@@ -9,7 +9,7 @@ datasource db {
 
 model Project {
   id      String @id @default(auto()) @map("_id") @db.ObjectId
-  title   String
+  title   String /// displayField
   number  String
   owner   User   @relation(fields: [ownerId], references: [id])
   ownerId String @db.ObjectId

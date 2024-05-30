@@ -6,27 +6,27 @@ import {
 	UpdateActionPayload,
 } from "@melony/types";
 import { prisma } from "./prisma";
+import { convertFilterToPrisma } from "./helpers";
 
-export const listAction = async ({ model }: ListActionPayload) => {
+export const listAction = async ({ model, filter }: ListActionPayload) => {
 	"use server";
 
-	const relationFieldNames = model.fields
-		.filter((x) => x.kind === "object")
-		.map((y) => y.name);
+	const where = convertFilterToPrisma(filter || []);
 
-	const include = relationFieldNames.reduce<Record<string, boolean>>(
-		(prev, curr) => {
-			if (curr) prev[curr.toLowerCase()] = true;
+	const include = model.fields
+		.filter((x) => x.kind === "object")
+		.reduce<Record<string, any>>((prev, curr) => {
+			if (curr)
+				prev[curr.name.toLowerCase()] = curr.isList ? { take: 3 } : true;
 
 			return prev;
-		},
-		{},
-	);
+		}, {});
 
 	// TODO: { select } needed for optimization to take only needed fields from related doc
 
 	// @ts-ignore
 	const res = await prisma[model.name].findMany({
+		where,
 		include,
 	}); // TODO: here modelName is camelCase so im not sure how it works when prisma.user model is always lowerCase.
 	return res;

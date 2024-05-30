@@ -45,6 +45,7 @@ export type LoginActionPayload = {
 
 export type ListActionPayload = {
 	model: Model;
+	filter?: FilterItem[];
 };
 
 export type CreateActionPayload = {
@@ -60,4 +61,10 @@ export type UpdateActionPayload = {
 export type DeleteActionPayload = {
 	model: Model;
 	where: any;
+};
+
+export type FilterItem = {
+	field: string;
+	operator: "Is" | "Contains" | "DoesNotContain" | "IsAnyOf" | "GeoWithinBox";
+	value: any;
 };

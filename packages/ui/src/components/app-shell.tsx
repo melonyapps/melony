@@ -17,7 +17,7 @@ export function AppShell({
 	const isCollapsed = false;
 
 	return (
-		<div className="relative overflow-hidden bg-muted/5 min-h-screen">
+		<div className="relative overflow-hidden min-h-screen">
 			<Sidebar
 				logo={logo}
 				title={title}
@@ -27,7 +27,7 @@ export function AppShell({
 			/>
 			<main
 				id="content"
-				className={`min-h-screen overflow-x-hidden transition-[margin] md:overflow-y-hidden ${isCollapsed ? "md:ml-14" : "md:ml-64"} h-full`}
+				className={`p-4 min-h-screen overflow-x-hidden transition-[margin] md:overflow-y-hidden ${isCollapsed ? "md:ml-14" : "md:ml-64"} h-full`}
 			>
 				{children}
 			</main>

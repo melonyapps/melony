@@ -1,5 +1,5 @@
 import React from "react";
-import { Field, Model } from "@melony/types";
+import { Field, FilterItem, Model } from "@melony/types";
 
 import { DataTable } from "../data-table";
 import { Button } from "../ui/button";
@@ -13,7 +13,7 @@ import {
 } from "../ui/dialog";
 import { SmartForm } from "./smart-form";
 import { useCreate, useUpdate, useList, useDelete } from "@/hooks";
-import { Ellipsis, X } from "lucide-react";
+import { Ellipsis, PlusIcon, X } from "lucide-react";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -25,15 +25,19 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "../ui/checkbox";
 import { useApp } from "../providers/app-provider";
 import { makeTableFields } from "./helpers";
+import { AdvancedFilter } from "../advanced-filter";
 import { DisplayText } from "../display-fields/display-text";
 import { DisplayImage } from "../display-fields/display-image";
 import { DisplayDocument } from "../display-fields/display-document";
+import { SmartTabbedRelatedLists } from "./smart-tabbed-related-lists";
+import { DisplayDocuments } from "../display-fields/display-documents";
 
 const DISPLAY_FIELDS_MAP = {
 	String: DisplayText,
 
 	// Melony specific "component"
 	Document: DisplayDocument,
+	Documents: DisplayDocuments,
 	Image: DisplayImage,
 	Color: DisplayText,
 };
@@ -83,16 +87,25 @@ const generateColumnsFromFields = (fields: Field[]) => {
 	return result;
 };
 
-export function SmartTable({ model }: { model: Model }) {
+export function SmartTable({
+	model,
+	initialFilter,
+}: {
+	model: Model;
+	initialFilter?: FilterItem[];
+}) {
 	const [activeDoc, setActiveDoc] = React.useState<{
 		mode: "show" | "update" | "create" | "delete";
 		data?: any;
 	} | null>(null);
 
+	const [filter, setFilter] = React.useState<FilterItem[]>(initialFilter || []);
+
 	const { getModelActions } = useApp();
 
 	const { data = [], isLoading } = useList({
 		model,
+		filter,
 	});
 
 	const { mutate: create, isPending: isCreating } = useCreate({
@@ -122,16 +135,26 @@ export function SmartTable({ model }: { model: Model }) {
 
 	return (
 		<div id="table" className="h-full flex flex-col">
-			<div className="flex justify-between items-center p-2">
-				<div>
+			<div className="flex justify-between items-center py-2">
+				<div className="flex items-center gap-2">
 					<Input placeholder="Search..." />
+					<AdvancedFilter
+						model={model}
+						values={filter}
+						onChange={(filter) => {
+							console.log("filterChange", filter);
+							setFilter(filter);
+						}}
+					/>
 				</div>
 				<div>
 					<Button
+						variant="outline"
 						onClick={() => {
 							setActiveDoc({ mode: "create" });
 						}}
 					>
+						<PlusIcon className="w-4 h-4 mr-2" />
 						Create
 					</Button>
 				</div>
@@ -153,7 +176,16 @@ export function SmartTable({ model }: { model: Model }) {
 			>
 				<DialogContent className="max-w-[44rem]">
 					<DialogHeader>
-						<DialogTitle>Create</DialogTitle>
+						<div className="flex justify-between items-center">
+							<DialogTitle>Create</DialogTitle>
+							<div className="flex gap-2 items-center">
+								<DialogClose asChild>
+									<Button size="sm" variant="ghost">
+										<X className="h-4 w-4" />
+									</Button>
+								</DialogClose>
+							</div>
+						</div>
 					</DialogHeader>
 
 					<SmartForm
@@ -168,7 +200,7 @@ export function SmartTable({ model }: { model: Model }) {
 				open={activeDoc?.mode === "update"}
 				onOpenChange={(open) => !open && setActiveDoc(null)}
 			>
-				<DialogContent className="max-w-[44rem]">
+				<DialogContent className="max-w-[60rem]">
 					<DialogHeader>
 						<div className="flex justify-between items-center">
 							<DialogTitle>Update</DialogTitle>
@@ -202,12 +234,23 @@ export function SmartTable({ model }: { model: Model }) {
 						</div>
 					</DialogHeader>
 
-					<SmartForm
-						model={model}
-						values={activeDoc?.data}
-						onSubmit={update}
-						isSubmitting={isUpdating}
-					/>
+					<div className="grid grid-cols-12 gap-4">
+						<div className="col-span-12">
+							<SmartForm
+								model={model}
+								values={activeDoc?.data}
+								onSubmit={update}
+								isSubmitting={isUpdating}
+							/>
+						</div>
+
+						<div className="col-span-12">
+							<SmartTabbedRelatedLists
+								model={model}
+								doc={activeDoc?.data || {}}
+							/>
+						</div>
+					</div>
 				</DialogContent>
 			</Dialog>
 

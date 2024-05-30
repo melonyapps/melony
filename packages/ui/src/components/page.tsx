@@ -15,7 +15,7 @@ export function Page({
 			</div>
 
 			<div className="flex-1">
-				<Card className="h-full">{children}</Card>
+				<div className="h-full">{children}</div>
 			</div>
 		</div>
 	);

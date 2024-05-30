@@ -15,7 +15,7 @@ export const DisplayDocument = ({ defaultValue, field }: DisplayFieldProps) => {
 	return (
 		<div className="min-w-[0] flex items-center gap-2">
 			{imageField && (
-				<Avatar className="w-6 h-6">
+				<Avatar className="w-5 h-5">
 					<AvatarImage src={defaultValue?.[imageField.name]} />
 				</Avatar>
 			)}

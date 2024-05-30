@@ -1,4 +1,4 @@
-import { Field } from "@melony/types";
+import { Field, Model } from "@melony/types";
 
 export const makeFormFields = (fields: Field[]) => {
 	const result: Field[] = [];
@@ -36,20 +36,27 @@ export const makeTableFields = (fields: Field[]) => {
 
 	// filter out scalar relation fields as we already have a @relation field presented
 	const result = fields.reduce<Field[]>((prev, curr) => {
-		if (!flattenRelationFromFields.includes(curr.name)) {
-			let shouldBeDocumentField = false;
-			if (curr.kind === "object" && !curr.isList) shouldBeDocumentField = true;
+		// omit related scalar and ID fields from table
+		if (!flattenRelationFromFields.includes(curr.name) && !curr.isId) {
+			let overrideComponent: Field["component"] = undefined;
+			if (curr.kind === "object" && !curr.isList)
+				overrideComponent = "Document";
+			if (curr.kind === "object" && curr.isList) {
+				overrideComponent = "Documents";
+			}
 
 			prev.push({
 				...curr,
-				component: shouldBeDocumentField ? "Document" : curr?.component,
+				component: overrideComponent || curr?.component,
 			});
 		}
 
 		return prev;
 	}, []);
 
-	console.log(result);
-
 	return result;
+};
+
+export const getRelatedListFields = ({ model }: { model: Model }) => {
+	return model.fields.filter((x) => x.kind === "object" && x.isList);
 };

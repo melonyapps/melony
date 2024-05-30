@@ -1,4 +1,4 @@
-import { Model } from "@melony/types";
+import { FilterItem, Model } from "@melony/types";
 import { Prisma } from "@prisma/client";
 
 export const getModels = (): Model[] => {
@@ -54,4 +54,27 @@ export function parseStringOptions(str?: string): ParsedOptions {
 	}
 
 	return options;
+}
+
+export function convertFilterToPrisma(
+	filters: FilterItem[],
+): Record<string, any> {
+	const whereClause: Record<string, any> = {};
+	for (const filterItem of filters) {
+		const { field, operator, value } = filterItem;
+
+		if (value !== "") {
+			switch (operator) {
+				case "Contains":
+					whereClause[field] = { contains: value };
+					break;
+				case "Is":
+					whereClause[field] = value;
+					break;
+				default:
+					throw new Error(`Unsupported operator: ${operator}`);
+			}
+		}
+	}
+	return whereClause;
 }

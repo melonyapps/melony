@@ -19,7 +19,7 @@ export function Sidebar({
 	return (
 		<aside
 			className={cn(
-				`fixed left-0 right-0 top-0 z-50 w-full flex flex-col transition-[width] md:bottom-0 md:right-auto md:h-svh ${isCollapsed ? "md:w-14" : "md:w-64"}`,
+				`fixed left-0 right-0 top-0 border-r z-50 w-full flex flex-col transition-[width] md:bottom-0 md:right-auto md:h-svh ${isCollapsed ? "md:w-14" : "md:w-64"}`,
 				className,
 			)}
 		>
