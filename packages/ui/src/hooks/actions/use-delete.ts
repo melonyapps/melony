@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useApp } from "..";
+import { useApp } from "../..";
 import { Model } from "@melony/types";
 
 export function useDelete({

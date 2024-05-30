@@ -24,3 +24,9 @@ model User {
   name     String?
   projects Project[]
 }
+
+model File {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  downloadUrl String
+  name        String
+}

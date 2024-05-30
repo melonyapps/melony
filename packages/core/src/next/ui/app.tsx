@@ -19,6 +19,7 @@ import { MelonyApp } from "@melony/types";
 import { getPathname } from "../lib/url";
 import { getUserAction, loginAction, logoutAction } from "@/prisma/auth";
 import { AppProvider } from "@melony/ui";
+import { uploadAction } from "@/prisma/storage";
 
 export function makeApp(config?: MelonyApp) {
 	return async function App({ children }: { children: React.ReactNode }) {
@@ -39,6 +40,7 @@ export function makeApp(config?: MelonyApp) {
 					loginAction={loginAction}
 					logoutAction={logoutAction}
 					getUserAction={getUserAction}
+					uploadAction={uploadAction}
 				>
 					<AuthProvider>
 						<Protected>

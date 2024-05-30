@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useApp } from "..";
+import { useApp } from "../..";
 import { Model } from "@melony/types";
 
-export function useUpdate({
+export function useCreate({
 	model,
 	onSuccess,
 }: {
@@ -11,11 +11,11 @@ export function useUpdate({
 }) {
 	const queryClient = useQueryClient();
 
-	const { updateAction } = useApp();
+	const { createAction } = useApp();
 
 	return useMutation({
-		mutationKey: ["update"],
-		mutationFn: (data: any) => updateAction({ model, data }),
+		mutationKey: ["create"],
+		mutationFn: (data: any) => createAction({ model, data }),
 		onSuccess: () => {
 			onSuccess();
 		},

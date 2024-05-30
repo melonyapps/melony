@@ -6,9 +6,10 @@ import { getFieldValidation } from "@/lib/validation";
 import z from "zod";
 import { Button } from "../ui/button";
 import { Check } from "lucide-react";
-import { makeFormFields } from "./helpers";
+import { makeFormFields, removeRelationsFromFormValues } from "./helpers";
 import { FormInput } from "../form/form-input";
 import { FormCombobox } from "../form/form-combobox";
+import { FormImage } from "../form/form-image";
 
 const FORM_FIELDS_MAP = {
 	String: FormInput,
@@ -16,7 +17,7 @@ const FORM_FIELDS_MAP = {
 	// Melony specific "component"
 	Document: FormCombobox,
 	Documents: FormCombobox, // its not used here yet. we have separated tables for related many docs. here its just for to avoid TS errors.
-	Image: FormInput,
+	Image: FormImage,
 	Color: FormInput,
 };
 
@@ -39,7 +40,7 @@ export function SmartForm({
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
-		values,
+		values: removeRelationsFromFormValues({ values, model }),
 	});
 
 	const handleSubmit = (inputData: any) => {

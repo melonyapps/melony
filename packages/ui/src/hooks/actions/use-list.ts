@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useApp } from "..";
+import { useApp } from "../..";
 import { ListActionPayload } from "@melony/types";
 
 export function useList({ model, filter }: ListActionPayload) {

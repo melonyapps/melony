@@ -1,4 +1,5 @@
 import { Field, Model } from "@melony/types";
+import { Mode } from "fs";
 
 export const makeFormFields = (fields: Field[]) => {
 	const result: Field[] = [];
@@ -59,4 +60,22 @@ export const makeTableFields = (fields: Field[]) => {
 
 export const getRelatedListFields = ({ model }: { model: Model }) => {
 	return model.fields.filter((x) => x.kind === "object" && x.isList);
+};
+
+export const removeRelationsFromFormValues = ({
+	values,
+	model,
+}: {
+	values: any;
+	model: Model;
+}) => {
+	const result: any = {};
+
+	model.fields.map((field) => {
+		if (field.kind !== "object") {
+			result[field.name] = values?.[field.name];
+		}
+	});
+
+	return result;
 };

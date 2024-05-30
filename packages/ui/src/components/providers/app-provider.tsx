@@ -20,6 +20,8 @@ type DefaultActions = {
 	loginAction: (payload: LoginActionPayload) => Promise<any>;
 	logoutAction: () => Promise<any>;
 	getUserAction: () => Promise<any>;
+
+	uploadAction: ({ formData }: { formData: FormData }) => Promise<any>;
 };
 
 type AppProviderProps = {
@@ -44,6 +46,7 @@ const AppContext = createContext<
 	loginAction: () => Promise.resolve(),
 	logoutAction: () => Promise.resolve(),
 	getUserAction: () => Promise.resolve(),
+	uploadAction: () => Promise.resolve(),
 });
 
 export function AppProvider({

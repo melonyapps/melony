@@ -92,7 +92,11 @@ export function AdvancedFilter({
 				<Button variant="ghost">
 					<Filter className="h-4 w-4 mr-2" />
 					Filter{" "}
-					{values.length > 0 && <Badge className="ml-2">{values.length}</Badge>}
+					{values.length > 0 && (
+						<Badge className="ml-2" variant="secondary">
+							{values.length}
+						</Badge>
+					)}
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="w-[400px] p-0" align="start">
