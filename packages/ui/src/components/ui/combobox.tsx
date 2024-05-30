@@ -19,18 +19,26 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 
-export type SelectOption = { label: string; value: string };
+export type SelectOption = {
+	label: string;
+	value: string;
+	icon?: React.ReactNode;
+};
 
 export function Combobox({
 	options,
 	value,
 	onChange,
+	isLoading,
 }: {
 	options: SelectOption[];
 	value: string;
 	onChange: (value: string) => void;
+	isLoading?: boolean;
 }) {
 	const [open, setOpen] = React.useState(false);
+
+	const selectedOption = options.find((option) => option.value === value);
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
@@ -41,15 +49,18 @@ export function Combobox({
 					aria-expanded={open}
 					className="w-[200px] justify-between"
 				>
+					{selectedOption?.icon && selectedOption.icon}
 					<span className="block truncate">
-						{value
-							? options.find((option) => option.value === value)?.label || value
-							: "Select"}
+						{isLoading
+							? "Loading..."
+							: value
+								? selectedOption?.label || value
+								: "Select"}
 					</span>
 					<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className="w-[200px] p-0">
+			<PopoverContent className="min-w-[200px] p-0" align="start">
 				<Command>
 					<CommandInput placeholder="Search option..." />
 					<CommandList>
@@ -70,6 +81,7 @@ export function Combobox({
 											value === option.value ? "opacity-100" : "opacity-0",
 										)}
 									/>
+									{option?.icon && option.icon}
 									{option.label}
 								</CommandItem>
 							))}
