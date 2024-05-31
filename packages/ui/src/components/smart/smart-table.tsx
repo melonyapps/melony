@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import {
 	Dialog,
+	DialogBody,
 	DialogClose,
 	DialogContent,
 	DialogHeader,
@@ -135,7 +136,7 @@ export function SmartTable({
 
 	return (
 		<div id="table" className="h-full flex flex-col">
-			<div className="flex justify-between items-center py-2">
+			<div className="flex justify-between items-center py-4">
 				<div className="flex items-center gap-2">
 					<Input placeholder="Search..." />
 					<AdvancedFilter
@@ -188,11 +189,13 @@ export function SmartTable({
 						</div>
 					</DialogHeader>
 
-					<SmartForm
-						model={model}
-						onSubmit={create}
-						isSubmitting={isCreating}
-					/>
+					<DialogBody>
+						<SmartForm
+							model={model}
+							onSubmit={create}
+							isSubmitting={isCreating}
+						/>
+					</DialogBody>
 				</DialogContent>
 			</Dialog>
 
@@ -204,7 +207,7 @@ export function SmartTable({
 					<DialogHeader>
 						<div className="flex justify-between items-center">
 							<DialogTitle>Update</DialogTitle>
-							<div className="flex gap-2 items-center">
+							<div className="flex gap-1 items-center">
 								<DropdownMenu>
 									<DropdownMenuTrigger asChild>
 										<Button size="sm" variant="ghost">
@@ -234,23 +237,21 @@ export function SmartTable({
 						</div>
 					</DialogHeader>
 
-					<div className="grid grid-cols-12 gap-4">
-						<div className="col-span-12">
+					<DialogBody>
+						<div className="flex flex-col gap-4">
 							<SmartForm
 								model={model}
 								values={activeDoc?.data}
 								onSubmit={update}
 								isSubmitting={isUpdating}
 							/>
-						</div>
 
-						<div className="col-span-12">
 							<SmartTabbedRelatedLists
 								model={model}
 								doc={activeDoc?.data || {}}
 							/>
 						</div>
-					</div>
+					</DialogBody>
 				</DialogContent>
 			</Dialog>
 

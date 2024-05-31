@@ -55,7 +55,9 @@ export function SmartForm({
 			>
 				<FormFields fields={makeFormFields(model.fields)} />
 
-				<div className="flex justify-end">
+				<div className="flex gap-2 justify-end">
+					<Button variant="ghost">Cancel</Button>
+
 					<Button type="submit" disabled={isSubmitting}>
 						<Check className="h-4 w-4 mr-2" />
 						Submit

@@ -13,6 +13,7 @@ export type Field = {
 	isId: boolean;
 	isReadOnly: boolean;
 	type: string;
+	default?: unknown;
 	documentation?: string | undefined;
 	relationFromFields?: string[];
 

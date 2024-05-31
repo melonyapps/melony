@@ -8,11 +8,45 @@ datasource db {
 }
 
 model Project {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  id         String        @id @default(auto()) @map("_id") @db.ObjectId
+  title      String /// displayField
+  amount     Float?         @default(0)
+  customer   Customer      @relation(fields: [customerId], references: [id])
+  customerId String        @db.ObjectId
+  owner      User          @relation(fields: [ownerId], references: [id])
+  ownerId    String        @db.ObjectId
+  status     ProjectStatus @relation(fields: [statusId], references: [id])
+  statusId   String        @db.ObjectId
+  tasks      Task[]
+}
+
+model ProjectStatus {
+  id      String    @id @default(auto()) @map("_id") @db.ObjectId
   title   String /// displayField
-  number  String
-  owner   User   @relation(fields: [ownerId], references: [id])
-  ownerId String @db.ObjectId
+  color   String
+  project Project[]
+}
+
+model Task {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  title       String /// displayField
+  item        Item       @relation(fields: [itemId], references: [id])
+  itemId      String     @db.ObjectId
+  project     Project    @relation(fields: [projectId], references: [id])
+  projectId   String     @db.ObjectId
+  status      TaskStatus @relation(fields: [statusId], references: [id])
+  statusId    String     @db.ObjectId
+  price       Float
+  description String
+  owner       User       @relation(fields: [ownerId], references: [id])
+  ownerId     String     @db.ObjectId
+}
+
+model TaskStatus {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  title String /// displayField
+  color String
+  task  Task[]
 }
 
 /// some comment here
@@ -23,10 +57,31 @@ model User {
   password String?
   name     String?
   projects Project[]
+  tasks    Task[]
 }
 
 model File {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
   downloadUrl String
   name        String
+}
+
+model Customer {
+  id      String    @id @default(auto()) @map("_id") @db.ObjectId
+  title   String
+  project Project[]
+}
+
+enum ItemType {
+  MATERIAL
+  PRODUCT
+}
+
+model Item {
+  id    String   @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  sku   String
+  price Float
+  type  ItemType
+  task  Task[]
 }
