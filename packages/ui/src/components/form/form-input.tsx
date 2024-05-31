@@ -1,15 +1,11 @@
-import { ControllerRenderProps, FieldValues } from "react-hook-form";
 import { FormControl } from "../ui/form";
 import { Input } from "../ui/input";
+import { FormFieldProps } from "./types";
 
-export function FormInput({
-	formField,
-}: {
-	formField: ControllerRenderProps<FieldValues, string>;
-}) {
+export function FormInput({ field, formFieldProps }: FormFieldProps) {
 	return (
 		<FormControl>
-			<Input placeholder={""} {...formField} />
+			<Input placeholder={field.name} {...formFieldProps} />
 		</FormControl>
 	);
 }

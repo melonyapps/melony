@@ -9,12 +9,12 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useAuth } from "./providers/auth-provider";
-import { useAction } from "./providers/action-provider";
 import { useMutation } from "@tanstack/react-query";
+import { useApp } from "./providers/app-provider";
 
 export function LoginForm() {
 	const { handleLogin } = useAuth();
-	const { loginAction } = useAction();
+	const { loginAction } = useApp();
 
 	const { mutate: login, isPending } = useMutation({
 		mutationKey: ["login"],

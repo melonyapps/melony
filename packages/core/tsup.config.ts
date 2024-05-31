@@ -3,7 +3,7 @@ import { defineConfig } from "tsup";
 export default defineConfig((options) => {
 	return {
 		entry: {
-			core: "src/core/index.ts",
+			auth: "src/next/index.ts",
 			next: "src/next/index.ts",
 			prisma: "src/prisma/index.ts",
 		},

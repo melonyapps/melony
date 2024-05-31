@@ -1,8 +1,13 @@
 import Link from "next/link";
-import { getDocs, getModels } from "@/prisma";
+import {
+	listAction,
+	getModels,
+	createAction,
+	updateAction,
+	deleteAction,
+} from "@/prisma";
 import {
 	AccountPopover,
-	ActionProvider,
 	AuthProvider,
 	AppShell,
 	Navigation,
@@ -13,6 +18,8 @@ import {
 import { MelonyApp } from "@melony/types";
 import { getPathname } from "../lib/url";
 import { getUserAction, loginAction, logoutAction } from "@/prisma/auth";
+import { AppProvider } from "@melony/ui";
+import { uploadAction } from "@/prisma/storage";
 
 export function makeApp(config?: MelonyApp) {
 	return async function App({ children }: { children: React.ReactNode }) {
@@ -23,12 +30,17 @@ export function makeApp(config?: MelonyApp) {
 
 		return (
 			<QueryProvider>
-				<ActionProvider
-					listAction={getDocs}
+				<AppProvider
+					models={models}
 					actions={config?.actions}
+					listAction={listAction}
+					createAction={createAction}
+					updateAction={updateAction}
+					deleteAction={deleteAction}
 					loginAction={loginAction}
 					logoutAction={logoutAction}
 					getUserAction={getUserAction}
+					uploadAction={uploadAction}
 				>
 					<AuthProvider>
 						<Protected>
@@ -36,7 +48,7 @@ export function makeApp(config?: MelonyApp) {
 								logo=""
 								title="Melony"
 								nav={
-									<Navigation>
+									<Navigation initialPathname={pathArr[pathArr.length - 1]}>
 										{models.map((model) => {
 											return (
 												<NavigationItem
@@ -45,7 +57,6 @@ export function makeApp(config?: MelonyApp) {
 													icon=""
 													title={model.name}
 													href={model.name}
-													active={model.name === pathArr[pathArr.length - 1]}
 												/>
 											);
 										})}
@@ -57,7 +68,7 @@ export function makeApp(config?: MelonyApp) {
 							</AppShell>
 						</Protected>
 					</AuthProvider>
-				</ActionProvider>
+				</AppProvider>
 			</QueryProvider>
 		);
 	};

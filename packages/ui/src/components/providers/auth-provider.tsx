@@ -3,8 +3,8 @@
 import { User } from "@melony/types";
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext } from "react";
-import { useAction } from "./action-provider";
 import { LoadingSpinner } from "../loading-spinner";
+import { useApp } from "./app-provider";
 
 type AuthProviderProps = {
 	children: React.ReactNode;
@@ -17,7 +17,7 @@ export const AuthContext = createContext<{
 }>({ user: null, handleLogin: () => {}, handleLogout: () => {} });
 
 export function AuthProvider({ children }: AuthProviderProps) {
-	const { getUserAction } = useAction();
+	const { getUserAction } = useApp();
 
 	const { data, isLoading, refetch } = useQuery({
 		queryKey: ["getUser"],
@@ -25,7 +25,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	});
 
 	const handleLogin = () => {
-		console.log("handle login");
 		refetch();
 	};
 

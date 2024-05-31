@@ -6,10 +6,20 @@ import { getFieldValidation } from "@/lib/validation";
 import z from "zod";
 import { Button } from "../ui/button";
 import { Check } from "lucide-react";
+import { makeFormFields, removeRelationsFromFormValues } from "./helpers";
 import { FormInput } from "../form/form-input";
+import { FormCombobox } from "../form/form-combobox";
+import { FormImage } from "../form/form-image";
+import { FormColor } from "../form/form-color";
 
-const FIELDS_MAP = {
+const FORM_FIELDS_MAP = {
 	String: FormInput,
+
+	// Melony specific "component"
+	Document: FormCombobox,
+	Documents: FormCombobox, // its not used here yet. we have separated tables for related many docs. here its just for to avoid TS errors.
+	Image: FormImage,
+	Color: FormColor,
 };
 
 export function SmartForm({
@@ -31,7 +41,7 @@ export function SmartForm({
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
-		values,
+		values: removeRelationsFromFormValues({ values, model }),
 	});
 
 	const handleSubmit = (inputData: any) => {
@@ -44,9 +54,11 @@ export function SmartForm({
 				onSubmit={form.handleSubmit(handleSubmit, (err) => console.log(err))}
 				className="space-y-4"
 			>
-				<FormFields fields={model.fields} />
+				<FormFields fields={makeFormFields(model.fields)} />
 
-				<div className="flex justify-end">
+				<div className="flex gap-2 justify-end">
+					<Button variant="ghost">Cancel</Button>
+
 					<Button type="submit" disabled={isSubmitting}>
 						<Check className="h-4 w-4 mr-2" />
 						Submit
@@ -63,14 +75,14 @@ export function FormFields({ fields }: { fields: Field[] }) {
 	return (
 		<div className="flex flex-col">
 			{fields.map((field) => {
-				const Comp = FIELDS_MAP["String"];
+				const Comp = FORM_FIELDS_MAP[field?.component || "String"];
 
 				return (
 					<FormField
 						key={field.name}
 						control={control}
 						name={field.name}
-						render={({ field: formField }) => {
+						render={({ field: formFieldProps }) => {
 							return (
 								<FormItem>
 									<div className="grid grid-cols-12 gap-2">
@@ -78,7 +90,7 @@ export function FormFields({ fields }: { fields: Field[] }) {
 											<FormLabel>{field.name}</FormLabel>
 										</div>
 										<div className="col-span-9 py-1.5">
-											<Comp formField={formField} />
+											<Comp formFieldProps={formFieldProps} field={field} />
 											<FormMessage />
 										</div>
 									</div>

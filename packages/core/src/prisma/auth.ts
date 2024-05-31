@@ -5,18 +5,20 @@ import {
 	comparePasswords,
 	createSession,
 	deleteSession,
-	getDoc,
+	getAction,
 	verifySession,
 } from "..";
+
+const USERS_COLLECTION = "user"; // TODO: User collection is hardcoded for now
 
 export async function loginAction(
 	payload: LoginActionPayload,
 ): Promise<User | null> {
-	"use server"; // TODO: i dont understand why the module at top not working
+	"use server"; // TODO: i dont understand why the module directive at the top of the file not working
 
 	try {
-		const user = await getDoc({
-			modelName: "users",
+		const user = await getAction({
+			model: { name: USERS_COLLECTION, fields: [] },
 			where: { email: payload.email },
 		});
 
@@ -54,8 +56,8 @@ export const getUserAction = async () => {
 	if (!session) return null;
 
 	try {
-		const user = await getDoc({
-			modelName: "users",
+		const user = await getAction({
+			model: { name: USERS_COLLECTION, fields: [] },
 			where: { id: session.userId },
 		});
 

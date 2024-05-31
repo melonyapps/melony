@@ -1,4 +1,11 @@
+export type Model = {
+	name: string;
+	displayField?: string;
+	fields: Field[];
+};
+
 export type Field = {
+	kind: string;
 	name: string;
 	isRequired: boolean;
 	isList: boolean;
@@ -6,12 +13,14 @@ export type Field = {
 	isId: boolean;
 	isReadOnly: boolean;
 	type: string;
+	default?: unknown;
 	documentation?: string | undefined;
-};
+	relationFromFields?: string[];
 
-export type Model = {
-	name: string;
-	fields: Field[];
+	// Melony specific.
+	relationModel?: string;
+	component?: "Document" | "Image" | "Color";
+	isDisplayField?: boolean;
 };
 
 export type Action = {
@@ -33,4 +42,30 @@ export type User = {
 export type LoginActionPayload = {
 	email: string;
 	password: string;
+};
+
+export type ListActionPayload = {
+	model: Model;
+	filter?: FilterItem[];
+};
+
+export type CreateActionPayload = {
+	model: Model;
+	data: any;
+};
+
+export type UpdateActionPayload = {
+	model: Model;
+	data: any;
+};
+
+export type DeleteActionPayload = {
+	model: Model;
+	where: any;
+};
+
+export type FilterItem = {
+	field: string;
+	operator: "Is" | "Contains" | "DoesNotContain" | "IsAnyOf" | "GeoWithinBox";
+	value: any;
 };

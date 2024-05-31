@@ -12,7 +12,6 @@ export type PrismaField = {
 	dbName?: string | null;
 	hasDefaultValue: boolean;
 	default?: unknown;
-	relationFromFields?: string[];
 	relationToFields?: string[];
 	relationOnDelete?: string;
 	relationName?: string;
