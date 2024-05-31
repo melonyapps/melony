@@ -32,6 +32,7 @@ import { DisplayImage } from "../display-fields/display-image";
 import { DisplayDocument } from "../display-fields/display-document";
 import { SmartTabbedRelatedLists } from "./smart-tabbed-related-lists";
 import { DisplayDocuments } from "../display-fields/display-documents";
+import { DisplayColor } from "../display-fields/display-color";
 
 const DISPLAY_FIELDS_MAP = {
 	String: DisplayText,
@@ -40,7 +41,7 @@ const DISPLAY_FIELDS_MAP = {
 	Document: DisplayDocument,
 	Documents: DisplayDocuments,
 	Image: DisplayImage,
-	Color: DisplayText,
+	Color: DisplayColor,
 };
 
 const generateColumnsFromFields = (fields: Field[]) => {

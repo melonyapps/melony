@@ -1,5 +1,6 @@
 import { useApp } from "../providers/app-provider";
 import { Avatar, AvatarImage } from "../ui/avatar";
+import { Badge } from "../ui/badge";
 import { DisplayFieldProps } from "./types";
 
 export const DisplayDocument = ({ defaultValue, field }: DisplayFieldProps) => {
@@ -11,6 +12,9 @@ export const DisplayDocument = ({ defaultValue, field }: DisplayFieldProps) => {
 	const imageField = relatedModel?.fields?.find(
 		(x) => x?.component === "Image",
 	);
+	const colorField = relatedModel?.fields?.find(
+		(x) => x?.component === "Color",
+	);
 
 	return (
 		<div className="min-w-[0] flex items-center gap-2">
@@ -20,9 +24,12 @@ export const DisplayDocument = ({ defaultValue, field }: DisplayFieldProps) => {
 				</Avatar>
 			)}
 
-			<span className="block truncate">
+			<Badge
+				variant="secondary"
+				color={colorField && defaultValue?.[colorField?.name]}
+			>
 				{defaultValue?.[displayField?.name || "id"]}
-			</span>
+			</Badge>
 		</div>
 	);
 };

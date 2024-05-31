@@ -10,6 +10,7 @@ import { makeFormFields, removeRelationsFromFormValues } from "./helpers";
 import { FormInput } from "../form/form-input";
 import { FormCombobox } from "../form/form-combobox";
 import { FormImage } from "../form/form-image";
+import { FormColor } from "../form/form-color";
 
 const FORM_FIELDS_MAP = {
 	String: FormInput,
@@ -18,7 +19,7 @@ const FORM_FIELDS_MAP = {
 	Document: FormCombobox,
 	Documents: FormCombobox, // its not used here yet. we have separated tables for related many docs. here its just for to avoid TS errors.
 	Image: FormImage,
-	Color: FormInput,
+	Color: FormColor,
 };
 
 export function SmartForm({

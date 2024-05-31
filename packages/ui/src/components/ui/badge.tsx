@@ -33,7 +33,7 @@ function Badge({ className, variant, color, children, ...props }: BadgeProps) {
     <div className={cn(badgeVariants({ variant }), className)} {...props}>
       {color && (
         <div
-          className="absolute opacity-25 top-0 right-0 bottom-0 left-0"
+          className="absolute opacity-45 top-0 right-0 bottom-0 left-0"
           style={{ backgroundColor: color }}
         />
       )}
