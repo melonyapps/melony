@@ -2,12 +2,16 @@ import { FilterItem, Model } from "@melony/types";
 import { Prisma } from "@prisma/client";
 
 export const getModels = (): Model[] => {
-	// console.log(
-	// 	Prisma.dmmf.datamodel.models.map((model) => console.log(model.fields)),
-	// );
+	const enums = Prisma.dmmf.datamodel.enums;
+
+	// console.log(Prisma.dmmf.datamodel.models.map((model) => console.log(model)));
+
 	return Prisma.dmmf.datamodel.models.map((model) => {
+		const modelOptions = parseStringOptions(model?.documentation);
+
 		return {
 			name: model.name,
+			layout: modelOptions?.layout as any,
 			fields: model.fields.map((field) => {
 				const options = parseStringOptions(field?.documentation);
 
@@ -28,6 +32,15 @@ export const getModels = (): Model[] => {
 					// melony specific
 					isDisplayField: options?.displayField as boolean,
 					component: options?.component as Model["fields"][0]["component"],
+					options:
+						field.kind === "enum"
+							? enums
+									.find((x) => x.name === field.type)
+									?.values?.map((value) => ({
+										label: value.name,
+										value: value.name,
+									}))
+							: undefined,
 				};
 			}),
 		};

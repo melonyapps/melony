@@ -16,12 +16,14 @@ import {
 	TableRow,
 } from "./ui/table";
 import { Skeleton } from "./ui/skeleton";
+import React from "react";
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
 	isLoading?: boolean;
 	onClickRow: (data: TData) => void;
+	onSelect?: (old: any) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -29,20 +31,30 @@ export function DataTable<TData, TValue>({
 	data,
 	isLoading,
 	onClickRow,
+	onSelect,
 }: DataTableProps<TData, TValue>) {
+	const [rowSelection, setRowSelection] = React.useState({});
+
 	const table = useReactTable({
 		data,
 		columns,
 		getCoreRowModel: getCoreRowModel(),
+		onRowSelectionChange: (val) => {
+			setRowSelection(val);
+			onSelect && onSelect(val);
+		},
+		state: {
+			rowSelection,
+		},
 	});
 
 	const renderBody = () => {
 		if (isLoading)
-			return Array.from([1, 2, 3, 4]).map((item) => (
+			return Array.from([1, 2, 3]).map((item) => (
 				<TableRow key={item}>
 					{columns.map((cell, i) => (
 						<TableCell key={i}>
-							<Skeleton className="h-4 w-[220px]" />
+							<Skeleton className="h-4 w-full" />
 						</TableCell>
 					))}
 				</TableRow>

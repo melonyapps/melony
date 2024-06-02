@@ -1,4 +1,4 @@
-import { Page, SmartTable } from "@melony/ui";
+import { Page, SmartCards, SmartTable } from "@melony/ui";
 import { getPathname } from "../lib/url";
 import { getModel } from "@/prisma";
 
@@ -15,6 +15,14 @@ export function makePage() {
 					<div className="text-sm">Model not found</div>
 				</div>
 			);
+
+		if (model?.layout === "Cards") {
+			return (
+				<Page title={model.name}>
+					<SmartCards model={model} />
+				</Page>
+			);
+		}
 
 		return (
 			<Page title={model.name}>

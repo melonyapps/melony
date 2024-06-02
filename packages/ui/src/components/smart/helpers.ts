@@ -1,10 +1,13 @@
 import { Field, Model } from "@melony/types";
 
-export const makeFormFields = (fields: Field[]) => {
+export const makeFormFields = (model: Model) => {
+	const fields = model.fields;
+
 	const result: Field[] = [];
 
 	const scalarFields = fields.filter((x) => x.kind === "scalar");
 	const objectFields = fields.filter((x) => x.kind === "object");
+	const enumFields = fields.filter((x) => x.kind === "enum");
 
 	// loop scalar fields and make relation with object fields
 	scalarFields.map((field) => {
@@ -21,6 +24,10 @@ export const makeFormFields = (fields: Field[]) => {
 		} else {
 			result.push(field);
 		}
+	});
+
+	enumFields.map((enumField) => {
+		result.push(enumField);
 	});
 
 	return result;
