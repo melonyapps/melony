@@ -17,7 +17,7 @@ export const DisplayDocuments = ({
 	);
 
 	return (
-		<div className="flex gap-2">
+		<div className="flex gap-1">
 			{(defaultValue || []).map((item: any) => (
 				<Badge key={item?.id} variant="outline">
 					{imageField && (

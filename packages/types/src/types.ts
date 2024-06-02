@@ -1,7 +1,7 @@
 export type Model = {
 	name: string;
-	displayField?: string;
 	fields: Field[];
+	layout?: "Table" | "Cards";
 };
 
 export type Field = {
@@ -21,11 +21,12 @@ export type Field = {
 	relationModel?: string;
 	component?: "Document" | "Image" | "Color";
 	isDisplayField?: boolean;
+	options?: { label: string; value: any }[];
 };
 
 export type Action = {
 	name: string;
-	handle: (props: { docs: any; fields: any }) => Promise<any>;
+	handle: (props: CustomActionPayload) => Promise<any>;
 };
 
 export type MelonyApp = {
@@ -62,6 +63,10 @@ export type UpdateActionPayload = {
 export type DeleteActionPayload = {
 	model: Model;
 	where: any;
+};
+
+export type CustomActionPayload = {
+	docs: any;
 };
 
 export type FilterItem = {

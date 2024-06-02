@@ -11,9 +11,13 @@ import { FormInput } from "../form/form-input";
 import { FormCombobox } from "../form/form-combobox";
 import { FormImage } from "../form/form-image";
 import { FormColor } from "../form/form-color";
+import { FormSelect } from "../form/form-select";
+import { FormNumber } from "../form/form-number";
 
 const FORM_FIELDS_MAP = {
 	String: FormInput,
+	Number: FormNumber,
+	Select: FormSelect,
 
 	// Melony specific "component"
 	Document: FormCombobox,
@@ -54,7 +58,7 @@ export function SmartForm({
 				onSubmit={form.handleSubmit(handleSubmit, (err) => console.log(err))}
 				className="space-y-4"
 			>
-				<FormFields fields={makeFormFields(model.fields)} />
+				<FormFields fields={makeFormFields(model)} />
 
 				<div className="flex gap-2 justify-end">
 					<Button variant="ghost">Cancel</Button>
@@ -75,7 +79,19 @@ export function FormFields({ fields }: { fields: Field[] }) {
 	return (
 		<div className="flex flex-col">
 			{fields.map((field) => {
-				const Comp = FORM_FIELDS_MAP[field?.component || "String"];
+				let Comp = FORM_FIELDS_MAP["String"];
+
+				if (field.type === "Float") {
+					Comp = FORM_FIELDS_MAP["Number"];
+				}
+
+				if (field?.component) {
+					Comp = FORM_FIELDS_MAP[field.component];
+				}
+
+				if (field.kind === "enum") {
+					Comp = FORM_FIELDS_MAP["Select"];
+				}
 
 				return (
 					<FormField
@@ -91,6 +107,7 @@ export function FormFields({ fields }: { fields: Field[] }) {
 										</div>
 										<div className="col-span-9 py-1.5">
 											<Comp formFieldProps={formFieldProps} field={field} />
+
 											<FormMessage />
 										</div>
 									</div>

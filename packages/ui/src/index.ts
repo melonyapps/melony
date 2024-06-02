@@ -31,6 +31,7 @@ export * from "./components/providers/auth-provider";
 export * from "./components/smart/smart-table";
 export * from "./components/smart/smart-form";
 export * from "./components/smart/smart-auth";
+export * from "./components/smart/smart-cards";
 export * from "./components/providers/app-provider";
 export * from "./components/page";
 export * from "./components/account-popover";

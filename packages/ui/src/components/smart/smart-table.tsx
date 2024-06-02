@@ -4,24 +4,8 @@ import { Field, FilterItem, Model } from "@melony/types";
 import { DataTable } from "../data-table";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import {
-	Dialog,
-	DialogBody,
-	DialogClose,
-	DialogContent,
-	DialogHeader,
-	DialogTitle,
-} from "../ui/dialog";
-import { SmartForm } from "./smart-form";
-import { useCreate, useUpdate, useList, useDelete } from "@/hooks";
-import { Ellipsis, PlusIcon, X } from "lucide-react";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { ConfirmDialog } from "../confirm-dialog";
+import { useList } from "@/hooks";
+import { PlusIcon } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "../ui/checkbox";
 import { useApp } from "../providers/app-provider";
@@ -30,9 +14,12 @@ import { AdvancedFilter } from "../advanced-filter";
 import { DisplayText } from "../display-fields/display-text";
 import { DisplayImage } from "../display-fields/display-image";
 import { DisplayDocument } from "../display-fields/display-document";
-import { SmartTabbedRelatedLists } from "./smart-tabbed-related-lists";
 import { DisplayDocuments } from "../display-fields/display-documents";
 import { DisplayColor } from "../display-fields/display-color";
+import { Actions } from "./actions";
+import { ViewDocDialog } from "./view-doc-dialog";
+import { DocMenu } from "./doc-menu";
+import { CreateDocDialog } from "./create-doc-dialog";
 
 const DISPLAY_FIELDS_MAP = {
 	String: DisplayText,
@@ -69,6 +56,9 @@ const generateColumnsFromFields = (fields: Field[]) => {
 				checked={row.getIsSelected()}
 				onCheckedChange={(value) => row.toggleSelected(!!value)}
 				aria-label="Select row"
+				onClick={(e) => {
+					e.stopPropagation();
+				}}
 			/>
 		),
 		enableSorting: false,
@@ -97,9 +87,11 @@ export function SmartTable({
 	initialFilter?: FilterItem[];
 }) {
 	const [activeDoc, setActiveDoc] = React.useState<{
-		mode: "show" | "update" | "create" | "delete";
+		mode: "update" | "create";
 		data?: any;
 	} | null>(null);
+
+	const [rowSelection, setRowSelection] = React.useState({});
 
 	const [filter, setFilter] = React.useState<FilterItem[]>(initialFilter || []);
 
@@ -110,30 +102,7 @@ export function SmartTable({
 		filter,
 	});
 
-	const { mutate: create, isPending: isCreating } = useCreate({
-		model,
-		onSuccess: () => {
-			setActiveDoc(null);
-		},
-	});
-
-	const { mutate: update, isPending: isUpdating } = useUpdate({
-		model,
-		onSuccess: () => {
-			setActiveDoc(null);
-		},
-	});
-
-	const { mutate: remove, isPending: isRemoving } = useDelete({
-		model,
-		onSuccess: () => {
-			setActiveDoc(null);
-		},
-	});
-
 	const modelActions = getModelActions(model.name);
-
-	console.log(modelActions);
 
 	return (
 		<div id="table" className="h-full flex flex-col">
@@ -149,7 +118,17 @@ export function SmartTable({
 						}}
 					/>
 				</div>
-				<div>
+				<div className="flex items-center gap-2">
+					{modelActions.length > 0 && (
+						<Actions
+							model={model}
+							actions={modelActions}
+							docs={data.filter((_: any, index: number) =>
+								Object.keys(rowSelection).includes(`${index}`),
+							)}
+						/>
+					)}
+
 					<Button
 						variant="outline"
 						onClick={() => {
@@ -169,100 +148,25 @@ export function SmartTable({
 					onClickRow={(data) => {
 						setActiveDoc({ mode: "update", data });
 					}}
+					onSelect={setRowSelection}
 				/>
 			</div>
 
-			<Dialog
+			<CreateDocDialog
+				model={model}
 				open={activeDoc?.mode === "create"}
-				onOpenChange={(open) => !open && setActiveDoc(null)}
-			>
-				<DialogContent className="max-w-[44rem]">
-					<DialogHeader>
-						<div className="flex justify-between items-center">
-							<DialogTitle>Create</DialogTitle>
-							<div className="flex gap-2 items-center">
-								<DialogClose asChild>
-									<Button size="sm" variant="ghost">
-										<X className="h-4 w-4" />
-									</Button>
-								</DialogClose>
-							</div>
-						</div>
-					</DialogHeader>
-
-					<DialogBody>
-						<SmartForm
-							model={model}
-							onSubmit={create}
-							isSubmitting={isCreating}
-						/>
-					</DialogBody>
-				</DialogContent>
-			</Dialog>
-
-			<Dialog
-				open={activeDoc?.mode === "update"}
-				onOpenChange={(open) => !open && setActiveDoc(null)}
-			>
-				<DialogContent className="max-w-[60rem]">
-					<DialogHeader>
-						<div className="flex justify-between items-center">
-							<DialogTitle>Update</DialogTitle>
-							<div className="flex gap-1 items-center">
-								<DropdownMenu>
-									<DropdownMenuTrigger asChild>
-										<Button size="sm" variant="ghost">
-											<Ellipsis className="h-4 w-4" />
-										</Button>
-									</DropdownMenuTrigger>
-									<DropdownMenuContent align="end">
-										<DropdownMenuItem
-											onClick={() => {
-												setActiveDoc((prev) => ({
-													mode: "delete",
-													data: prev?.data,
-												}));
-											}}
-										>
-											Delete
-										</DropdownMenuItem>
-									</DropdownMenuContent>
-								</DropdownMenu>
-
-								<DialogClose asChild>
-									<Button size="sm" variant="ghost">
-										<X className="h-4 w-4" />
-									</Button>
-								</DialogClose>
-							</div>
-						</div>
-					</DialogHeader>
-
-					<DialogBody>
-						<div className="flex flex-col gap-4">
-							<SmartForm
-								model={model}
-								values={activeDoc?.data}
-								onSubmit={update}
-								isSubmitting={isUpdating}
-							/>
-
-							<SmartTabbedRelatedLists
-								model={model}
-								doc={activeDoc?.data || {}}
-							/>
-						</div>
-					</DialogBody>
-				</DialogContent>
-			</Dialog>
-
-			<ConfirmDialog
-				open={activeDoc?.mode === "delete"}
-				onClose={() => setActiveDoc(null)}
-				onConfirm={() => {
-					remove({ id: activeDoc?.data?.id });
+				onClose={() => {
+					setActiveDoc(null);
 				}}
-				isConfirming={isRemoving}
+			/>
+
+			<ViewDocDialog
+				model={model}
+				data={activeDoc?.data}
+				open={activeDoc?.mode === "update"}
+				onClose={() => {
+					setActiveDoc(null);
+				}}
 			/>
 		</div>
 	);

@@ -34,10 +34,10 @@ const AppContext = createContext<
 	{
 		models?: Model[];
 		actions?: Record<string, Action[]>;
-		getModelActions: (modelName: string) => void;
+		getModelActions: (modelName: string) => Action[];
 	} & DefaultActions
 >({
-	getModelActions: () => {},
+	getModelActions: () => [],
 	listAction: () => Promise.resolve(),
 	createAction: () => Promise.resolve(),
 	updateAction: () => Promise.resolve(),
@@ -56,7 +56,7 @@ export function AppProvider({
 	...rest
 }: AppProviderProps) {
 	const getModelActions = (modelName: string) => {
-		return actions ? actions[modelName] : [];
+		return actions?.[modelName] || [];
 	};
 
 	const value = { getModelActions, actions, models, ...rest };

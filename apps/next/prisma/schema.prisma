@@ -37,7 +37,7 @@ model Task {
   status      TaskStatus @relation(fields: [statusId], references: [id])
   statusId    String     @db.ObjectId
   price       Float
-  description String
+  description String?    @default("")
   owner       User       @relation(fields: [ownerId], references: [id])
   ownerId     String     @db.ObjectId
 }
@@ -45,7 +45,7 @@ model Task {
 model TaskStatus {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
   title String /// displayField
-  color String
+  color String /// component=Color
   tasks Task[]
 }
 
@@ -60,10 +60,11 @@ model User {
   tasks    Task[]
 }
 
+/// layout=Cards
 model File {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
-  downloadUrl String
-  name        String
+  downloadUrl String /// component=Image
+  name        String /// displayField
 }
 
 model Customer {
@@ -81,7 +82,7 @@ model Item {
   id    String   @id @default(auto()) @map("_id") @db.ObjectId
   title String /// displayField
   sku   String
-  price Float
+  price Float?   @default(0)
   type  ItemType
   tasks Task[]
 }
